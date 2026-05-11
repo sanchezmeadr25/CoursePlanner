@@ -26,12 +26,26 @@ public class Curso {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
 	private Long id;
+	
+	@Column(name="titulo", nullable = false, length = 300)
 	private String titulo;
+	
+	@Column(name="descripcion",columnDefinition = "Text")
 	private String descripcion;
+	
+	@Column(name="categoria",nullable = false)
 	private String categoria;
+	
+	@Column(name="foto")
 	private String fotoCurso;
+	
+	@Column(name="duracion")
 	private Duration duracionHoras;
+	
+	
 	private double precio;
+	
+	
 	private int plazasMaximas;
 	
 	@OneToMany
