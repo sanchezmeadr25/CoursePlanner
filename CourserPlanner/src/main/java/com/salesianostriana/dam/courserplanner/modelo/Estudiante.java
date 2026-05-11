@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +24,7 @@ import lombok.NoArgsConstructor;
 //@Builder
 @Entity
 @Table(name="estudiante")
-public abstract class Estudiante {
+public  class Estudiante {
 
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,7 +43,7 @@ public abstract class Estudiante {
 	@Column(name="email", nullable=false)
 	private String email;
 	
-	@Column(name="experiencia")
+	@Column(name="experiencia", nullable=false)
 	private String nivelExperiencia;
 	
 	@Column(name="telefono", nullable=false)
@@ -57,8 +58,8 @@ public abstract class Estudiante {
 	@Column(name="localidad")
 	private String localidad;
 
-	@ManyToMany
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_estudiante_inscripcion"))
+	@OneToMany(mappedBy = "estudiante")
+	//@JoinColumn(foreignKey = @ForeignKey(name = "fk_estudiante_inscripcion"))
 	private List<Inscripcion>listaInscripciones=new ArrayList <>();
 	
 	
@@ -66,8 +67,8 @@ public abstract class Estudiante {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		Curso other = (Curso) o;
-		return dni != null && dni .equals(other.getId());
+		Estudiante other = (Estudiante) o;
+		return dni != null && dni .equals(other.getDni());
 		
 	}
 	

@@ -12,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,15 +39,19 @@ public class Inscripcion {
 	private double progreso;
 	
 	@Column(name="estado", nullable = false)
+	//@Enumerated(EnumType.STRING) PREGUNTAR A LUISMI
 	private EstadoInscripcion estado;
 	
 	@Column(name="valoracion")
 	private double valoracion;
 	
-	@ManyToMany
+	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_inscripcion_estudiante"))
-	private List<Estudiante> listaEstudiantes= new ArrayList<>();
+	private Estudiante estudiante;
 	
+	@ManyToOne
+	@JoinColumn(foreignKey = @ForeignKey(name = "fk_inscripcion_curso"))
+	private Curso curso;
 	
 	public enum EstadoInscripcion{
 		PENDIENTE, EN_CURSO, COMPLETADO, CANCELADO
