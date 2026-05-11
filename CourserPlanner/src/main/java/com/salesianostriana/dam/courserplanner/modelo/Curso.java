@@ -1,13 +1,14 @@
 package com.salesianostriana.dam.courserplanner.modelo;
 
 import java.time.Duration;
-import java.time.LocalDate;
-import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,9 +19,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
+@Table(name="curso")
 public class Curso {
 	
-	@Id @GeneratedValue
+	@Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id", nullable = false)
 	private Long id;
 	private String titulo;
 	private String descripcion;
@@ -32,5 +36,19 @@ public class Curso {
 	
 	@OneToMany
 	private Instructor instructor;
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Curso other = (Curso) o;
+		return id != null && id.equals(other.getId());
+		
+	}
+	
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
 	
 }
