@@ -64,8 +64,8 @@ public class Instructor {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		Curso other = (Curso) o;
-		return dni != null && dni .equals(other.getId());
+		Instructor other = (Instructor) o;
+		return dni != null && dni .equals(other.getDni());
 		
 	}
 	

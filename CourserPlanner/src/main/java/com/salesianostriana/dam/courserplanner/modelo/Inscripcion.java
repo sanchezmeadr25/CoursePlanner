@@ -61,7 +61,7 @@ public class Inscripcion {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		Curso other = (Curso) o;
+		Inscripcion other = (Inscripcion) o;
 		return id != null && id.equals(other.getId());
 		
 	}
