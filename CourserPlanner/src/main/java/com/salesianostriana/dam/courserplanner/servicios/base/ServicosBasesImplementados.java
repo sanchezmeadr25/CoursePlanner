@@ -1,15 +1,13 @@
 package com.salesianostriana.dam.courserplanner.servicios.base;
-
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public class BaseServiceImpl<T, ID, R extends JpaRepository<T,ID>>implements BaseService<T,ID>{
-
+public class ServicosBasesImplementados <T, ID, R extends JpaRepository<T,ID>>implements ServicioBase<T,ID>{
+	
 	@Override
 	public List<T> findAll() {
-		
 		return null;
 	}
 

@@ -1,19 +1,24 @@
 package com.salesianostriana.dam.courserplanner.controlador;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.salesianostriana.dam.courserplanner.modelo.Estudiante;
+import com.salesianostriana.dam.courserplanner.servicio.EstudianteServicio;
 
 @Controller
 public class EstudianteControlador {
 
+	private EstudianteServicio estudianteServicio;
 	
-	//Formulario que rellena el usuario
-	@GetMapping("/estudiante")
+	//Formulario que crea el estudiante
+	@GetMapping("/anadirestudiante")
 	public String mostrarFormulario(Model model) {
 		Estudiante estudiante = new Estudiante();
 		model.addAttribute("estudianteFormulario",estudiante);
@@ -21,11 +26,23 @@ public class EstudianteControlador {
 	}
 	
 	
-	@PostMapping("/anadirEstudiante")
-	public String submit(@ModelAttribute("estudianteFormulario") Estudiante estudiante, Model model) {
+	@PostMapping("/crearEstudiante")
+	public String submit(@ModelAttribute("estudianteFormulario") Estudiante estudiante) {
+		estudianteServicio.save(estudiante);
+		return "redirect:/";
+	}
 	
-		model.addAttribute("estudiante",estudiante);
-		return "view";
-	
+		//Formulario de editar el estudiante
+	@GetMapping("/editarEstudiante/{dni}")
+	public String formularioEditar(@PathVariable("dni") String dni, Model model ) {
+		Optional<Estudiante> estudianteEditar= estudianteServicio.findById(dni);
+		
+		if (estudianteEditar.isPresent()) {
+		model.addAttribute("estudianteFormulario",estudianteEditar.get());
+		return "formulario";
+			}else {
+				return "redirect:/";
+			}
+	}
 }
-}
+

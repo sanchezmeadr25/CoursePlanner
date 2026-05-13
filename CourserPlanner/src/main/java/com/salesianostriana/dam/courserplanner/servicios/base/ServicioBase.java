@@ -3,8 +3,8 @@ package com.salesianostriana.dam.courserplanner.servicios.base;
 import java.util.List;
 import java.util.Optional;
 
-public interface BaseService<T, ID> {
-
+public interface ServicioBase <T,ID>{
+	
 	List<T> findAll();
 
 	Optional<T> findById(ID id);
@@ -16,5 +16,5 @@ public interface BaseService<T, ID> {
 	void delete(T t);
 
 	void deleteById(ID id);
-
+	
 }
