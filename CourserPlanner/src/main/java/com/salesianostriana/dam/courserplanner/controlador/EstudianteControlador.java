@@ -28,14 +28,14 @@ public class EstudianteControlador {
 	
 	@PostMapping("/crearEstudiante")
 	public String submit(@ModelAttribute("estudianteFormulario") Estudiante estudiante) {
-		estudianteServicio.save(estudiante);
+		estudianteServicio.guardar(estudiante);
 		return "redirect:/";
 	}
 	
-		//Formulario de editar el estudiante
+	//Formulario de editar el estudiante
 	@GetMapping("/editarEstudiante/{dni}")
 	public String formularioEditar(@PathVariable("dni") String dni, Model model ) {
-		Optional<Estudiante> estudianteEditar= estudianteServicio.findById(dni);
+		Optional<Estudiante> estudianteEditar= estudianteServicio.buscarPorId(dni);
 		
 		if (estudianteEditar.isPresent()) {
 		model.addAttribute("estudianteFormulario",estudianteEditar.get());
