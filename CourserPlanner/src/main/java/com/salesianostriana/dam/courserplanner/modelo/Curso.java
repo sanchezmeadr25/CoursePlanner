@@ -1,54 +1,42 @@
 package com.salesianostriana.dam.courserplanner.modelo;
 
 import java.time.Duration;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name="curso")
+@Table(name = "curso")
 public class Curso {
 	
 	@Id 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
 	private Long id;
 	
-	@Column(name="titulo", nullable = false, length = 300)
+	@Column(nullable = false, length = 300)
 	private String titulo;
 	
-	@Column(name="descripcion",columnDefinition = "Text")
+	@Column(columnDefinition = "TEXT")
 	private String descripcion;
 	
-	@Column(name="categoria",nullable = false)
+	@Column(nullable = false)
 	private String categoria;
 	
-	@Column(name="foto")
 	private String fotoCurso;
 	
-	@Column(name="duracion")
-	private Duration duracionHoras;
 	
+	private Duration duracionHoras;
 	
 	private double precio;
 	
-	
 	private int plazasMaximas;
 	
-	@OneToMany
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "instructor_id")
 	private Instructor instructor;
 	
 	@Override
@@ -57,12 +45,10 @@ public class Curso {
 		if (o == null || getClass() != o.getClass()) return false;
 		Curso other = (Curso) o;
 		return id != null && id.equals(other.getId());
-		
 	}
 	
 	@Override
 	public int hashCode() {
 		return getClass().hashCode();
 	}
-	
 }

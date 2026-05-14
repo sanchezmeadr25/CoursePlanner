@@ -1,68 +1,64 @@
 package com.salesianostriana.dam.courserplanner.modelo;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name= "inscripcion")
+@Table(name = "inscripcion")
 public class Inscripcion {
-	
-	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	private Long id;
-	
-	@Column(name="fechaInscripcion", nullable = false)
-	private LocalDateTime fechaInscripcion;
-	
-	@Column(name="progreso")
-	private double progreso;
-	
-	@Column(name="estado", nullable = false)
-	private EstadoInscripcion estado;
-	
-	@Column(name="valoracion")
-	private double valoracion;
-	
-	@ManyToMany
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_inscripcion_estudiante"))
-	private List<Estudiante> listaEstudiantes= new ArrayList<>();
-	
-	
-	public enum EstadoInscripcion{
-		PENDIENTE, EN_CURSO, COMPLETADO, CANCELADO
-	}
-	
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Curso other = (Curso) o;
-		return id != null && id.equals(other.getId());
-		
-	}
-	
-	@Override
-	public int hashCode() {
-		return getClass().hashCode();
-	}
+
+    
+    @EmbeddedId
+    @Builder.Default
+    private InscripcionPK inscripcionPK = new InscripcionPK();
+
+  
+    @Column(name = "fecha_inscripcion", nullable = false)
+    private LocalDateTime fechaInscripcion;
+    
+    private double progreso;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private EstadoInscripcion estado;
+    
+    private double valoracion;
+
+ 
+    @ManyToOne
+    @MapsId("estudiante_dni")
+    @JoinColumn(name = "estudiante_dni")
+    private Estudiante estudiante;
+
+    @ManyToOne
+    @MapsId("curso_id")
+    @JoinColumn(name = "curso_id")
+    private Curso curso;
+
+   
+    public Inscripcion(Estudiante e, Curso c) {
+        this.estudiante = e;
+        this.curso = c;
+        this.fechaInscripcion = LocalDateTime.now(); 
+        this.estado = EstadoInscripcion.PENDIENTE;   
+    }
+   
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Inscripcion other = (Inscripcion) o;
+        return inscripcionPK != null && inscripcionPK.equals(other.getInscripcionPK());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
