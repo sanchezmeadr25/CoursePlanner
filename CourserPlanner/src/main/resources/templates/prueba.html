@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+        <div th:replace="~{fragments/general :: cabecera}"></div>
+
+    <main>
+        <h2>Contacto</h2>
+        <p>¿Tienes alguna duda sobre nuestros productos? Estamos aquí para ayudarte.</p>
+        
+        <h3>Datos de contacto:</h3>
+        <ul>
+            <li>Email: soporte@ejemplo-dam.com</li>
+            <li>Teléfono: 900 123 456</li>
+            <li>Horario: Lunes a Viernes, 09:00 - 18:00</li>
+        </ul>
+    </main>
+
+    <div th:replace="~{fragments/general :: pie}"></div>
+
+</body>
+</html>
