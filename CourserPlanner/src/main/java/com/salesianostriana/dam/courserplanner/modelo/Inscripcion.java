@@ -21,6 +21,7 @@ public class Inscripcion {
     @Column(name = "fecha_inscripcion", nullable = false)
     private LocalDateTime fechaInscripcion;
     
+    @Column(name="progreso")
     private double progreso;
     
     @Enumerated(EnumType.STRING)
@@ -40,13 +41,6 @@ public class Inscripcion {
     @JoinColumn(name = "curso_id")
     private Curso curso;
 
-   
-    public Inscripcion(Estudiante e, Curso c) {
-        this.estudiante = e;
-        this.curso = c;
-        this.fechaInscripcion = LocalDateTime.now(); 
-        this.estado = EstadoInscripcion.PENDIENTE;   
-    }
    
 
     @Override

@@ -3,8 +3,18 @@ package com.salesianostriana.dam.courserplanner.modelo;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import jakarta.persistence.*;
-import lombok.*;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
@@ -43,9 +53,12 @@ public class Instructor {
 	private LocalDate fechaNacimiento;
 
 	
-	@OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(
+			mappedBy = "instructor", 
+			cascade = CascadeType.ALL,
+			orphanRemoval = true)
 	@Builder.Default
-	// @ToString.Exclude PREGUNTAR A LUISMI
+	@ToString.Exclude
 	private List<Curso> curso = new ArrayList<>();
 	
 	
