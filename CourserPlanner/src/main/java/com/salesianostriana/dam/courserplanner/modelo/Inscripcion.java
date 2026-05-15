@@ -1,71 +1,53 @@
 package com.salesianostriana.dam.courserplanner.modelo;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name= "inscripcion")
+@Table(name = "inscripcion")
 public class Inscripcion {
-	
-	@Id 
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	private Long id;
-	
-	@Column(name="fechaInscripcion", nullable = false)
+
+	@EmbeddedId
+	@Builder.Default
+	private InscripcionPK inscripcionPK = new InscripcionPK();
+
+	@Column(name = "fecha_inscripcion", nullable = false)
 	private LocalDateTime fechaInscripcion;
-	
-	@Column(name="progreso")
+
+	@Column(name = "progreso")
 	private double progreso;
-	
-	@Column(name="estado", nullable = false)
-	//@Enumerated(EnumType.STRING) PREGUNTAR A LUISMI
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
 	private EstadoInscripcion estado;
-	
-	@Column(name="valoracion")
+
 	private double valoracion;
-	
+
 	@ManyToOne
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_inscripcion_estudiante"))
+	@MapsId("estudiante_dni")
+	@JoinColumn(name = "estudiante_dni")
 	private Estudiante estudiante;
-	
+
 	@ManyToOne
-	@JoinColumn(foreignKey = @ForeignKey(name = "fk_inscripcion_curso"))
+	@MapsId("curso_id")
+	@JoinColumn(name = "curso_id")
 	private Curso curso;
-	
-	public enum EstadoInscripcion{
-		PENDIENTE, EN_CURSO, COMPLETADO, CANCELADO
-	}
-	
+
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		Inscripcion other = (Inscripcion) o;
-		return id != null && id.equals(other.getId());
-		
+		return inscripcionPK != null && inscripcionPK.equals(other.getInscripcionPK());
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return getClass().hashCode();

@@ -1,6 +1,5 @@
 package com.salesianostriana.dam.courserplanner.modelo;
 
-
 import java.time.Duration;
 import java.util.List;
 import java.util.ArrayList;
@@ -25,55 +24,54 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name="curso")
+@Table(name = "curso")
 public class Curso {
-	
-	@Id 
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
 	private Long id;
-	
-	@Column(name="titulo", nullable = false, length = 300)
+
+	@Column(name = "titulo", nullable = false, length = 300)
 	private String titulo;
-	
-	@Column(name="descripcion",columnDefinition = "Text")
+
+	@Column(name = "descripcion", columnDefinition = "Text")
 	private String descripcion;
-	
-	@Column(name="categoria",nullable = false)
+
+	@Column(name = "categoria", nullable = false)
 	private String categoria;
-	
-	@Column(name="foto")
+
+	@Column(name = "foto")
 	private String fotoCurso;
-	
-	@Column(name="duracion")
+
+	@Column(name = "duracion")
 	private Duration duracionHoras;
-	
-	
+
 	private double precio;
-	
-	
+
 	private int plazasMaximas;
-	
+
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_instructor_curso"))
 	private Instructor instructor;
-	
+
 	@OneToMany(mappedBy = "curso")
 	@Builder.Default
 	private List<Inscripcion> listaInscripciones = new ArrayList<>();
-	
+
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		Curso other = (Curso) o;
 		return id != null && id.equals(other.getId());
-		
+
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return getClass().hashCode();
 	}
-	
+
 }
