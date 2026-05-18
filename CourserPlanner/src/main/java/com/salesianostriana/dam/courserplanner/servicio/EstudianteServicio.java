@@ -9,4 +9,9 @@ import com.salesianostriana.dam.courserplanner.serviciobase.ServicosBasesImpleme
 @Service
 public class EstudianteServicio extends ServicosBasesImplementados<Estudiante, String, EstudianteRepositorio> {
 
+	public EstudianteServicio(EstudianteRepositorio repositorio) {
+		super(repositorio);
+		// TODO Auto-generated constructor stub
+	}
+
 }
