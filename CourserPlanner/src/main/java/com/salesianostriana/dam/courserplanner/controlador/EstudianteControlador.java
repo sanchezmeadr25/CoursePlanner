@@ -32,6 +32,8 @@ public class EstudianteControlador {
 		return "redirect:/";
 	}
 	
+	
+	/*
 	//Formulario de editar el estudiante
 	@GetMapping("/editarEstudiante/{dni}")
 	public String formularioEditar(@PathVariable("dni") String dni, Model model ) {
@@ -43,6 +45,6 @@ public class EstudianteControlador {
 			}else {
 				return "redirect:/";
 			}
-	}
+	}*/
 }
 
