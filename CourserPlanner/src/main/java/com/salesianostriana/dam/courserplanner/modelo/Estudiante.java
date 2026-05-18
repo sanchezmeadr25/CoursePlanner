@@ -44,7 +44,8 @@ public class Estudiante {
 	@Column(name = "localidad")
 	private String localidad;
 
-	@OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "estudiante", 
+			orphanRemoval = true)
 	@Builder.Default
 	private List<Inscripcion> listaInscripciones = new ArrayList<>();
 

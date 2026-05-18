@@ -7,13 +7,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+
 public abstract class ServicosBasesImplementados <T, ID, R extends JpaRepository<T,ID>>implements ServicioBase<T,ID>{
 	
 	
 	private final R repositorio;
-
 	
+	public ServicosBasesImplementados(R repositorio) {
+		this.repositorio = repositorio;
+	}
+
 	@Override
 	public List<T> buscarTodos() {
 		return repositorio.findAll();
