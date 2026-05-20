@@ -17,9 +17,9 @@ public class ConfiguracionSeguridad {
 		//Aquí dentro lo que hacemos es decidir quien entra y quien no y a que puede entrar.
 		http.authorizeHttpRequests(
 				(authz)-> authz
-					.requestMatchers("/instructores/**", "/cursos/**").hasRole("ADMIN")
-					.requestMatchers("/registrado/**").authenticated()
-					.requestMatchers("/","/registrarse","/crearCuenta","/css","/img/**").permitAll()
+					.requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
+					.requestMatchers("/", "/acceso", "/error").permitAll()
+					.requestMatchers("/admin/**").hasRole("ADMIN")
 					.anyRequest()
 					.authenticated())
 					.requestCache(cache -> {
@@ -29,8 +29,7 @@ public class ConfiguracionSeguridad {
 		            	
 		            })
 					.formLogin(form -> form
-							.loginPage("/registrarse")//Esto indica el controlador del login
-							.defaultSuccessUrl("/", true) //Esto indica donde llevamos a un usuario que llega al enlace escribiendolo
+							.loginPage("/acceso")
 							.permitAll()
 					);
 				
