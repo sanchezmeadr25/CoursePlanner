@@ -1,12 +1,9 @@
 package com.salesianostriana.dam.courserplanner.controlador;
 
-import java.util.Optional;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.salesianostriana.dam.courserplanner.modelo.Estudiante;
@@ -29,6 +26,13 @@ public class EstudianteControlador {
 	public String submit(@ModelAttribute("estudiante") Estudiante estudiante) {
 		estudianteServicio.guardar(estudiante);
 		return "redirect:/";
+	}
+	
+	//Lista Estudiantes
+	@GetMapping("/listaEstudiantes")
+	public String listarEstudiantes(Model model) {
+		model.addAttribute("estudiantes",estudianteServicio.buscarTodos());
+		return "admin/listaEstudiantes";
 	}
 	
 	

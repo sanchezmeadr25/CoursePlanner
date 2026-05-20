@@ -5,17 +5,12 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import lombok.RequiredArgsConstructor;
 
+public abstract class ServicosBasesImplementados <T, ID, R extends JpaRepository<T,ID>>implements ServicioBase<T,ID>{	
+	
+	@Autowired
+	protected R repositorio;
 
-public abstract class ServicosBasesImplementados <T, ID, R extends JpaRepository<T,ID>>implements ServicioBase<T,ID>{
-	
-	
-	private final R repositorio;
-	
-	public ServicosBasesImplementados(R repositorio) {
-		this.repositorio = repositorio;
-	}
 
 	@Override
 	public List<T> buscarTodos() {
