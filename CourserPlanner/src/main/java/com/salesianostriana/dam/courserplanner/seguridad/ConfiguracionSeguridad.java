@@ -30,12 +30,7 @@ public class ConfiguracionSeguridad {
 		            })
 					.formLogin(form -> form
 							.loginPage("/acceso")
-							.permitAll()
 					);
-				
-		
-			// Añadimos esto para poder acceder a la consola de H2
-			// con Spring Security habilitado.
 			http.csrf((csrf) -> {
 				csrf.ignoringRequestMatchers("/h2/**");
 			});
