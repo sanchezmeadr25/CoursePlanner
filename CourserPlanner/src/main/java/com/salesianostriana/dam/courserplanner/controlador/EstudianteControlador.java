@@ -18,31 +18,21 @@ public class EstudianteControlador {
 	private EstudianteServicio estudianteServicio;
 	
 	//Formulario que crea el estudiante
-	@GetMapping("/anadirestudiante")
+	@GetMapping("/anadirEstudiante")
 	public String mostrarFormulario(Model model) {
-		Estudiante estudiante = new Estudiante();
-		model.addAttribute("estudianteFormulario",estudiante);
+		model.addAttribute("estudiante",new Estudiante());
 		return "formularioEstudiante";
 	}
 	
 	
-	@PostMapping("/crearEstudiante")
-	public String submit(@ModelAttribute("estudianteFormulario") Estudiante estudiante) {
+	@PostMapping("/anadirEstudiante/submit")
+	public String submit(@ModelAttribute("estudiante") Estudiante estudiante) {
 		estudianteServicio.guardar(estudiante);
 		return "redirect:/";
 	}
 	
-	//Formulario de editar el estudiante
-	@GetMapping("/editarEstudiante/{dni}")
-	public String formularioEditar(@PathVariable("dni") String dni, Model model ) {
-		Optional<Estudiante> estudianteEditar= estudianteServicio.buscarPorId(dni);
-		
-		if (estudianteEditar.isPresent()) {
-		model.addAttribute("estudianteFormulario",estudianteEditar.get());
-		return "formulario";
-			}else {
-				return "redirect:/";
-			}
-	}
+	
+	
+	
 }
 

@@ -30,16 +30,20 @@
                                 <h2
                                     class="text-center mb-4 text-primary">Registro
                                     de Estudiante</h2>
-                                <p class="text-muted text-center">Introduce los
-                                    datos para dar de alta al nuevo alumno.</p>
-                                <form method="post" th:action="anadirEstudiante"
-                                    th:object="${estudianteFormulario}">
+                                <p class="text-muted text-center">Introduce
+                                    los
+                                    datos para dar de alta al nuevo
+                                    alumno.</p>
+                                <form method="post"
+                                    th:action="@{/anadirEstudiante/submit}"
+                                    th:object="${estudiante}">
 
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label
                                                 class="form-label font-weight-bold">DNI:</label>
-                                            <input type="text" th:field="*{dni}"
+                                            <input type="text"
+                                                th:field="*{dni}"
                                                 class="form-control"
                                                 placeholder="12345678X"
                                                 required>
@@ -62,7 +66,8 @@
                                             <input type="text"
                                                 th:field="*{nombre}"
                                                 class="form-control"
-                                                placeholder="Ej:Juan" required>
+                                                placeholder="Ej:Juan"
+                                                required>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label
@@ -113,7 +118,8 @@
                                     <div class="mb-3">
                                         <label class="form-label">Nivel de
                                             Experiencia:</label>
-                                        <select th:field="*{nivelExperiencia}"
+                                        <select
+                                            th:field="*{nivelExperiencia}"
                                             class="form-select">
                                             <option
                                                 value="Principiante">Principiante</option>
@@ -144,7 +150,8 @@
                                     </div>
 
                                     <div class="d-grid gap-2 mt-4">
-                                        <button type="submit" value="Submit"
+                                        <button type="submit" name="enviar"
+                                            value="Enviar"
                                             class="btn btn-primary btn-lg">
                                             <i
                                                 class="bi bi-person-plus-fill"></i>
