@@ -1,72 +1,106 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
 
-        <title>Lista de Estudiantes</title>
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
 
-        <div th:replace="~{fragments/cabecera :: cabecera}"></div>
-        <div class="container mt-3">
-            <h2>Table Head Colors</h2>
-            <p>You can use any of the contextual classes to only add a color to
-                the table header:</p>
-            <table class="table">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Firstname</th>
-                        <th>Lastname</th>
-                        <th>Email</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>John</td>
-                        <td>Doe</td>
-                        <td>john@example.com</td>
-                    </tr>
-                    <tr>
-                        <td>Mary</td>
-                        <td>Moe</td>
-                        <td>mary@example.com</td>
-                    </tr>
-                    <tr>
-                        <td>July</td>
-                        <td>Dooley</td>
-                        <td>july@example.com</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="table">
-                <thead class="table-success">
-                    <tr>
-                        <th>Firstname</th>
-                        <th>Lastname</th>
-                        <th>Email</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>John</td>
-                        <td>Doe</td>
-                        <td>john@example.com</td>
-                    </tr>
-                    <tr>
-                        <td>Mary</td>
-                        <td>Moe</td>
-                        <td>mary@example.com</td>
-                    </tr>
-                    <tr>
-                        <td>July</td>
-                        <td>Dooley</td>
-                        <td>july@example.com</td>
-                    </tr>
-                </tbody>
-            </table>
+    <title>Lista de Estudiantes</title>
+</head>
+
+
+<body>
+
+    <div th:replace="~{fragments/cabecera :: cabecera}"></div>
+
+    <div class="container mt-4 mb-5">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Lista de Estudiantes</h2>
+            <a th:href="@{/admin/estudiante/nuevo}" class="btn btn-primary rounded-pill btn-sm px-3">
+                <i class="bi bi-plus-circle me-1"></i> Añadir Estudiante
+            </a>
         </div>
-        <div th:replace="~{fragments/pieDePagina :: piedepagina}"></div>
-    </body>
+
+        <table class="table table-hover align-middle shadow-sm rounded">
+            <thead class="table-success">
+                <tr>
+                    <th>DNI</th>
+                    <th>Nombre</th>
+                    <th>Apellidos</th>
+                    <th>Email</th>
+                    <th scope="col" class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="estudiante : ${estudiantes}">
+                    <td th:text="${estudiante.dni}">12345678A</td>
+                    <td th:text="${estudiante.nombre}">John</td>
+                    <td th:text="${estudiante.apellidos}">Doe</td>
+                    <td th:text="${estudiante.email}">john@example.com</td>
+
+                    <td class="text-center">
+                        <div class="btn-group btn-group-sm" role="group">
+                            <a th:href="@{/admin/estudiante/detalle/{id}(id=${estudiante.id})}"
+                                class="btn btn-outline-info" title="Ver detalles">
+                                <i class="bi bi-eye"></i> Detalle
+                            </a>
+                            <a th:href="@{/admin/estudiante/editar/{id}(id=${estudiante.id})}"
+                                class="btn btn-outline-primary ms-2" title="Editar">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </a>
+                            <button type="button" class="btn btn-outline-danger ms-2" data-bs-toggle="modal"
+                                data-bs-target="#delete-modal" th:data-bs-id="${estudiante.id}" title="Borrar">
+                                <i class="bi bi-trash"></i> Borrar
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(estudiantes)}">
+                    <td colspan="5" class="text-center text-muted py-3">No hay estudiantes registrados.</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <div class="modal fade" id="delete-modal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteModalLabel"><i
+                            class="bi bi-exclamation-triangle me-2"></i>Confirmar Borrado</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="lead">¿Está seguro de que desea eliminar este estudiante?</p>
+                    <p class="text-muted small">Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <a id="confirmDeleteBtn" href="#" class="btn btn-danger">Eliminar definitivamente</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/pieDePagina :: piedepagina}"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const deleteModal = document.getElementById('delete-modal');
+        if (deleteModal) {
+            deleteModal.addEventListener('show.bs.modal', event => {
+                const button = event.relatedTarget;
+                const id = button.getAttribute('th:data-bs-id') || button.getAttribute('data-bs-id');
+                const confirmBtn = deleteModal.querySelector('#confirmDeleteBtn');
+                confirmBtn.href = '/admin/estudiante/borrar/' + id;
+            });
+        }
+    </script>
+</body>
+
 </html>

@@ -10,7 +10,7 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 @Configuration
 @EnableWebSecurity //esto sirve para activar la seguridad y que se apliquen las que indico
 public class ConfiguracionSeguridad {
-
+	
 	@Bean
 	SecurityFilterChain CadenaFiltrosSeguridad(HttpSecurity http) {
 		
@@ -31,6 +31,13 @@ public class ConfiguracionSeguridad {
 					.formLogin(form -> form
 							.loginPage("/acceso")
 					);
+		
+		
+		
+		
+		
+		
+		
 			http.csrf((csrf) -> {
 				csrf.ignoringRequestMatchers("/h2/**");
 			});

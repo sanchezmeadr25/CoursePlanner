@@ -17,10 +17,10 @@ public class DataSeed {
 	
 	private final EstudianteServicio estudianteServicio;
 	
-	
 	@PostConstruct
 	public void run() {
 		Estudiante e = Estudiante.builder()
+				.dni("12345678A") 
 				.nombre("Juan")
 				.apellidos("Suarez")
 				.email("juan@gmail.com")
@@ -29,10 +29,8 @@ public class DataSeed {
 				.fechaNacimiento(LocalDate.of(2026, 05, 30))
 				.pais("España")
 				.localidad("Sevilla")
-				.build()	;
+				.build();
 		
 		estudianteServicio.guardar(e);
 	}
-
-	
 }
