@@ -7,18 +7,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "estudiante")
 public class Estudiante extends Usuario {
 
-
 	@Column(name = "nivelExperiencia", nullable = false)
 	private String nivelExperiencia;
-
-	
 
 	@OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL, orphanRemoval = true)
 	@Builder.Default
@@ -38,4 +33,6 @@ public class Estudiante extends Usuario {
 	public int hashCode() {
 		return getClass().hashCode();
 	}
+
+
 }

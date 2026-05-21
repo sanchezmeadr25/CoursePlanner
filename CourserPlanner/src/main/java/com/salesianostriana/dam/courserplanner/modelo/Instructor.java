@@ -17,9 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "instructor")
 public class Instructor extends Usuario{
@@ -54,4 +52,5 @@ public class Instructor extends Usuario{
 	public int hashCode() {
 		return getClass().hashCode();
 	}
+
 }
