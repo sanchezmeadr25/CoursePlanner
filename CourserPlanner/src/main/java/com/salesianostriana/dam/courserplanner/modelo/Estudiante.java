@@ -34,5 +34,9 @@ public class Estudiante extends Usuario {
 		return getClass().hashCode();
 	}
 
-
+	
+	public Estudiante() {
+	    super();
+	}
+	
 }

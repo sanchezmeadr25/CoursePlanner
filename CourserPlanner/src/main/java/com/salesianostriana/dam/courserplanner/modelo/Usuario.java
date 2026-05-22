@@ -13,6 +13,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +23,7 @@ import lombok.NoArgsConstructor;
 
 
 
-@Table(name = "usuarios")
+@Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
