@@ -9,13 +9,15 @@ import com.salesianostriana.dam.courserplanner.serviciobase.ServicosBasesImpleme
 @Service
 public class UsuarioServicio extends ServicosBasesImplementados<Usuario,String,UsuarioRepositorio> {
 
-	public UsuarioServicio(UsuarioRepositorio repositorio) {
-		super(repositorio);
-		// TODO Auto-generated constructor stub
-	}
 
 	private UsuarioRepositorio usuarioRepositorio;
 
+	public UsuarioServicio(UsuarioRepositorio usuarioRepositorio) {
+		super();
+		this.usuarioRepositorio = usuarioRepositorio;
+	}
+
+	
 	
 	
 }
