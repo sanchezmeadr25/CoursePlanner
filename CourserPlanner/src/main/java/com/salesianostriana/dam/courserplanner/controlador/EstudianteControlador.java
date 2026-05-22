@@ -16,11 +16,13 @@ import com.salesianostriana.dam.courserplanner.servicio.EstudianteServicio;
 public class EstudianteControlador {
 
 	private EstudianteServicio estudianteServicio;
+
 	
 	//Formulario que crea el estudiante
 	@GetMapping("/anadirEstudiante")
 	public String mostrarFormulario(Model model) {
-		model.addAttribute("estudiante",new Estudiante());
+		Estudiante estudiante = new Estudiante(null, null);
+		model.addAttribute("estudianteFormulario",estudiante);
 		return "formularioEstudiante";
 	}
 	
