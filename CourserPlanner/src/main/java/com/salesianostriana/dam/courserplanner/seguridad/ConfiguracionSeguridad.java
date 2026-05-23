@@ -33,9 +33,11 @@ public class ConfiguracionSeguridad {
 		            	
 		            })
 					.formLogin(form -> form
-							.loginPage("/acceso")
+					        .loginPage("/acceso") 
+					        .loginProcessingUrl("/acceso") 
+					        .defaultSuccessUrl("/", true) 
+					        .permitAll()
 					);
-		
 		
 		
 		
