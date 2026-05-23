@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoursePlanner - Iniciar Sesión</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        /* Ajuste sutil para que la tarjeta no se pegue al techo en pantallas grandes */
+        .card-login-wrapper {
+            max-width: 850px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-light d-flex align-items-center justify-content-center vh-100">
+
+    <div class="card shadow border-0 overflow-hidden card-login-wrapper m-3">
+        <div class="row g-0">
+            
+            <div class="col-md-6 bg-primary d-flex flex-column align-items-center justify-content-center text-white p-5 text-center">
+                <div>
+                    <i class="bi bi-laptop mb-3" style="font-size: 6rem; opacity: 0.9;"></i>
+                    <h2 class="fw-bold display-6 m-0">CoursePlanner</h2>
+                    <p class="small opacity-75 mt-2 mb-0">La plataforma tecnológica para dominar tu futuro.</p>
+                </div>
+            </div>
+
+            <div class="col-md-6 bg-white p-4 p-md-5">
+                <div>
+                    
+                    <div class="mb-4">
+                        <h4 class="fw-bold text-dark mb-1">Bienvenido de nuevo</h4>
+                        <p class="text-muted small">Introduce tus credenciales para gestionar tus cursos</p>
+                    </div>
+
+                    <div th:if="${param.error}" class="alert alert-danger p-2 small mb-3" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-1"></i> Usuario o contraseña incorrectos.
+                    </div>
+                    <div th:if="${param.logout}" class="alert alert-success p-2 small mb-3" role="alert">
+                        <i class="bi bi-check-circle-fill me-1"></i> Sesión cerrada correctamente.
+                    </div>
+
+                    <form th:action="@{/acceso}" method="post">
+                        
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Usuario" required autofocus>
+                            <label th:for="username"><i class="bi bi-person text-muted me-2"></i>Nombre de usuario</label>
+                        </div>
+                        
+                        <div class="form-floating mb-4">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña" required>
+                            <label th:for="password"><i class="bi bi-lock text-muted me-2"></i>Contraseña</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill fw-bold shadow-sm mb-4 text-white">
+                            Entrar <i class="bi bi-box-arrow-in-right ms-2"></i>
+                        </button>
+                        
+                    </form>
+
+                    <div class="text-center border-top pt-3">
+                        <p class="mb-1 text-muted small">¿No tienes cuenta todavía?</p>
+                        <a th:href="@{/registrarse}" class="btn btn-outline-secondary btn-sm rounded-pill px-4">
+                            Crear una cuenta nueva
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+</body>
+</html>

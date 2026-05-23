@@ -15,36 +15,46 @@ import com.salesianostriana.dam.courserplanner.servicio.EstudianteServicio;
 @Controller
 public class EstudianteControlador {
 
-	private EstudianteServicio estudianteServicio;
-	
-	//Formulario que crea el estudiante
+	private final EstudianteServicio estudianteServicio;
+
+	public EstudianteControlador(EstudianteServicio estudianteServicio) {
+		super();
+		this.estudianteServicio = estudianteServicio;
+	}
+
+	// Formulario que crea el estudiante
 	@GetMapping("/anadirestudiante")
 	public String mostrarFormulario(Model model) {
 		Estudiante estudiante = new Estudiante();
-		model.addAttribute("estudianteFormulario",estudiante);
-		return "formularioEstudiante";
+		model.addAttribute("estudianteFormulario", estudiante);
+		return "fragments/formularioEstudiante";
 	}
-	
-	
+
 	@PostMapping("/crearEstudiante")
 	public String submit(@ModelAttribute("estudianteFormulario") Estudiante estudiante) {
 		estudianteServicio.guardar(estudiante);
 		return "redirect:/";
 	}
-	
-	
-	/*
-	//Formulario de editar el estudiante
-	@GetMapping("/editarEstudiante/{dni}")
-	public String formularioEditar(@PathVariable("dni") String dni, Model model ) {
-		Optional<Estudiante> estudianteEditar= estudianteServicio.buscarPorId(dni);
-		
-		if (estudianteEditar.isPresent()) {
-		model.addAttribute("estudianteFormulario",estudianteEditar.get());
-		return "formulario";
-			}else {
-				return "redirect:/";
-			}
-	}*/
-}
 
+	// Formulario de editar el estudiante
+	@GetMapping("/editarEstudiante/{dni}")
+	public String formularioEditar(@PathVariable("dni") String dni, Model model) {
+		Optional<Estudiante> estudianteEditar = estudianteServicio.buscarPorId(dni);
+
+		if (estudianteEditar.isPresent()) {
+			model.addAttribute("estudianteFormulario", estudianteEditar.get());
+			return "formulario";
+		} else {
+			return "redirect:/";
+		}
+
+	}
+
+	//Lista de estudiantes 
+	@GetMapping("/admin/listaEstudiantes")
+	public String listaEstudiantes(Model model) {
+		model.addAttribute("estudiantes", estudianteServicio.buscarTodos());
+		return "admin/listaEstudiantes";
+	}
+
+}
