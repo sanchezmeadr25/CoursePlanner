@@ -33,7 +33,8 @@ public class Instructor extends Usuario{
 
 	
 
-	@OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "instructor", 
+			orphanRemoval = true)
 	@Builder.Default
 	@ToString.Exclude
 	private List<Curso> curso = new ArrayList<>();
