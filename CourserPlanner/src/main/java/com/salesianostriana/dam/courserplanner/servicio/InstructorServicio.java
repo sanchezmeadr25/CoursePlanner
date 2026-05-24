@@ -20,7 +20,7 @@ public class InstructorServicio extends ServicosBasesImplementados<Instructor,St
         return instructorRepositorio.save(instructor);
     }
 	
-	public int calcularTotalCursos(Instructor instructor) {
+	/*public int calcularTotalCursos(Instructor instructor) {
         return instructor.getListaCursos().size();
     }
 	
@@ -30,5 +30,5 @@ public class InstructorServicio extends ServicosBasesImplementados<Instructor,St
                 .mapToDouble(Curso::getValoracion)
                 .average()
                 .orElse(0.0);
-    }
+    }*/
 }
