@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.courserplanner.servicio;
 
+import java.time.Duration;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -16,13 +17,16 @@ public class CursoServicio {
 		super();
 		this.cursoRepositorio = cursoRepositorio;
 	}
-	
+
 	public Curso guardar(Curso curso) {
-        return cursoRepositorio.save(curso);
-    }
-    
-    // Método adicional para listar todos los cursos (te servirá luego)
-    public List<Curso> findAll() {
-        return cursoRepositorio.findAll();
-    }
+	//	if (curso.getDuracionHoras() > 0) {
+	//		curso.setDuracionHoras(Duration.minusHours(curso.getDuracionHoras()));
+	//	}
+		return cursoRepositorio.save(curso);
+	}
+
+	// Método adicional para listar todos los cursos (te servirá luego)
+	public List<Curso> findAll() {
+		return cursoRepositorio.findAll();
+	}
 }
