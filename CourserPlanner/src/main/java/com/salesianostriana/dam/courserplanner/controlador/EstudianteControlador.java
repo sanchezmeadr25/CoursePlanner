@@ -27,7 +27,7 @@ public class EstudianteControlador {
 	public String mostrarFormulario(Model model) {
 		Estudiante estudiante = new Estudiante();
 		model.addAttribute("estudianteFormulario", estudiante);
-		return "fragments/formularioEstudiante";
+		return "formularioEstudiante";
 	}
 
 	@PostMapping("/crearEstudiante")

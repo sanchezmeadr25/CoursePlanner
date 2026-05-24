@@ -21,7 +21,7 @@ public class ConfiguracionSeguridad {
 		//Aquí dentro lo que hacemos es decidir quien entra y quien no y a que puede entrar.
 		http.authorizeHttpRequests(
 				(authz)-> authz
-					.requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
+					.requestMatchers("/crearInstructor","/anadirestudiante","/acceso", "/registro/seleccion","/css/**", "/js/**", "/img/**").permitAll()
 					.requestMatchers("/", "/acceso", "/error").permitAll()
 					.requestMatchers("/admin/**").hasRole("ADMIN")
 					.anyRequest()
