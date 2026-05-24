@@ -13,13 +13,14 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @Entity
-
+@EqualsAndHashCode(callSuper = true)
 public class Instructor extends Usuario{
 
 	
@@ -30,6 +31,8 @@ public class Instructor extends Usuario{
 
 	@Column(name = "valoracion")
 	private double valoracionMedia;
+	
+	
 
 	
 

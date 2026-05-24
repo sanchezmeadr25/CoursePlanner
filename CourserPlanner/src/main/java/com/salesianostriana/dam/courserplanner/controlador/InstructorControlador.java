@@ -17,11 +17,11 @@ public class InstructorControlador {
 	
 	
 	//Formulacrio crear Instructor
-	@GetMapping("/instructor")
+	@GetMapping("/crearInstructor")
 	public String mostrarFormulario(Model model) {
 		Instructor instructor  = new Instructor();
-			model.addAttribute("instructorFormulario",instructor);
-			return "formularioinstructor";
+			model.addAttribute("instructor",instructor);
+			return "formularioInstructor";
 	
 	}
 	
@@ -29,6 +29,18 @@ public class InstructorControlador {
 	public String submit(@ModelAttribute("instructorFormulario") Instructor instructor) {
 		instructorServicio.guardar(instructor);;
 		return "redirect:/";
+	}
+	
+	@GetMapping("/dashboard/instructor")
+	public String mostrarDashboard(Model model,@AuthenticationPrincipal Usuario usuario) {
+	    Instructor instructor = instructorServicio.buscarPorEmail(principal.getName());
+	    
+	    // Llamamos al servicio para cada dato y lo añadimos al modelo
+	    model.addAttribute("totalCursos", instructorServicio.calcularTotalCursos(instructor));
+	    model.addAttribute("mediaValoracion", instructorServicio.calcularValoracionMedia(instructor));
+	    model.addAttribute("instructor", instructor);
+	    
+	    return "admin/dashboardInstructor";
 	}
 		
 }
