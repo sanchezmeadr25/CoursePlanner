@@ -9,9 +9,26 @@ import com.salesianostriana.dam.courserplanner.serviciobase.ServicosBasesImpleme
 @Service 
 public class InstructorServicio extends ServicosBasesImplementados<Instructor,String,InstructorRepositorio> {
 
-	public InstructorServicio(InstructorRepositorio repositorio) {
-		super(repositorio);
-		// TODO Auto-generated constructor stub
-	}
+	private final InstructorRepositorio instructorRepositorio;
 
+	public InstructorServicio(InstructorRepositorio instructorRepositorio) {
+		super();
+		this.instructorRepositorio = instructorRepositorio;
+	}
+	
+	public Instructor crearInstructor(Instructor instructor) {
+        return instructorRepositorio.save(instructor);
+    }
+	
+	/*public int calcularTotalCursos(Instructor instructor) {
+        return instructor.getListaCursos().size();
+    }
+	
+	
+	public double calcularValoracionMedia(Instructor instructor) {
+        return instructor.getListaCursos().stream()
+                .mapToDouble(Curso::getValoracion)
+                .average()
+                .orElse(0.0);
+    }*/
 }
