@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body class="pt-5">
+
+    <div th:replace="~{fragments/cabecera :: cabecera}"></div>
+<div class="container mt-5">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                
+                <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${param.error}">
+                    <span>¡No se puede borrar un curso que ya tiene estudiantes inscritos!</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3>Mis Cursos</h3>
+                    <a th:href="@{/curso/nuevo}" class="btn btn-primary">Nuevo curso</a>
+                </div>
+
+                <table class="table table-striped align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Imagen</th>
+                            <th>Título</th>
+                            <th>Categoría</th>
+                            <th>Precio</th>
+                            <th class="text-end">Operaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="curso : ${listaCursos}">
+                            <td>
+                                <img th:src="${not (#strings.isEmpty(curso.fotoCurso))} ? ${curso.fotoCurso} : 'https://via.placeholder.com/48'"
+                                    class="img-thumbnail" style="width: 48px; height: 48px; object-fit: cover;" alt="curso" />
+                            </td>
+                            <td th:text="${curso.titulo}"></td>
+                            <td th:text="${curso.categoria}"></td>
+                            <td th:text="${curso.precio} + ' €'"></td>
+                            <td class="text-end">
+                                <a th:href="@{/curso/editar/{id}(id=${curso.id})}"
+                                    class="btn btn-sm btn-outline-primary">Editar</a>
+                                
+                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#delete-modal" th:data-bs-id="${curso.id}">Borrar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="delete-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Borrar curso</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Está seguro de que desea borrar este curso? Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <a id="confirmDelete" href="#" class="btn btn-danger">Sí, borrar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <div th:replace="~{fragments/pieDePagina :: piedepagina}"></div>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const deleteModal = document.getElementById('delete-modal');
+        if (deleteModal) {
+            deleteModal.addEventListener('show.bs.modal', event => {
+                const button = event.relatedTarget;
+                const id = button.getAttribute('data-bs-id');
+                const confirmBtn = deleteModal.querySelector('#confirmDelete');
+                // IMPORTANTE: Asegúrate de que esta ruta coincide con tu controlador de borrado
+                confirmBtn.href = "/curso/borrar/" + id;
+            });
+        }
+    </script>
+</body>
+</html>

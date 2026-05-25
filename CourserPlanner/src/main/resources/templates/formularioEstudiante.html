@@ -15,12 +15,10 @@
         <title>Formulario de Estudiante</title>
     </head>
 
-    <body>
+    <body class="d-flex flex-column min-vh-100">
         <div th:replace="~{fragments/cabecera :: cabecera}"></div>
 
-        <div><p></p></div>
-
-        <main>
+        <main class="flex-grow-1 mt-4">
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-md-8 form-container">
@@ -32,7 +30,9 @@
                                     de Estudiante</h2>
                                 <p class="text-muted text-center">Introduce los
                                     datos para dar de alta al nuevo alumno.</p>
-                                <form method="post" th:action="anadirEstudiante"
+
+                                <form method="post"
+                                    th:action="@{/anadirestudiante/submit}"
                                     th:object="${estudianteFormulario}">
 
                                     <div class="row">
@@ -60,7 +60,7 @@
                                             <label
                                                 class="form-label">Nombre:</label>
                                             <input type="text"
-                                                th:field="*{nombre}"
+                                                th:field="*{username}"
                                                 class="form-control"
                                                 placeholder="Ej:Juan" required>
                                         </div>
@@ -75,20 +75,31 @@
                                         </div>
                                     </div>
 
-                                    <div class="mb-3">
-                                        <label class="form-label">Correo
-                                            Electrónico:</label>
-                                        <div class="input-group">
-                                            <span
-                                                class="input-group-text">@</span>
-                                            <input type="email"
-                                                th:field="*{email}"
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Correo
+                                                Electrónico:</label>
+                                            <div class="input-group">
+                                                <span
+                                                    class="input-group-text">@</span>
+                                                <input type="email"
+                                                    th:field="*{email}"
+                                                    class="form-control"
+                                                    placeholder="Ej:ejemplo@correo.com"
+                                                    required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label
+                                                class="form-label">Contraseña:</label>
+                                            <input type="password"
+                                                th:field="*{password}"
                                                 class="form-control"
-                                                placeholder="Ej:ejemplo@correo.com"
+                                                placeholder="Introduce una contraseña segura"
                                                 required>
+
                                         </div>
                                     </div>
-
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label
@@ -104,24 +115,35 @@
                                                 Nacimiento:</label>
                                             <input type="date"
                                                 th:field="*{fechaNacimiento}"
-                                                class="form-control"
-                                                placeholder="Ej:1990-01-01"
-                                                required>
+                                                class="form-control" required>
                                         </div>
                                     </div>
 
-                                    <div class="mb-3">
-                                        <label class="form-label">Nivel de
-                                            Experiencia:</label>
-                                        <select th:field="*{nivelExperiencia}"
-                                            class="form-select">
-                                            <option
-                                                value="Principiante">Principiante</option>
-                                            <option
-                                                value="Intermedio">Intermedio</option>
-                                            <option
-                                                value="Avanzado">Avanzado</option>
-                                        </select>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Nivel de
+                                                Experiencia:</label>
+                                            <select
+                                                th:field="*{nivelExperiencia}"
+                                                class="form-select" required>
+                                                <option
+                                                    value="Principiante">Principiante</option>
+                                                <option
+                                                    value="Intermedio">Intermedio</option>
+                                                <option
+                                                    value="Avanzado">Avanzado</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">Tipo de
+                                                Rol</label>
+                                            <select
+                                                th:field="*{rol}"
+                                                class="form-select" required>
+                                                <option
+                                                    value="USER">Estudiante</option>
+                                            </select>
+                                        </div>
                                     </div>
 
                                     <div class="row">
@@ -144,7 +166,9 @@
                                     </div>
 
                                     <div class="d-grid gap-2 mt-4">
-                                        <button type="submit" value="Submit"
+                                        <button type="submit"
+                                            name="enviar"
+                                            value="enviar"
                                             class="btn btn-primary btn-lg">
                                             <i
                                                 class="bi bi-person-plus-fill"></i>
@@ -160,8 +184,6 @@
                 </div>
             </div>
         </main>
-
-        <div><p></p></div>
 
         <div th:replace="~{fragments/pieDePagina :: piedepagina}"></div>
 

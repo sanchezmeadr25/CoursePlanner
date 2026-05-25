@@ -1,6 +1,5 @@
 package com.salesianostriana.dam.courserplanner.modelo;
 
-public enum RolUsuario {
-
-	USER, ADMIN
+public enum Rol {
+ USER,ADMIN
 }
