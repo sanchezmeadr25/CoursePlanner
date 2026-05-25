@@ -21,7 +21,7 @@ public class ConfiguracionSeguridad {
 		//Aquí dentro lo que hacemos es decidir quien entra y quien no y a que puede entrar.
 		http.authorizeHttpRequests(
 				(authz)-> authz
-					.requestMatchers("/crearInstructor","/anadirestudiante","/acceso", "/registro/seleccion","/css/**", "/js/**", "/img/**").permitAll()
+					.requestMatchers("/h2-console/**","/crearInstructor","/anadirestudiante","/acceso", "/registro/seleccion","/css/**", "/js/**", "/img/**").permitAll()
 					.requestMatchers("/", "/acceso", "/error").permitAll()
 					.requestMatchers("/admin/**").hasRole("ADMIN")
 					.anyRequest()
@@ -45,7 +45,7 @@ public class ConfiguracionSeguridad {
 		
 		
 			http.csrf((csrf) -> {
-				csrf.ignoringRequestMatchers("/h2/**");
+				csrf.ignoringRequestMatchers("/h2-console/**");
 			});
 			http.headers((headers) -> headers.frameOptions((opts) -> opts.disable()));
 
