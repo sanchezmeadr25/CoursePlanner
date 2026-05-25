@@ -1,325 +1,91 @@
 <!DOCTYPE html>
-<html lang="es"
-    xmlns:th="http://www.thymeleaf.org"
-    xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-        <title>Principal</title>
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-            rel="stylesheet">
-        <style>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CoursePlanner - Impulsa tu Carrera Profesional</title>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
         .hero-section {
             background: linear-gradient(135deg, #78c2ad, #5a9e8a);
         }
+
         .category-card:hover {
             transform: translateY(-5px);
             transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
         }
+
         .course-card img {
             height: 180px;
             object-fit: cover;
         }
     </style>
-    </head>
-    <body class="bg-light">
+</head>
+<body class="bg-light">
+    <div th:replace="fragments/cabecera :: cabecera"></div>
+    <main class="container-fluid px-4 py-5" style="min-height: 80vh;">
+        <div class="mb-4">
+            <h2 class="fw-bold">Bienvenido, <span th:text="${usuario.username}">Adrián</span></h2>
+            <p class="text-secondary">Tu panel de aprendizaje</p>
+        </div>
 
-        <div th:replace="~{fragments/cabecera :: cabecera}"></div>
-
-        <main>
-            <section class="hero-section text-white py-5">
-                <div class="container py-5">
-                    <div class="row align-items-center g-5">
-                        <div class="col-lg-6">
-
-                            <div sec:authorize="isAnonymous()">
-                                <span
-                                    class="badge bg-light text-primary fw-bold mb-3 px-3 py-2 rounded-pill text-uppercase">
-                                    La mayor comunidad de aprendizaje
-                                </span>
-                                <h1 class="display-4 fw-bold lh-sm mb-3">La
-                                    plataforma tecnológica para dominar tu
-                                    futuro</h1>
-                                <p class="lead mb-4 opacity-75">
-                                    Accede al catálogo completo de asignaturas,
-                                    interactúa con instructores certificados y
-                                    gestiona tu progreso académico desde un solo
-                                    lugar.
-                                </p>
-                                <div
-                                    class="d-flex justify-content-md-start gap-3">
-                                    <a href="/login"
-                                        class="btn btn-light btn-lg px-4 me-md-2 fw-bold text-primary shadow">Crear
-                                        cuenta gratis</a>
-                                    <a href="#cursos"
-                                        class="btn btn-outline-light btn-lg px-4">Explorar
-                                        cursos</a>
-                                </div>
-                            </div>
-
-                            <div sec:authorize="isAuthenticated()">
-                                <span
-                                    class="badge bg-light text-primary fw-bold mb-3 px-3 py-2 rounded-pill text-uppercase">
-                                    ¡Bienvenido de nuevo!
-                                </span>
-                                <h1 class="display-4 fw-bold lh-sm mb-3">
-                                    Hola, <span
-                                        sec:authentication="name">Usuario</span>
-                                </h1>
-                                <p class="lead mb-4 opacity-75">
-                                    Qué bueno tenerte de vuelta. Gestiona tus
-                                    secciones, revisa tus cursos y ponte al día
-                                    con tus actividades desde tu panel
-                                    personalizado.
-                                </p>
-
-                                <div
-                                    class="d-flex justify-content-md-start gap-3">
-                                    <div sec:authorize="hasRole('ADMIN')"
-                                        class="d-flex gap-2">
-                                        <a th:href="@{/admin/listaEstudiantes}"
-                                            class="btn btn-light btn-lg px-4 fw-bold text-primary shadow">
-                                            <i
-                                                class="bi bi-people-fill me-2"></i>Gestión
-                                            Alumnos
-                                        </a>
-                                        <a th:href="@{/admin/cursos}"
-                                            class="btn btn-outline-light btn-lg px-4">
-                                            <i
-                                                class="bi bi-journal-plus me-2"></i>Nuevo
-                                            Curso
-                                        </a>
-                                    </div>
-
-                                    <div sec:authorize="hasRole('ALUMNO')"
-                                        class="d-flex gap-2">
-                                        <a href="/mis-cursos"
-                                            class="btn btn-light btn-lg px-4 fw-bold text-primary shadow">
-                                            <i
-                                                class="bi bi-book-half me-2"></i>Mis
-                                            Cursos
-                                        </a>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-lg-6 text-center">
-                            <i class="bi bi-laptop text-white opacity-25"
-                                style="font-size: 12rem;"></i>
-                        </div>
-                    </div>
+        <div class="row g-4">
+            <div class="col-12 col-md-4">
+                <div class="card bg-dark text-white border border-secondary p-3">
+                    <h6 class="text-uppercase text-secondary small">Cursos Inscritos</h6>
+                    <h3 class="fw-bold" th:text="${numInscritos}">0</h3>
                 </div>
-            </section>
-
-            <section class="bg-white py-4 shadow-sm border-bottom">
-                <div class="container">
-                    <div class="row text-center g-4">
-                        <div class="col-6 col-md-3">
-                            <h3 class="fw-bold text-primary mb-0">+10.000</h3>
-                            <p
-                                class="text-muted small text-uppercase mb-0">Alumnos
-                                Activos</p>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <h3 class="fw-bold text-primary mb-0">+150</h3>
-                            <p
-                                class="text-muted small text-uppercase mb-0">Cursos
-                                Especializados</p>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <h3 class="fw-bold text-primary mb-0">98%</h3>
-                            <p
-                                class="text-muted small text-uppercase mb-0">Casos
-                                de Éxito</p>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <h3 class="fw-bold text-primary mb-0">24/7</h3>
-                            <p
-                                class="text-muted small text-uppercase mb-0">Soporte
-                                y Tutorías</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <div class="container py-5">
-                <section class="mb-5">
-                    <div class="text-center mb-5">
-                        <h2 class="fw-bold">¿Qué quieres aprender hoy?</h2>
-                        <p class="text-muted">Especialízate en las ramas
-                            técnicas más demandadas del sector</p>
-                    </div>
-
-                    <div class="row g-4">
-                        <div class="col-md-4 col-lg-3">
-                            <div
-                                class="card h-100 text-center border-0 shadow-sm p-4 category-card">
-                                <div class="fs-1 text-primary mb-3"><i
-                                        class="bi bi-code-slash"></i></div>
-                                <h5 class="fw-bold">Desarrollo Software</h5>
-                                <p class="text-muted small">Java, Spring Boot,
-                                    Python, JavaScript.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-lg-3">
-                            <div
-                                class="card h-100 text-center border-0 shadow-sm p-4 category-card">
-                                <div class="fs-1 text-success mb-3"><i
-                                        class="bi bi-cloud-arrow-up"></i></div>
-                                <h5 class="fw-bold">Cloud Computing</h5>
-                                <p class="text-muted small">AWS, Azure, Docker y
-                                    Kubernetes.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-lg-3">
-                            <div
-                                class="card h-100 text-center border-0 shadow-sm p-4 category-card">
-                                <div class="fs-1 text-warning mb-3"><i
-                                        class="bi bi-database"></i></div>
-                                <h5 class="fw-bold">Big Data & SQL</h5>
-                                <p class="text-muted small">Gestión de datos,
-                                    H2, PostgreSQL.</p>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-lg-3">
-                            <div
-                                class="card h-100 text-center border-0 shadow-sm p-4 category-card">
-                                <div class="fs-1 text-danger mb-3"><i
-                                        class="bi bi-shield-lock"></i></div>
-                                <h5 class="fw-bold">Ciberseguridad</h5>
-                                <p class="text-muted small">Seguridad defensiva
-                                    y auditorías.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <hr class="my-5 opacity-25">
-
-                <section id="cursos" class="mb-5">
-                    <div
-                        class="d-flex justify-content-between align-items-end mb-4">
-                        <div>
-                            <h2 class="fw-bold mb-1">Últimos cursos
-                                añadidos</h2>
-                            <p class="text-muted mb-0">Formaciones actualizadas
-                                por instructores expertos.</p>
-                        </div>
-                        <a href="/cursos"
-                            class="btn btn-outline-primary rounded-pill btn-sm px-3 d-none d-sm-block">Ver
-                            todo el catálogo</a>
-                    </div>
-
-                    <div class="row g-4">
-                        <div class="col-md-4">
-                            <div
-                                class="card h-100 shadow-sm border-0 course-card">
-                                <img th:src="@{/images/curso-java.jpg}"
-                                    class="card-img-top bg-dark text-white text-center pt-5"
-                                    alt="Miniatura Curso Java">
-                                <div class="card-body">
-                                    <span
-                                        class="badge bg-primary-subtle text-primary mb-2">Programación</span>
-                                    <h5 class="card-title fw-bold">Máster en
-                                        Java 21 y Spring Boot 4</h5>
-                                    <p
-                                        class="card-text text-muted small">Aprende
-                                        arquitectura limpia, JPA, Spring
-                                        Security y despliegue profesional desde
-                                        cero.</p>
-                                </div>
-                                <div
-                                    class="card-footer bg-white border-0 py-3 d-flex justify-content-between align-items-center">
-                                    <div class="small text-muted"><i
-                                            class="bi bi-clock me-1"></i> 40
-                                        horas</div>
-                                    <a href="/login"
-                                        class="btn btn-primary btn-sm px-3 rounded-pill">Ver
-                                        Curso</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div
-                                class="card h-100 shadow-sm border-0 course-card">
-                                <img th:src="@{/images/curso-db.jpg}"
-                                    class="card-img-top bg-secondary text-white text-center pt-5"
-                                    alt="Miniatura Curso Bases de Datos">
-                                <div class="card-body">
-                                    <span
-                                        class="badge bg-warning-subtle text-warning-emphasis mb-2">Datos</span>
-                                    <h5 class="card-title fw-bold">Diseño y
-                                        Optimización de Bases de Datos</h5>
-                                    <p class="card-text text-muted small">Domina
-                                        el modelo relacional, consultas
-                                        complejas, claves compuestas y
-                                        optimización de índices.</p>
-                                </div>
-                                <div
-                                    class="card-footer bg-white border-0 py-3 d-flex justify-content-between align-items-center">
-                                    <div class="small text-muted"><i
-                                            class="bi bi-clock me-1"></i> 25
-                                        horas</div>
-                                    <a href="/login"
-                                        class="btn btn-primary btn-sm px-3 rounded-pill">Ver
-                                        Curso</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div
-                                class="card h-100 shadow-sm border-0 course-card">
-                                <img th:src="@{/images/curso-web.jpg}"
-                                    class="card-img-top bg-dark text-white text-center pt-5"
-                                    alt="Miniatura Curso Frontend">
-                                <div class="card-body">
-                                    <span
-                                        class="badge bg-success-subtle text-success mb-2">Frontend</span>
-                                    <h5 class="card-title fw-bold">Desarrollo
-                                        Web Moderno con Bootstrap 5</h5>
-                                    <p class="card-text text-muted small">Diseña
-                                        interfaces profesionales, interactivas,
-                                        adaptables a móviles y aplicando buenas
-                                        prácticas UX/UI.</p>
-                                </div>
-                                <div
-                                    class="card-footer bg-white border-0 py-3 d-flex justify-content-between align-items-center">
-                                    <div class="small text-muted"><i
-                                            class="bi bi-clock me-1"></i> 15
-                                        horas</div>
-                                    <a th:href="@{/anadirEstudiante}"
-                                        class="btn btn-primary btn-sm px-3 rounded-pill">Ver
-                                        Curso</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                <section
-                    class="my-5 p-5 bg-dark text-white rounded-4 shadow text-center position-relative overflow-hidden">
-                    <div class="py-3">
-                        <h2 class="fw-bold display-6 mb-3">¿Listo para
-                            transformar tu futuro digital?</h2>
-                        <p class="col-md-8 mx-auto text-muted mb-4 fs-5">Únete a
-                            miles de profesionales que ya están escalando
-                            laboralmente gracias a CoursePlanner.</p>
-                        <a th:href="@{/anadirEstudiante}"
-                            class="btn btn-primary btn-lg px-5 rounded-pill fw-bold shadow-lg">Regístrate
-                            Ahora Gratuitamente</a>
-                    </div>
-                </section>
             </div>
-        </main>
+            <div class="col-12 col-md-4">
+                <div class="card bg-dark text-white border border-secondary p-3">
+                    <h6 class="text-uppercase text-secondary small">Cursos Disponibles</h6>
+                    <h3 class="fw-bold" th:text="${numDisponibles}">0</h3>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card bg-dark text-white border border-secondary p-3">
+                    <h6 class="text-uppercase text-secondary small">Valoraciones Dadas</h6>
+                    <h3 class="fw-bold" th:text="${numValoraciones}">0</h3>
+                </div>
+            </div>
+        </div>
 
-        <div th:replace="~{fragments/pieDePagina :: piedepagina}"></div>
+        <div class="row mt-5 g-4">
+            <div class="col-12 col-lg-6">
+                <div class="card bg-dark text-white border border-secondary p-4 h-100">
+                    <h5 class="fw-bold mb-3">Mis Cursos</h5>
 
-    </body>
+
+                    <div th:unless="${#lists.isEmpty(misCursos)}" th:each="inscripcion : ${misCursos}">
+                        <div class="border-bottom border-secondary py-2">
+                            <h6 class="mb-1" th:text="${inscripcion.curso.titulo}">Nombre del Curso</h6>
+                        </div>
+                    </div>
+                    <div th:if="${#lists.isEmpty(misCursos)}">
+                        <p class="text-center text-secondary py-5">No estás inscrito en ningún curso aún</p>
+                        <a href="/catalogo" class="btn btn-primary w-100">Explorar Cursos</a>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <div class="card bg-dark text-white border border-secondary p-4">
+                    <h5 class="fw-bold mb-3">Cursos Recomendados</h5>
+
+                    <div th:each="curso : ${cursosRecomendados}" class="border-bottom border-secondary py-3">
+                        <h6 class="mb-1" th:text="${curso.titulo}">Título del Curso</h6>
+                        <small class="text-secondary" th:text="'Instructor: ' + ${curso.instructor.nombre}">Nombre
+                            Instructor</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div th:replace="~{fragments/general :: pieDePagina}"></div>
+</body>
+
 </html>
