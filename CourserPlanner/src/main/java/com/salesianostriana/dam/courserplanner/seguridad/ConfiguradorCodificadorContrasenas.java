@@ -13,6 +13,7 @@ public class ConfiguradorCodificadorContrasenas {
 
 	//Este metodo devuelve un objeto que lo que hace es coger la contraseña y encriptarla.
 	@Bean
+	public
 	PasswordEncoder CodificadorContrasenas() {
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	}

@@ -17,10 +17,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@Entity
 @Data
 @AllArgsConstructor
-@Entity
-@EqualsAndHashCode(callSuper = true)
 public class Instructor extends Usuario{
 
 	
