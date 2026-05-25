@@ -36,7 +36,7 @@ public class Dataseed {
 			System.out.println("La base de datos está vacía, procediendo a insertar...");
 			Instructor admin = new Instructor();
 			admin.setDni("12345678A");
-			admin.setFotoPerfil("foto");
+			admin.setFoto("foto");
 			admin.setUsername("admin");
 			admin.setApellidos("admin");
 			admin.setEmail("admin@admin.com");
@@ -52,7 +52,7 @@ public class Dataseed {
 
 			Estudiante user = new Estudiante();
 			user.setDni("87654321B");
-			user.setFotoPerfil("foto");
+			user.setFoto("foto");
 			user.setUsername("user");
 			user.setApellidos("user");
 			user.setEmail("usser@user.com");
