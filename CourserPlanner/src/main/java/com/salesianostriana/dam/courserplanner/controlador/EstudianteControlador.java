@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.salesianostriana.dam.courserplanner.modelo.Estudiante;
 import com.salesianostriana.dam.courserplanner.servicio.EstudianteServicio;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class EstudianteControlador {
@@ -30,10 +33,26 @@ public class EstudianteControlador {
 		return "formularioEstudiante";
 	}
 
-	@PostMapping("/anadirestudiante/submit")
+	/*@PostMapping("/anadirestudiante/submit")
 	public String submit(@ModelAttribute("estudianteFormulario") Estudiante anadirestudiante) {
 		estudianteServicio.guardar(anadirestudiante);
 		return "redirect:/admin/listaEstudiantes";
+	}*/
+	
+	@PostMapping("/anadirestudiante/submit")
+	public String submit(@ModelAttribute("estudianteFormulario") Estudiante estudiante) {
+	    System.out.println("DEBUG: Entrando en submit con DNI: " + estudiante.getDni());
+	    
+	    // Forzamos el guardado directo sin validaciones
+	    try {
+	        estudianteServicio.guardar(estudiante);
+	        System.out.println("DEBUG: Guardado exitoso");
+	    } catch (Exception e) {
+	        System.out.println("DEBUG: Error al guardar: " + e.getMessage());
+	        e.printStackTrace();
+	    }
+	    
+	    return "redirect:/";
 	}
 
 	// Formulario de editar el estudiante
