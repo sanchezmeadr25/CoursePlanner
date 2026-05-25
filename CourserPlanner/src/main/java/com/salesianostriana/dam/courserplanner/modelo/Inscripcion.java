@@ -12,53 +12,44 @@ import lombok.*;
 @Table(name = "inscripcion")
 public class Inscripcion {
 
-    
-    @EmbeddedId
-    @Builder.Default
-    private InscripcionPK inscripcionPK = new InscripcionPK();
+	@EmbeddedId
+	@Builder.Default
+	private InscripcionPK inscripcionPK = new InscripcionPK();
 
-  
-    @Column(name = "fecha_inscripcion", nullable = false)
-    private LocalDateTime fechaInscripcion;
-    
-    private double progreso;
-    
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private EstadoInscripcion estado;
-    
-    private double valoracion;
+	@Column(name = "fecha_inscripcion", nullable = false)
+	private LocalDateTime fechaInscripcion;
 
- 
-    @ManyToOne
-    @MapsId("estudiante_dni")
-    @JoinColumn(name = "estudiante_dni")
-    private Estudiante estudiante;
+	@Column(name = "progreso")
+	private double progreso;
 
-    @ManyToOne
-    @MapsId("curso_id")
-    @JoinColumn(name = "curso_id")
-    private Curso curso;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private EstadoInscripcion estado;
 
-   
-    public Inscripcion(Estudiante e, Curso c) {
-        this.estudiante = e;
-        this.curso = c;
-        this.fechaInscripcion = LocalDateTime.now(); 
-        this.estado = EstadoInscripcion.PENDIENTE;   
-    }
-   
+	private double valoracion;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Inscripcion other = (Inscripcion) o;
-        return inscripcionPK != null && inscripcionPK.equals(other.getInscripcionPK());
-    }
+	@ManyToOne
+	@MapsId("estudiante_dni")
+	@JoinColumn(name = "estudiante_dni")
+	private Estudiante estudiante;
 
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
-    }
+	@ManyToOne
+	@MapsId("curso_id")
+	@JoinColumn(name = "curso_id")
+	private Curso curso;
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+		Inscripcion other = (Inscripcion) o;
+		return inscripcionPK != null && inscripcionPK.equals(other.getInscripcionPK());
+	}
+
+	@Override
+	public int hashCode() {
+		return getClass().hashCode();
+	}
 }

@@ -7,56 +7,36 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 @Table(name = "estudiante")
-public class Estudiante {
+public class Estudiante extends Usuario {
 
-	@Id 
-	@Column(name = "dni", length = 9)
-	private String dni;
-	
-	private String fotoPerfil;
-	
-	@Column(nullable = false)
-	private String nombre;
-	
-	@Column(nullable = false)
-	private String apellidos;
-	
-	@Column(nullable = false, unique = true)
-	private String email;
-	
+	@Column(name = "nivelExperiencia", nullable = false)
 	private String nivelExperiencia;
-	
-	@Column(nullable = false)
-	private String telefono;
-	
-	@Column(nullable = false)
-	private LocalDate fechaNacimiento;
-	
-	private String pais;
-	
-	private String localidad;
 
-	
 	@OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL, orphanRemoval = true)
 	@Builder.Default
 	private List<Inscripcion> listaInscripciones = new ArrayList<>();
-	
-	
+
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
 		Estudiante other = (Estudiante) o;
 		return dni != null && dni.equals(other.getDni());
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return getClass().hashCode();
 	}
+
+	
+	public Estudiante() {
+	    super();
+	}
+	
 }
