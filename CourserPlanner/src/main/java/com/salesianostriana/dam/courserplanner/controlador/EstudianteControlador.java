@@ -30,10 +30,10 @@ public class EstudianteControlador {
 		return "formularioEstudiante";
 	}
 
-	@PostMapping("/crearEstudiante")
-	public String submit(@ModelAttribute("estudianteFormulario") Estudiante estudiante) {
-		estudianteServicio.guardar(estudiante);
-		return "redirect:/";
+	@PostMapping("/anadirestudiante/submit")
+	public String submit(@ModelAttribute("estudianteFormulario") Estudiante anadirestudiante) {
+		estudianteServicio.guardar(anadirestudiante);
+		return "redirect:/admin/listaEstudiantes";
 	}
 
 	// Formulario de editar el estudiante
