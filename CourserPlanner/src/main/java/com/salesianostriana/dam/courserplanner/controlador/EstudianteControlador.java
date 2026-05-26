@@ -58,16 +58,26 @@ public class EstudianteControlador {
 	
 	// Formulario de editar el estudiante
 	@GetMapping("/editarEstudiante/{dni}")
-	public String formularioEditar(@PathVariable("dni") String dni, Model model) {
-		Optional<Estudiante> estudianteEditar = estudianteServicio.buscarPorId(dni);
-
-		if (estudianteEditar.isPresent()) {
-			model.addAttribute("estudianteFormulario", estudianteEditar.get());
-			return "formulario";
+	public String mostrarFormularioEdicion(@PathVariable("dni")String dni, Model model) {
+	
+		Optional<Estudiante> estudiante = estudianteServicio.findById(dni);
+		
+		if (estudiante.isPresent()) {
+			model.addAttribute("estudianteFormulario", estudiante.get());
+			return "formularioEstudiante";
 		} else {
-			return "redirect:/";
-		}
+			return "redirect:/admin/listaEstudiantes";
+		}	
 
+	}
+	
+	
+	@PostMapping("/editar/submit")
+	public String procesarFormularioEdicion(@ModelAttribute("estudianteFormulariol") Estudiante e) {
+		estudianteServicio.editar(e);	
+		
+		return "redirect:/admin/listaEstudiantes";
+		
 	}
 
 	//Lista de estudiantes 
