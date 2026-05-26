@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,10 +37,11 @@ public  class Usuario implements UserDetails {
 	protected String dni;
 
 	@Column(name = "foto")
-	private String fotoPerfil;
+	private String foto;
 
-	@Column(name = "nombre", nullable = false)
-	private String username;//Nombre de la persona pero le tengo puesto username porque si no me hace tener un metodo get username
+	@Column(name = "username", nullable = false, unique = true)
+	private String username;
+
 
 	@Column(name = "apellidos", nullable = false)
 	private String apellidos;
@@ -50,6 +52,7 @@ public  class Usuario implements UserDetails {
 	@Column(name = "telefono", nullable = false)
 	private String telefono;
 
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	@Column(name = "fechaNacimiento", nullable = false)
 	private LocalDate fechaNacimiento;
 
