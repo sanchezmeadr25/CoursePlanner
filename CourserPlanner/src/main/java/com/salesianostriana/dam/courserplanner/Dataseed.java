@@ -1,13 +1,16 @@
 package com.salesianostriana.dam.courserplanner;
 
+import java.time.Duration;
 import java.time.LocalDate;
 
 import org.springframework.stereotype.Component;
 
+import com.salesianostriana.dam.courserplanner.modelo.Curso;
 import com.salesianostriana.dam.courserplanner.modelo.Estudiante;
 import com.salesianostriana.dam.courserplanner.modelo.Instructor;
 import com.salesianostriana.dam.courserplanner.modelo.Rol;
 import com.salesianostriana.dam.courserplanner.modelo.Usuario;
+import com.salesianostriana.dam.courserplanner.repositorio.CursoRepositorio;
 import com.salesianostriana.dam.courserplanner.repositorio.UsuarioRepositorio;
 import com.salesianostriana.dam.courserplanner.seguridad.ConfiguradorCodificadorContrasenas;
 
@@ -16,11 +19,18 @@ import jakarta.annotation.PostConstruct;
 @Component
 public class Dataseed {
 
+	
+	private final CursoRepositorio cursoRepositorio;
 	private final UsuarioRepositorio usuarioRepositorio;
 	private final ConfiguradorCodificadorContrasenas codi;
 
-	public Dataseed(UsuarioRepositorio usuarioRepositorio, ConfiguradorCodificadorContrasenas codi) {
+	
+
+	public Dataseed( CursoRepositorio cursoRepositorio, UsuarioRepositorio usuarioRepositorio,
+			ConfiguradorCodificadorContrasenas codi) {
 		super();
+		
+		this.cursoRepositorio = cursoRepositorio;
 		this.usuarioRepositorio = usuarioRepositorio;
 		this.codi = codi;
 	}
@@ -65,14 +75,19 @@ public class Dataseed {
 			user.setRol(Rol.USER);
 			usuarioRepositorio.save(user);
 
-			try {
-				// ESTO DEBE IR DENTRO DEL TRY
-				usuarioRepositorio.save(admin);
-				System.out.println("DEBUG: Usuario admin guardado correctamente.");
-			} catch (Exception e) {
-				System.err.println("DEBUG: ERROR al guardar en Dataseed: " + e.getMessage());
-				e.printStackTrace();
-			}
+			Curso cursoPrueba = Curso.builder()
+				    .titulo("Curso de Prueba")
+				    .categoria("Programación")
+				    .descripcion("Descripción de prueba para verificar que el listado funciona.")
+				    .fotoCurso("https://via.placeholder.com/150")
+				    .precio(99.99)
+				    .plazasMaximas(20)
+				    .duracionHoras(Duration.ofHours(2).plusMinutes(30)) 
+				    .instructor(admin) 
+				    .build();
+
+				cursoRepositorio.save(cursoPrueba);
+			
 
 		}
 

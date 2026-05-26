@@ -23,7 +23,7 @@
                 </a>
             </div>
 
-            <div th:unless="${not #lists.isEmpty(listaCurso)}" class="card shadow-sm border-0 p-5 text-center">
+            <div th:unless="${#lists.size(listaCurso) > 0}" class="card shadow-sm border-0 p-5 text-center">
                 <div class="card-body">
                     <p class="text-muted mb-3">No tienes cursos creados aún</p>
                     <a th:href="@{/crearCurso}" class="text-decoration-none fw-bold">Crear tu primer curso</a>
@@ -48,7 +48,7 @@
                             </div>
                             
                             <p class="text-muted small mt-3 mb-0">
-                                Creado el <span th:text="${#temporals.format(curso.fechaCreacion, 'dd/MM/yyyy')}">24/5/2026</span>
+                                Estado: <span class="badge bg-success">Activo</span>
                             </p>
                         </div>
                     </div>
