@@ -32,7 +32,7 @@ public class CursoServicio {
 		return cursoRepositorio.findAll();
 	}
 	
-	public List<Curso> findCursosByInstructor(Optional<Instructor> instructor) {
-	    return cursoRepositorio.findByInstructor(instructor);
+	public List<Curso> findCursosByInstructor(String dni) {
+	    return cursoRepositorio.findByInstructor_Dni(dni);
 	}
 }
