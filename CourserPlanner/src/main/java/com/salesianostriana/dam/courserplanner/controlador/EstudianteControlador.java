@@ -57,7 +57,7 @@ public class EstudianteControlador {
 	
 	
 	// Formulario de editar el estudiante
-	@GetMapping("/editarEstudiante/{dni}")
+	@GetMapping("admin/editarEstudiante/{dni}")
 	public String mostrarFormularioEdicion(@PathVariable("dni")String dni, Model model) {
 	
 		Optional<Estudiante> estudiante = estudianteServicio.findById(dni);
@@ -72,8 +72,8 @@ public class EstudianteControlador {
 	}
 	
 	
-	@PostMapping("/editar/submit")
-	public String procesarFormularioEdicion(@ModelAttribute("estudianteFormulariol") Estudiante e) {
+	@PostMapping("admin/editarEstudiante/submit")
+	public String procesarFormularioEdicion(@ModelAttribute("estudianteFormulario") Estudiante e) {
 		estudianteServicio.editar(e);	
 		
 		return "redirect:/admin/listaEstudiantes";

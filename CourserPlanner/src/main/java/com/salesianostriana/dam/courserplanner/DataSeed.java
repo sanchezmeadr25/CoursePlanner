@@ -36,7 +36,7 @@ public class Dataseed {
 			System.out.println("La base de datos está vacía, procediendo a insertar...");
 			Instructor admin = new Instructor();
 			admin.setDni("12345678A");
-			admin.setFoto("foto");
+			admin.setFoto("https://dinastiacachorros.com.co/wp-content/uploads/2024/05/Img-Dinastia-del-Cachorro-Home-Razas-Husky.png.webp");
 			admin.setUsername("admin");
 			admin.setApellidos("admin");
 			admin.setEmail("admin@admin.com");
