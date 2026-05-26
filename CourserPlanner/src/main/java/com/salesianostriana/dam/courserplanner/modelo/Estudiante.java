@@ -6,10 +6,9 @@ import java.util.List;
 import jakarta.persistence.*;
 import lombok.*;
 
+@Entity
 @Data
 @AllArgsConstructor
-@Entity
-@Table(name = "estudiante")
 public class Estudiante extends Usuario {
 
 	@Column(name = "nivelExperiencia", nullable = false)
