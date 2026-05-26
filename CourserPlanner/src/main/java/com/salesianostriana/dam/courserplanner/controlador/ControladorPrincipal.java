@@ -28,4 +28,15 @@ public class ControladorPrincipal {
         model.addAttribute("numCursos", cursoRepositorio.countByInstructor_Dni(usuario.getDni()));
         return "principalAdmin"; 
     }
+    
+    @GetMapping("/principalUser") 
+    public String principalUser(Model model, Principal principal) {
+    	Usuario usuario = usuarioRepositorio.findByUsername(principal.getName())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+       
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("numCursos", cursoRepositorio.countByInstructor_Dni(usuario.getDni()));
+        return "principalUser"; 
+    }
 }
