@@ -37,10 +37,11 @@ public  class Usuario implements UserDetails {
 	protected String dni;
 
 	@Column(name = "foto")
-	private String fotoPerfil;
+	private String foto;
 
-	@Column(name = "nombre", nullable = false)
-	private String username;//Nombre de la persona pero le tengo puesto username porque si no me hace tener un metodo get username
+	@Column(name = "username", nullable = false, unique = true)
+	private String username;
+
 
 	@Column(name = "apellidos", nullable = false)
 	private String apellidos;
