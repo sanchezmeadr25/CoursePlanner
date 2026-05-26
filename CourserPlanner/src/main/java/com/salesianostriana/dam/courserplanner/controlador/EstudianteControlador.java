@@ -84,5 +84,17 @@ public class EstudianteControlador {
 	   
 	    return "admin/listaEstudiantes";
 	}
+	
+	
+	@GetMapping("/admin/estudiante/borrar/{dni}")
+	public String borrar(@PathVariable("dni") String dni) {
+		
+		Optional<Estudiante> aBorrar = estudianteServicio.buscarPorId(dni);		
+		if (aBorrar.isPresent()) {
+			estudianteServicio.eliminarPorId(dni);
+		} 
+
+		return "redirect:/admin/listaEstudiantes";		
+	}
 
 }
