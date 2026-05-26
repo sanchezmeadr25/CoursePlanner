@@ -35,12 +35,12 @@
                             <a href="#"
                                 class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
                                 id="userMenu" data-bs-toggle="dropdown">
-                                <img th:src="${usuario.foto}" width="40" height="40"
+                                <img th:src="${usuario?.foto}" width="40" height="40"
                                     class="rounded-circle border border-2 border-light">
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end shadow mt-2">
                                 <li>
-                                    <h6 class="dropdown-header" th:text="${usuario.username}">Adrián</h6>
+                                    <h6 class="dropdown-header" th:text="${usuario?.username}">Adrián</h6>
                                 </li>
                                 <li><a class="dropdown-item" href="/perfil">Editar perfil</a></li>
                                 <li>

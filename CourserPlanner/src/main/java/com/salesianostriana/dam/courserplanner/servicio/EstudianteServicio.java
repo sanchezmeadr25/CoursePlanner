@@ -1,6 +1,7 @@
 package com.salesianostriana.dam.courserplanner.servicio;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,11 @@ public class EstudianteServicio extends ServicosBasesImplementados<Estudiante, S
 	
 	public Estudiante guardar(Estudiante e) {
 	    return estudianteRepositorio.save(e);
+	}
+
+
+	public Optional<Estudiante> findById(String dni) {
+		return estudianteRepositorio.findById(dni);
 	}
 
 }
