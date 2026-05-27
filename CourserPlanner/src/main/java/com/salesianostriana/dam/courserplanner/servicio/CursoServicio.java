@@ -8,6 +8,7 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 import com.salesianostriana.dam.courserplanner.modelo.Curso;
+import com.salesianostriana.dam.courserplanner.modelo.Estudiante;
 import com.salesianostriana.dam.courserplanner.modelo.Instructor;
 import com.salesianostriana.dam.courserplanner.repositorio.CursoRepositorio;
 
@@ -33,6 +34,11 @@ public class CursoServicio {
 	
 	public List<Curso> buscarCursoPorInstructor(String dni) {
 	    return cursoRepositorio.findByInstructor_Dni(dni);
+	}
+
+	public Optional<Estudiante> findById(Long cursoId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
