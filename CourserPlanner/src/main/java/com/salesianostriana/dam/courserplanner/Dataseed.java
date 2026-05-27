@@ -181,7 +181,7 @@ public class Dataseed {
 						.titulo("Introducción a Figma y UI/UX")
 						.categoria("Diseño UI/UX")
 						.descripcion("Aprende a diseñar interfaces web y móviles desde cero de forma práctica.")
-						.fotoCurso("https://via.placeholder.com/150")
+						.fotoCurso("https://cdn-imgix.headout.com/media/images/c9db3cea62133b6a6bb70597326b4a34-388-dubai-img-worlds-of-adventure-tickets-01.jpg?auto=compress%2Cformat&w=1222.3999999999999&h=687.6&q=90&ar=16%3A9&crop=faces&fit=crop")
 						.precio(49.99)
 						.plazasMaximas(15)
 						.duracionHoras(Duration.ofHours(15))
