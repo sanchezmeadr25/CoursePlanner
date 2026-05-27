@@ -66,7 +66,7 @@ public class Curso {
 	
     public String getDuracionFormateada() {
         long h = duracionHoras.toHours();
-        long m = duracionHoras.toMinutesPart(); // requiere Java 9+
+        long m = duracionHoras.toMinutesPart(); 
         return h + "h " + m + "m";
     }
     
