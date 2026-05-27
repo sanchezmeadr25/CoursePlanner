@@ -9,11 +9,13 @@ import lombok.*;
 @Entity
 @Data
 @AllArgsConstructor
+@ToString(exclude = {"inscripciones"})
 public class Estudiante extends Usuario {
 
 	@Column(name = "nivelExperiencia", nullable = false)
 	private String nivelExperiencia;
 
+	
 	@OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL, orphanRemoval = true)
 	@Builder.Default
 	private List<Inscripcion> listaInscripciones = new ArrayList<>();
