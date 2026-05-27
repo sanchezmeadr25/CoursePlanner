@@ -15,7 +15,7 @@ public class EstudianteServicio extends ServicosBasesImplementados<Estudiante, S
 	private final EstudianteRepositorio estudianteRepositorio;
 
 	public EstudianteServicio(EstudianteRepositorio estudianteRepositorio) {
-		super();
+		super(estudianteRepositorio);
 		this.estudianteRepositorio = estudianteRepositorio;
 	}
 	

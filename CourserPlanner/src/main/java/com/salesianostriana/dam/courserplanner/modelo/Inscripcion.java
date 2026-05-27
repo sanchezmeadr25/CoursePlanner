@@ -12,31 +12,31 @@ import lombok.*;
 @Table(name = "inscripcion")
 public class Inscripcion {
 
-	@EmbeddedId
-	@Builder.Default
-	private InscripcionPK inscripcionPK = new InscripcionPK();
+    @EmbeddedId
+    private InscripcionPK inscripcionPK = new InscripcionPK();
 
-	@Column(name = "fecha_inscripcion", nullable = false)
-	private LocalDateTime fechaInscripcion;
+    @Column(name = "fecha_inscripcion", nullable = false)
+    private LocalDateTime fechaInscripcion;
 
-	@Column(name = "progreso")
-	private double progreso;
+    @Column(name = "progreso")
+    private double progreso;
 
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private EstadoInscripcion estado;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private EstadoInscripcion estado;
 
-	private double valoracion;
+    private double valoracion;
 
-	@ManyToOne
-	@MapsId("estudiante_dni")
-	@JoinColumn(name = "estudiante_dni")
-	private Estudiante estudiante;
+    @ManyToOne
+    @MapsId("estudianteDni") // Coincide con el campo en InscripcionPK
+    @JoinColumn(name = "estudiante_dni")
+    private Estudiante estudiante;
 
-	@ManyToOne
-	@MapsId("curso_id")
-	@JoinColumn(name = "curso_id")
-	private Curso curso;
+    @ManyToOne
+    @MapsId("cursoId")       // Coincide con el campo en InscripcionPK
+    @JoinColumn(name = "curso_id")
+    private Curso curso;
+
 
 	@Override
 	public boolean equals(Object o) {
