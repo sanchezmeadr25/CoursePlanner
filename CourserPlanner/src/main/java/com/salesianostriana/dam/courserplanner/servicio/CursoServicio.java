@@ -20,19 +20,17 @@ public class CursoServicio {
 		this.cursoRepositorio = cursoRepositorio;
 	}
 
-	public Curso guardar(Curso curso) {
-	//	if (curso.getDuracionHoras() > 0) {
-	//		curso.setDuracionHoras(Duration.minusHours(curso.getDuracionHoras()));
-	//	}
-		return cursoRepositorio.save(curso);
-	}
-
+	public void guardar(Curso curso) {
+        
+        curso.calcularDuracion(); 
+        cursoRepositorio.save(curso);
+    }
 	
 	public List<Curso> findAll() {
 		return cursoRepositorio.findAll();
 	}
 	
-	public List<Curso> findCursosByInstructor(Optional<Instructor> instructor) {
-	    return cursoRepositorio.findByInstructor(instructor);
+	public List<Curso> findCursosByInstructor(String dni) {
+	    return cursoRepositorio.findByInstructor_Dni(dni);
 	}
 }

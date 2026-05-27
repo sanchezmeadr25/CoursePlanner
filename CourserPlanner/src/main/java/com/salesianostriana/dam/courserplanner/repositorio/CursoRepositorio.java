@@ -12,8 +12,8 @@ import com.salesianostriana.dam.courserplanner.modelo.Usuario;
 
 public interface CursoRepositorio extends JpaRepository<Curso, Long> {
 
-	List<Curso> findByInstructor(Optional<Instructor> instructor);
-
+	List<Curso> findByInstructor_Dni(String dni);
+	
 	int countByInstructor_Dni(String dni);
 	
 }
