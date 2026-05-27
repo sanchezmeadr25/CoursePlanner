@@ -68,10 +68,17 @@ public class CursoControlador {
 	public String listarMisCursos(Model model, Principal principal) {
 	    
 	    model.addAttribute("listaCurso", usuarioRepositorio.findByUsername(principal.getName())
-	            .map(u -> cursoServicio.findCursosByInstructor(u.getDni()))
+	            .map(instructor -> cursoServicio.buscarCursoPorInstructor(instructor.getDni()))
 	            .orElse(Collections.emptyList()));
 	            
 	    return "admin/listaCursos";
+	}
+	
+	@GetMapping("/catalogo")
+	public String listarTodosLosCursos(Model model) {
+		model.addAttribute("cursos", cursoServicio.buscarTodos());
+		return "listaCursosEstudiante";
+
 	}
 	
 	
