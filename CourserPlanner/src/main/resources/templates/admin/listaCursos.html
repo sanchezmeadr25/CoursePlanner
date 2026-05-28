@@ -1,91 +1,84 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body class="pt-5">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <title>Mis Cursos</title>
+    </head>
+    <body class="d-flex flex-column min-vh-100 bg-light">
 
-    <div th:replace="~{fragments/cabecera :: cabecera}"></div>
-<div class="container mt-5">
-        <div class="row">
-            <div class="col-md-10 offset-md-1">
-                
-                <div class="alert alert-warning alert-dismissible fade show" role="alert" th:if="${param.error}">
-                    <span>¡No se puede borrar un curso que ya tiene estudiantes inscritos!</span>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div th:replace="~{fragments/cabeceraAdmin :: cabeceraAdmin}"></div>
+
+        <main class="flex-grow-1 py-5">
+            <div class="container">
+                <div
+                    class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h2 class="fw-bold">Mis Cursos</h2>
+                        <p class="text-muted">Gestiona tus cursos</p>
+                    </div>
+                    <a th:href="@{/crearCurso}" class="btn btn-primary">
+                        <i class="bi bi-plus-lg"></i> Crear Curso
+                    </a>
                 </div>
 
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h3>Mis Cursos</h3>
-                    <a th:href="@{/curso/nuevo}" class="btn btn-primary">Nuevo curso</a>
+                <div th:unless="${#lists.size(listaCurso) > 0}"
+                    class="card shadow-sm border-0 p-5 text-center">
+                    <div class="card-body">
+                        <p class="text-muted mb-3">No tienes cursos creados
+                            aún</p>
+                        <a th:href="@{/crearCurso}"
+                            class="text-decoration-none fw-bold">Crear tu primer
+                            curso</a>
+                    </div>
                 </div>
 
-                <table class="table table-striped align-middle">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Imagen</th>
-                            <th>Título</th>
-                            <th>Categoría</th>
-                            <th>Precio</th>
-                            <th class="text-end">Operaciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="curso : ${listaCursos}">
-                            <td>
-                                <img th:src="${not (#strings.isEmpty(curso.fotoCurso))} ? ${curso.fotoCurso} : 'https://via.placeholder.com/48'"
-                                    class="img-thumbnail" style="width: 48px; height: 48px; object-fit: cover;" alt="curso" />
-                            </td>
-                            <td th:text="${curso.titulo}"></td>
-                            <td th:text="${curso.categoria}"></td>
-                            <td th:text="${curso.precio} + ' €'"></td>
-                            <td class="text-end">
-                                <a th:href="@{/curso/editar/{id}(id=${curso.id})}"
-                                    class="btn btn-sm btn-outline-primary">Editar</a>
-                                
-                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                    data-bs-target="#delete-modal" th:data-bs-id="${curso.id}">Borrar</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div th:if="${not #lists.isEmpty(listaCurso)}"
+                    class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                    <div class="col" th:each="curso : ${listaCurso}">
+                        <div class="card h-100 shadow-sm border-0 p-3">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold"
+                                    th:text="${curso.titulo}">Nombre del
+                                    Curso</h5>
+                                <p class="text-muted"
+                                    th:text="${curso.categoria}">Categoría</p>
+
+                                <hr>
+
+                                <div
+                                    class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <i class="bi bi-people"></i>
+                                        <span
+                                            th:text="${#lists.size(curso.listaInscripciones) + ' estudiantes'}">0
+                                            estudiantes</span>
+                                    </div>
+                                    <a href="#"
+                                        class="text-decoration-none fw-bold">Ver
+                                        estudiantes</a>
+                                    <a
+                                        th:href="@{/admin/editarCurso/{id}(id=${curso.id})}"
+                                        class="btn btn-outline-primary btn-sm ms-2 fw-bold">Editar</a>
+                                </div>
+
+                                <p class="text-muted small mt-3 mb-0">
+                                    Estado: <span
+                                        class="badge bg-success">Activo</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+        </main>
 
-    <div class="modal fade" id="delete-modal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title">Borrar curso</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                    <p>¿Está seguro de que desea borrar este curso? Esta acción no se puede deshacer.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                    <a id="confirmDelete" href="#" class="btn btn-danger">Sí, borrar</a>
-                </div>
-            </div>
-        </div>
-    </div>
+        <div th:replace="~{fragments/pieDePagina :: pieDePagina}"></div>
 
-     <div th:replace="~{fragments/pieDePagina :: piedepagina}"></div>
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        const deleteModal = document.getElementById('delete-modal');
-        if (deleteModal) {
-            deleteModal.addEventListener('show.bs.modal', event => {
-                const button = event.relatedTarget;
-                const id = button.getAttribute('data-bs-id');
-                const confirmBtn = deleteModal.querySelector('#confirmDelete');
-                // IMPORTANTE: Asegúrate de que esta ruta coincide con tu controlador de borrado
-                confirmBtn.href = "/curso/borrar/" + id;
-            });
-        }
-    </script>
-</body>
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
 </html>

@@ -12,7 +12,7 @@ public class InstructorServicio extends ServicosBasesImplementados<Instructor,St
 	private final InstructorRepositorio instructorRepositorio;
 
 	public InstructorServicio(InstructorRepositorio instructorRepositorio) {
-		super();
+		super(instructorRepositorio);
 		this.instructorRepositorio = instructorRepositorio;
 	}
 	
