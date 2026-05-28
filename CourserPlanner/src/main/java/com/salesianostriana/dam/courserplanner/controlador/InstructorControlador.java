@@ -35,8 +35,8 @@ public class InstructorControlador {
 		return "redirect:/";
 	}
 	
-	@GetMapping("/dashboard/instructor")
-	public String mostrarDashboard(Model model, @AuthenticationPrincipal Usuario usuario) {
+	@GetMapping("/principalAdmin/instructor")
+	public String mostrarEstadisticas(Model model, @AuthenticationPrincipal Usuario usuario) {
 	    if (usuario == null) {
 	        return "redirect:/acceso";
 	    }

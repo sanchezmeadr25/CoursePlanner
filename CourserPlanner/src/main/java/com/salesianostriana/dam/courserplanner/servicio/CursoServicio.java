@@ -11,21 +11,23 @@ import com.salesianostriana.dam.courserplanner.modelo.Curso;
 import com.salesianostriana.dam.courserplanner.modelo.Estudiante;
 import com.salesianostriana.dam.courserplanner.modelo.Instructor;
 import com.salesianostriana.dam.courserplanner.repositorio.CursoRepositorio;
+import com.salesianostriana.dam.courserplanner.repositorio.EstudianteRepositorio;
+import com.salesianostriana.dam.courserplanner.serviciobase.ServicosBasesImplementados;
 
 @Service
-public class CursoServicio {
+public class CursoServicio  extends ServicosBasesImplementados<Curso, Long, CursoRepositorio>  {
 
 	private final CursoRepositorio cursoRepositorio;
 
 	public CursoServicio(CursoRepositorio cursoRepositorio) {
-		super();
+		super(cursoRepositorio);
 		this.cursoRepositorio = cursoRepositorio;
 	}
 
-	public void guardar(Curso curso) {
+	public Curso guardar(Curso curso) {
         
         curso.calcularDuracion(); 
-        cursoRepositorio.save(curso);
+        return cursoRepositorio.save(curso);
     }
 	
 	public List<Curso> buscarTodos() {
@@ -36,14 +38,10 @@ public class CursoServicio {
 	    return cursoRepositorio.findByInstructor_Dni(dni);
 	}
 
-	public Optional<Estudiante> findById(Long cursoId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Optional<Curso> findById(Long id) {
+		return cursoRepositorio.findById(id);
 	}
 
-	public String buscarCursosPorEstudiante(String dni) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 }
