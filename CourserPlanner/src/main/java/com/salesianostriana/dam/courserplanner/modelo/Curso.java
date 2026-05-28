@@ -19,6 +19,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
@@ -26,6 +27,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 @Table(name = "curso")
+@ToString(exclude = {"instructor", "listaInscripciones"})
 public class Curso {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

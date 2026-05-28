@@ -1,6 +1,9 @@
 package com.salesianostriana.dam.courserplanner.servicio;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.salesianostriana.dam.courserplanner.modelo.Curso;
@@ -16,22 +19,20 @@ import com.salesianostriana.dam.courserplanner.serviciobase.ServicosBasesImpleme
 public class InscripcionServicio
 		extends ServicosBasesImplementados<Inscripcion, InscripcionPK, InscripcionRepositorio> {
 
+	private final InscripcionRepositorio inscripcionRepositorio;
 	private final EstudianteRepositorio estudianteRepositorio;
 	private final CursoRepositorio cursoRepositorio;
 
-	public InscripcionServicio(InscripcionRepositorio inscripcionRepositorio,
+	public InscripcionServicio(InscripcionRepositorio repositorio, InscripcionRepositorio inscripcionRepositorio,
 			EstudianteRepositorio estudianteRepositorio, CursoRepositorio cursoRepositorio) {
-		
-	
-		super(inscripcionRepositorio); 
-
+		super(repositorio);
+		this.inscripcionRepositorio = inscripcionRepositorio;
 		this.estudianteRepositorio = estudianteRepositorio;
 		this.cursoRepositorio = cursoRepositorio;
 	}
 
 	public Inscripcion registrarInscripcion(Inscripcion inscripcion) {
 
-	
 		if (repositorio.existsById(inscripcion.getInscripcionPK())) {
 			throw new RuntimeException("El estudiante ya está inscrito en este curso.");
 		}
@@ -48,5 +49,13 @@ public class InscripcionServicio
 		inscripcion.setProgreso(0.0);
 
 		return repositorio.save(inscripcion);
+	}
+
+	// Primero cogemos la lista de las inscripciones que tiene el estudiante, luego
+	// la transformamos en una lista de cursos y sacamos el cirso de la inscripcion
+	// y hacemos una lista con los curso sacaado
+	public List<Curso> buscarCursosPorEstudiante(String dniEstudiante) {
+		List<Inscripcion> inscripciones = inscripcionRepositorio.findAllByEstudianteDni(dniEstudiante);
+		return inscripciones.stream().map(i -> i.getCurso()).collect(Collectors.toList());
 	}
 }

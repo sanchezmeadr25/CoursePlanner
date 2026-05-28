@@ -41,4 +41,9 @@ public class CursoServicio {
 		return null;
 	}
 
+	public String buscarCursosPorEstudiante(String dni) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

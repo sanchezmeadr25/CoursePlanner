@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,11 +22,13 @@ import com.salesianostriana.dam.courserplanner.repositorio.CursoRepositorio;
 import com.salesianostriana.dam.courserplanner.repositorio.InstructorRepositorio;
 import com.salesianostriana.dam.courserplanner.repositorio.UsuarioRepositorio;
 import com.salesianostriana.dam.courserplanner.servicio.CursoServicio;
+import com.salesianostriana.dam.courserplanner.servicio.InscripcionServicio;
 import com.salesianostriana.dam.courserplanner.servicio.InstructorServicio;
 
 @Controller
 public class CursoControlador {
 
+	private final InscripcionServicio inscripcionServicio;
 	private final CursoRepositorio cursoRepositorio;
 	private final CursoServicio cursoServicio;
 	private final InstructorRepositorio instructorRepositorio;
@@ -33,10 +36,11 @@ public class CursoControlador {
 	private final UsuarioRepositorio usuarioRepositorio;
 	
 	
-	public CursoControlador(CursoRepositorio cursoRepositorio, CursoServicio cursoServicio,
-			InstructorRepositorio instructorRepositorio, InstructorServicio instructorServicio,
-			UsuarioRepositorio usuarioRepositorio) {
+	public CursoControlador(InscripcionServicio inscripcionServicio, CursoRepositorio cursoRepositorio,
+			CursoServicio cursoServicio, InstructorRepositorio instructorRepositorio,
+			InstructorServicio instructorServicio, UsuarioRepositorio usuarioRepositorio) {
 		super();
+		this.inscripcionServicio = inscripcionServicio;
 		this.cursoRepositorio = cursoRepositorio;
 		this.cursoServicio = cursoServicio;
 		this.instructorRepositorio = instructorRepositorio;
@@ -44,7 +48,7 @@ public class CursoControlador {
 		this.usuarioRepositorio = usuarioRepositorio;
 	}
 
-
+	
 	@GetMapping("/crearCurso")
 	public String mostrarFormulario(Model model) {
 	    model.addAttribute("curso", new Curso());
@@ -82,7 +86,23 @@ public class CursoControlador {
 	}
 	
 	
-	
+	@GetMapping("/misCursosInscritos")
+	public String listarMisCursosInscritos(Model model, Principal principal) {
+	    String username = principal.getName();
+	    Usuario usuario = usuarioRepositorio.findByUsername(username)
+	            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+	    
+	    List<Curso> misCursos = inscripcionServicio.buscarCursosPorEstudiante(usuario.getDni());
+	    
+	  
+	    if (misCursos != null) {
+	        misCursos.removeIf(Objects::isNull);
+	    }
+	    
+	    model.addAttribute("misCursos", (misCursos != null) ? misCursos : new ArrayList<Curso>());
+	    
+	    return "misCursosInscritos"; 
+	}
 	
 	
 	
