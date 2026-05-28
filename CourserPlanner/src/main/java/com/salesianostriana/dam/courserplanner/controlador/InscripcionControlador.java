@@ -1,8 +1,8 @@
 package com.salesianostriana.dam.courserplanner.controlador;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +15,7 @@ import com.salesianostriana.dam.courserplanner.modelo.EstadoInscripcion;
 import com.salesianostriana.dam.courserplanner.modelo.Estudiante;
 import com.salesianostriana.dam.courserplanner.modelo.Inscripcion;
 import com.salesianostriana.dam.courserplanner.modelo.InscripcionPK;
-import com.salesianostriana.dam.courserplanner.repositorio.EstudianteRepositorio;
 import com.salesianostriana.dam.courserplanner.servicio.InscripcionServicio;
-
-
-import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/inscripcion")
