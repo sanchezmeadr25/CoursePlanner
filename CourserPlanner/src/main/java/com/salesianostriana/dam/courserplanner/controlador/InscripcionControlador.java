@@ -15,55 +15,54 @@ import com.salesianostriana.dam.courserplanner.modelo.EstadoInscripcion;
 import com.salesianostriana.dam.courserplanner.modelo.Estudiante;
 import com.salesianostriana.dam.courserplanner.modelo.Inscripcion;
 import com.salesianostriana.dam.courserplanner.modelo.InscripcionPK;
+import com.salesianostriana.dam.courserplanner.repositorio.EstudianteRepositorio;
 import com.salesianostriana.dam.courserplanner.servicio.InscripcionServicio;
 
 @Controller
 @RequestMapping("/inscripcion")
 public class InscripcionControlador {
 
-	private final InscripcionServicio inscripcionServicio;
-	private final EstudianteRepositorio estudianteRepositorio; 
+    private final InscripcionServicio inscripcionServicio;
+    private final EstudianteRepositorio estudianteRepositorio; 
 
-	
-	public InscripcionControlador(InscripcionServicio inscripcionServicio, EstudianteRepositorio estudianteRepositorio) {
-		this.inscripcionServicio = inscripcionServicio;
-		this.estudianteRepositorio = estudianteRepositorio;
-	}
-	@GetMapping("/nueva")
-	public String mostrarFormulario(@RequestParam(required = false) Long cursoId, Model model, Principal principal) {
-	    Inscripcion inscripcion = new Inscripcion();
-	    InscripcionPK pk = new InscripcionPK();
-	    
-	    if (cursoId != null) {
-	        pk.setCursoId(cursoId);
-	    }
-	    
-	    inscripcion.setInscripcionPK(pk); 
-	    estudianteRepositorio.findByUsername(principal.getName())
-	            .ifPresent(usuario -> model.addAttribute("usuario", usuario));
-	    model.addAttribute("inscripcion", inscripcion); 
-	    return "formularioInscripcion";
-	}
-	
-	
-	@PostMapping("/nuevainscripcion/submit") 
-	public String procesarInscripcion(@ModelAttribute("inscripcion") Inscripcion inscripcion, 
-	                                  Principal principal) {
-	
-	    String username = principal.getName();
-	  
-	    Estudiante estudiante = estudianteRepositorio.findByUsername(username)
-	            .orElseThrow(() -> new RuntimeException("Estudiante no encontrado para el usuario: " + username));
-	    
-	
-	    inscripcion.getInscripcionPK().setEstudianteDni(estudiante.getDni());
-	   
-	    inscripcion.setEstado(EstadoInscripcion.PENDIENTE);
-	    
-	    inscripcion.setFechaInscripcion(LocalDateTime.now());
-	    
-	    inscripcionServicio.registrarInscripcion(inscripcion);
-	    
-	    return "redirect:/principalUser";
-	}
+    public InscripcionControlador(InscripcionServicio inscripcionServicio, EstudianteRepositorio estudianteRepositorio) {
+        this.inscripcionServicio = inscripcionServicio;
+        this.estudianteRepositorio = estudianteRepositorio;
+    }
+    
+    @GetMapping("/nueva")
+    public String mostrarFormulario(@RequestParam(required = false) Long cursoId, 
+                                    Model model, 
+                                    @AuthenticationPrincipal Estudiante estudianteLogueado) {
+        
+        Inscripcion inscripcion = new Inscripcion();
+        InscripcionPK pk = new InscripcionPK();
+        
+        if (cursoId != null) {
+            pk.setCursoId(cursoId);
+        }
+        
+        inscripcion.setInscripcionPK(pk); 
+        
+        // Gracias a @AuthenticationPrincipal, ya tenemos al estudianteLogueado
+        model.addAttribute("usuario", estudianteLogueado);
+        model.addAttribute("inscripcion", inscripcion); 
+        
+        return "formularioInscripcion";
+    }
+    
+    @PostMapping("/nuevainscripcion/submit") 
+    public String procesarInscripcion(@ModelAttribute("inscripcion") Inscripcion inscripcion, 
+                                      @AuthenticationPrincipal Estudiante estudianteLogueado) {
+    
+        // Ya no necesitas buscar al estudiante en el repositorio, ya lo tienes inyectado
+        inscripcion.getInscripcionPK().setEstudianteDni(estudianteLogueado.getDni());
+       
+        inscripcion.setEstado(EstadoInscripcion.PENDIENTE);
+        inscripcion.setFechaInscripcion(LocalDateTime.now());
+        
+        inscripcionServicio.registrarInscripcion(inscripcion);
+        
+        return "redirect:/principalUser";
+    }
 }

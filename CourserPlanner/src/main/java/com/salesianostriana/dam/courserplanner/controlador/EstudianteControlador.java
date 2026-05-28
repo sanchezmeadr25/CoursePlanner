@@ -45,20 +45,24 @@ public class EstudianteControlador {
 	}
 	
 	// Formulario de editar el estudiante
-	@GetMapping("admin/editarEstudiante/{dni}")
-	public String mostrarFormularioEdicion(@PathVariable("dni")String dni, Model model, Principal principal) {
-	
-		Optional<Estudiante> estudiante = estudianteServicio.findById(dni);
-		
-		if (estudiante.isPresent()) {
-			Usuario usuario = usuarioRepositorio.findByUsername(principal.getName())
-		            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-		    model.addAttribute("usuario", usuario);
-			model.addAttribute("estudianteFormulario", estudiante.get());
-			return "formularioEstudiante";
-		} else {
-			return "redirect:/admin/listaEstudiantes";
-		}	
+	@GetMapping("/admin/editarEstudiante/{dni}")
+	public String mostrarFormularioEdicion(@PathVariable("dni") String dni, 
+	                                       Model model, 
+	                                       @AuthenticationPrincipal Usuario usuarioLogueado) {
+	    
+	  
+	    Optional<Estudiante> estudiante = estudianteServicio.findById(dni);
+	    
+	    if (estudiante.isPresent()) {
+	  
+	        model.addAttribute("usuario", usuarioLogueado);
+	        model.addAttribute("estudianteFormulario", estudiante.get());
+	        
+	        return "formularioEstudiante";
+	    } else {
+	       
+	        return "redirect:/admin/listaEstudiantes";
+	    }	
 	}
 	
 	@PostMapping("admin/editarFormularioEdicion/submit")

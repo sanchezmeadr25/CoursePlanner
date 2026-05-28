@@ -7,21 +7,23 @@ import org.springframework.stereotype.Service;
 
 import com.salesianostriana.dam.courserplanner.modelo.Curso;
 import com.salesianostriana.dam.courserplanner.repositorio.CursoRepositorio;
+import com.salesianostriana.dam.courserplanner.repositorio.EstudianteRepositorio;
+import com.salesianostriana.dam.courserplanner.serviciobase.ServicosBasesImplementados;
 
 @Service
-public class CursoServicio {
+public class CursoServicio  extends ServicosBasesImplementados<Curso, Long, CursoRepositorio>  {
 
 	private final CursoRepositorio cursoRepositorio;
 
 	public CursoServicio(CursoRepositorio cursoRepositorio) {
-		super();
+		super(cursoRepositorio);
 		this.cursoRepositorio = cursoRepositorio;
 	}
 
-	public void guardar(Curso curso) {
+	public Curso guardar(Curso curso) {
         
         curso.calcularDuracion(); 
-        cursoRepositorio.save(curso);
+        return cursoRepositorio.save(curso);
     }
 	
 	public List<Curso> buscarTodos() {
@@ -32,13 +34,10 @@ public class CursoServicio {
 	    return cursoRepositorio.findByInstructor_Dni(dni);
 	}
 
-	public Optional<Curso> buscarPorId(Long cursoId) {
-		return cursoRepositorio.findById(cursoId);
+	public Optional<Curso> findById(Long id) {
+		return cursoRepositorio.findById(id);
 	}
 
-	public void editar(Curso curso) {
-		curso.calcularDuracion();
-		cursoRepositorio.save(curso);
-	}
+	
 
 }
