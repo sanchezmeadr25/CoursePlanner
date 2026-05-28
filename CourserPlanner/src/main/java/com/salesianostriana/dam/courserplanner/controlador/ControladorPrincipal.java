@@ -1,10 +1,7 @@
 package com.salesianostriana.dam.courserplanner.controlador;
 
 import com.salesianostriana.dam.courserplanner.modelo.Usuario; 
-import com.salesianostriana.dam.courserplanner.repositorio.UsuarioRepositorio; 
 import com.salesianostriana.dam.courserplanner.repositorio.CursoRepositorio; 
-import java.security.Principal;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,9 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller 
 public class ControladorPrincipal {
 
-    private final UsuarioRepositorio usuarioRepositorio;
-
     private final CursoRepositorio cursoRepositorio;
+
+    public ControladorPrincipal(CursoRepositorio cursoRepositorio) {
+        this.cursoRepositorio = cursoRepositorio;
+    }
 
     @GetMapping("/principalAdmin") 
     public String principalAdmin(Model model, @AuthenticationPrincipal Usuario usuario) {
