@@ -50,9 +50,9 @@
                                     <span th:text="${#lists.size(curso.listaInscripciones) + ' estudiantes'}">0
                                         estudiantes</span>
                                 </div>
-                                <a href="#" class="text-decoration-none fw-bold">Ver
-                                    estudiantes</a>
-                                <a href="#" class="btn btn-outline-primary btn-sm ms-2 fw-bold"></a>
+                                <a th:href="@{/cursoDetalle/{id} (id=${curso.id})}"
+                                    class="btn btn-outline-primary btn-sm ms-2 fw-bold">Ver detalles</a>
+
 
                                 <a th:href="@{/admin/editarCurso/{id}(id=${curso.id})}"
                                     class="btn btn-outline-primary btn-sm ms-2 fw-bold">Editar</a>
