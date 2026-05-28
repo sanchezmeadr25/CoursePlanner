@@ -111,4 +111,14 @@ public class CursoControlador {
         cursoRepositorio.save(curso);
         return "redirect:/admin/misCursos";
     }
+    
+    
+    //Borrar CUrso
+    @GetMapping("/admin/borrarCurso/{id}")
+    public String borrarCurso(@PathVariable("id") Long id) {
+        if (cursoRepositorio.existsById(id)) {
+            cursoRepositorio.deleteById(id);
+        }
+        return "redirect:/admin/misCursos";
+    }
 }
