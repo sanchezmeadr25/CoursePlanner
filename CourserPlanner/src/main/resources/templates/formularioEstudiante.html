@@ -11,7 +11,10 @@
 
 <body class="d-flex flex-column min-vh-100 bg-light">
     
-    <div th:replace="~{fragments/cabecera :: cabecera}"></div>
+    <div th:if="${usuario != null and usuario.rol.name() == 'ADMIN'}"
+         th:replace="~{fragments/cabeceraAdmin :: cabeceraAdmin}"></div>
+    <div th:unless="${usuario != null and usuario.rol.name() == 'ADMIN'}"
+         th:replace="~{fragments/cabecera :: cabecera}"></div>
 
     <main class="flex-grow-1 py-5">
         <div class="container">

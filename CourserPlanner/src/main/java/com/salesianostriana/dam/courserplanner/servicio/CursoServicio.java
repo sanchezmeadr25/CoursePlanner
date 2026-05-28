@@ -1,15 +1,11 @@
 package com.salesianostriana.dam.courserplanner.servicio;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
-import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 import com.salesianostriana.dam.courserplanner.modelo.Curso;
-import com.salesianostriana.dam.courserplanner.modelo.Estudiante;
-import com.salesianostriana.dam.courserplanner.modelo.Instructor;
 import com.salesianostriana.dam.courserplanner.repositorio.CursoRepositorio;
 import com.salesianostriana.dam.courserplanner.repositorio.EstudianteRepositorio;
 import com.salesianostriana.dam.courserplanner.serviciobase.ServicosBasesImplementados;

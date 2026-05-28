@@ -51,13 +51,14 @@
 
                         <div class="d-flex align-items-center">
                             <div class="dropdown">
-                                <a th:href="@{#}"
-                                    class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+                                <a href="#"
+                                    class="d-flex align-items-center link-dark text-decoration-none"
                                     id="dropdownUser1" data-bs-toggle="dropdown"
                                     aria-expanded="false">
-                                    <img th:src="${usuario?.foto}" alt="Foto"
+                                    <img th:src="${usuario != null and usuario.foto != null and !#strings.isEmpty(usuario.foto)} ? ${usuario.foto} : 'https://ssl.gstatic.com/accounts/ui/avatar_2x.png'" alt="Foto de perfil"
                                         width="40" height="40"
-                                        class="rounded-circle border border-2 border-primary">
+                                        class="rounded-circle border border-2 border-primary object-fit-cover"
+                                        onerror="this.onerror=null;this.src='https://ssl.gstatic.com/accounts/ui/avatar_2x.png';">
                                 </a>
 
                                 <ul
@@ -72,8 +73,8 @@
                                         <hr class="dropdown-divider">
                                     </li>
                                     <li><a class="dropdown-item"
-                                            th:href="@{/perfil/editar}"><i
-                                                class="bi bi-pencil-square me-2"></i>Editar
+                                            th:href="@{/principalAdmin}"><i
+                                                class="bi bi-person-circle me-2"></i>Ver
                                             perfil</a></li>
                                     <li>
                                         <form th:action="@{/logout}"
@@ -92,6 +93,29 @@
                     </div>
                 </div>
             </nav>
+            <script>
+            document.addEventListener('click', function (event) {
+                const toggle = event.target.closest('#dropdownUser1');
+                const menu = document.querySelector('[aria-labelledby="dropdownUser1"]');
+
+                if (!menu) {
+                    return;
+                }
+
+                if (toggle) {
+                    event.preventDefault();
+                    menu.classList.toggle('show');
+                    toggle.setAttribute('aria-expanded', menu.classList.contains('show'));
+                    return;
+                }
+
+                menu.classList.remove('show');
+                const currentToggle = document.getElementById('dropdownUser1');
+                if (currentToggle) {
+                    currentToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+            </script>
         </header>
     </body>
 
