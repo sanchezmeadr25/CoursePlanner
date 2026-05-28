@@ -46,7 +46,11 @@ public class ConfiguracionSeguridad {
 		        .permitAll()
 		    )
 		    
-		    .logout(logout -> logout.permitAll());
+		    .logout(logout -> logout.logoutSuccessUrl("/principal")
+		    		.permitAll())
+		    .csrf(csrf -> csrf.disable())
+		    .headers(headers -> headers.frameOptions(f -> f.disable()));
+		    		
 
 		    http.csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"));
 		    http.headers(headers -> headers.frameOptions(opts -> opts.disable()));
