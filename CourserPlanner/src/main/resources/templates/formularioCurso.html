@@ -24,7 +24,7 @@
 
    
 
-    <div th:replace="~{fragments/cabecera :: cabecera}"></div>
+    <div th:replace="~{fragments/cabeceraAdmin :: cabeceraAdmin}"></div>
 
 
 
@@ -40,13 +40,14 @@
 
                         <div class="card-body">
 
-                            <h2 class="mb-2">Crear Nuevo Curso</h2>
+                            <h2 class="mb-2" th:text="${curso.id == null} ? 'Crear Nuevo Curso' : 'Editar Curso'">Crear Nuevo Curso</h2>
 
                             <p class="text-muted mb-4">Introduce los datos para publicar un nuevo curso en la plataforma.</p>
 
 
 
-                            <form method="post" th:action="@{/crearCurso/submit}" th:object="${curso}">
+                            <form method="post" th:action="${curso.id == null} ? @{/crearCurso/submit} : @{/admin/editarCurso/submit}" th:object="${curso}">
+                                <input type="hidden" th:field="*{id}">
 
                                
 
@@ -138,11 +139,12 @@
 
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
 
-                                    <a th:href="@{/admin/listaCursos}" class="btn btn-outline-secondary px-4">Cancelar</a>
+                                    <a th:href="@{/admin/misCursos}" class="btn btn-outline-secondary px-4">Cancelar</a>
 
                                     <button type="submit" class="btn btn-success px-4">
 
-                                        <i class="bi bi-plus-circle-fill"></i> Publicar Curso
+                                        <i class="bi bi-plus-circle-fill"></i>
+                                        <span th:text="${curso.id == null} ? 'Publicar Curso' : 'Guardar Cambios'">Publicar Curso</span>
 
                                     </button>
 

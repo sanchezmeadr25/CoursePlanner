@@ -34,7 +34,7 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav mx-auto">
                             <li class="nav-item"><a class="nav-link active"
-                                    th:href="@{/principalUser}">Dashboard</a></li>
+                                    th:href="@{/principalUser}">Principal</a></li>
                             <li class="nav-item"><a class="nav-link"
                                     th:href="@{/catalogo}">Catálogo</a></li>
                             <li class="nav-item"><a class="nav-link"
@@ -46,12 +46,14 @@
                             th:if="${usuario != null}">
                             <div class="dropdown">
                                 <a href="#"
-                                    class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
-                                    id="userMenu" data-bs-toggle="dropdown">
-                                    <img th:src="${usuario.foto}" width="40"
+                                    class="d-flex align-items-center text-white text-decoration-none"
+                                    id="userMenu" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <img th:src="${usuario.foto != null and !#strings.isEmpty(usuario.foto)} ? ${usuario.foto} : 'https://ssl.gstatic.com/accounts/ui/avatar_2x.png'" width="40"
                                         height="40"
-                                        class="rounded-circle border border-2 border-light"
-                                        alt="Usuario">
+                                        class="rounded-circle border border-2 border-light object-fit-cover"
+                                        alt="Foto de perfil"
+                                        onerror="this.onerror=null;this.src='https://ssl.gstatic.com/accounts/ui/avatar_2x.png';">
                                 </a>
                                 <ul
                                     class="dropdown-menu dropdown-menu-end shadow mt-2">
@@ -61,21 +63,22 @@
                                     </li>
                                     <li>
                                         <a class="dropdown-item"
-                                            th:href="@{/admin/editarEstudiante/{dni}(dni=${usuario.dni})}">
-                                            Editar perfil
+                                            th:href="@{/principalUser}">
+                                            <i class="bi bi-person-circle me-2"></i>Ver perfil
                                         </a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item"
-                                            th:href="@{/admin/historialCursos}">
-                                            Historial de cursos
+                                            th:href="@{/misCursosInscritos}">
+                                            <i class="bi bi-clock-history me-2"></i>Ver historial de compras
                                         </a>
                                     </li>
                                     <li>
                                         <form th:action="@{/logout}"
                                             method="post">
                                             <button type="submit"
-                                                class="dropdown-item text-danger">Cerrar
+                                                class="dropdown-item text-danger"><i
+                                                    class="bi bi-box-arrow-right me-2"></i>Cerrar
                                                 sesión</button>
                                         </form>
                                     </li>

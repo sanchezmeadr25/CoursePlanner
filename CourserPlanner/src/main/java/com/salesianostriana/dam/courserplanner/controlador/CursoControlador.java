@@ -7,13 +7,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.salesianostriana.dam.courserplanner.modelo.Curso;
 import com.salesianostriana.dam.courserplanner.modelo.Instructor;
@@ -48,9 +47,17 @@ public class CursoControlador {
 		this.usuarioRepositorio = usuarioRepositorio;
 	}
 
+	private void cargarUsuario(Model model, Principal principal) {
+		if (principal != null) {
+			usuarioRepositorio.findByUsername(principal.getName())
+					.ifPresent(usuario -> model.addAttribute("usuario", usuario));
+		}
+	}
+
 	
 	@GetMapping("/crearCurso")
-	public String mostrarFormulario(Model model) {
+	public String mostrarFormulario(Model model, Principal principal) {
+		cargarUsuario(model, principal);
 	    model.addAttribute("curso", new Curso());
 	    model.addAttribute("listaInstructores", instructorRepositorio.findAll());
 	    return "formularioCurso"; 
@@ -67,9 +74,52 @@ public class CursoControlador {
 	    cursoRepositorio.save(curso);
 	    return "redirect:/admin/misCursos";
 	}
+
+	@GetMapping("/admin/editarCurso/{id}")
+	public String mostrarFormularioEdicion(@PathVariable("id") Long id, Model model, Principal principal) {
+		cargarUsuario(model, principal);
+		Optional<Curso> curso = cursoServicio.buscarPorId(id);
+
+		if (curso.isPresent()) {
+			Curso cursoAEditar = curso.get();
+
+			if (cursoAEditar.getDuracionHoras() != null) {
+				cursoAEditar.setHorasForm((int) cursoAEditar.getDuracionHoras().toHours());
+				cursoAEditar.setMinutosForm(cursoAEditar.getDuracionHoras().toMinutesPart());
+			}
+
+			model.addAttribute("curso", cursoAEditar);
+			model.addAttribute("listaInstructores", instructorRepositorio.findAll());
+			return "formularioCurso";
+		}
+
+		return "redirect:/admin/misCursos";
+	}
+
+	@PostMapping("/admin/editarCurso/submit")
+	public String procesarFormularioEdicion(@ModelAttribute Curso cursoEditado) {
+		Optional<Curso> cursoOriginal = cursoServicio.buscarPorId(cursoEditado.getId());
+
+		if (cursoOriginal.isPresent()) {
+			Curso curso = cursoOriginal.get();
+			curso.setTitulo(cursoEditado.getTitulo());
+			curso.setCategoria(cursoEditado.getCategoria());
+			curso.setPrecio(cursoEditado.getPrecio());
+			curso.setPlazasMaximas(cursoEditado.getPlazasMaximas());
+			curso.setFotoCurso(cursoEditado.getFotoCurso());
+			curso.setDescripcion(cursoEditado.getDescripcion());
+			curso.setHorasForm(cursoEditado.getHorasForm());
+			curso.setMinutosForm(cursoEditado.getMinutosForm());
+
+			cursoServicio.editar(curso);
+		}
+
+		return "redirect:/admin/misCursos";
+	}
 	
 	@GetMapping("admin/misCursos")
 	public String listarMisCursos(Model model, Principal principal) {
+		cargarUsuario(model, principal);
 	    
 	    model.addAttribute("listaCurso", usuarioRepositorio.findByUsername(principal.getName())
 	            .map(instructor -> cursoServicio.buscarCursoPorInstructor(instructor.getDni()))
@@ -79,7 +129,8 @@ public class CursoControlador {
 	}
 	
 	@GetMapping("/catalogo")
-	public String listarTodosLosCursos(Model model) {
+	public String listarTodosLosCursos(Model model, Principal principal) {
+		cargarUsuario(model, principal);
 		model.addAttribute("cursos", cursoServicio.buscarTodos());
 		return "listaCursosEstudiante";
 
@@ -99,6 +150,7 @@ public class CursoControlador {
 	        misCursos.removeIf(Objects::isNull);
 	    }
 	    
+	    model.addAttribute("usuario", usuario);
 	    model.addAttribute("misCursos", (misCursos != null) ? misCursos : new ArrayList<Curso>());
 	    
 	    return "misCursosInscritos"; 

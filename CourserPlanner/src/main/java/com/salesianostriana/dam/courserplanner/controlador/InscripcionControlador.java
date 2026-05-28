@@ -34,7 +34,7 @@ public class InscripcionControlador {
 		this.estudianteRepositorio = estudianteRepositorio;
 	}
 	@GetMapping("/nueva")
-	public String mostrarFormulario(@RequestParam(required = false) Long cursoId, Model model) {
+	public String mostrarFormulario(@RequestParam(required = false) Long cursoId, Model model, Principal principal) {
 	    Inscripcion inscripcion = new Inscripcion();
 	    InscripcionPK pk = new InscripcionPK();
 	    
@@ -43,6 +43,8 @@ public class InscripcionControlador {
 	    }
 	    
 	    inscripcion.setInscripcionPK(pk); 
+	    estudianteRepositorio.findByUsername(principal.getName())
+	            .ifPresent(usuario -> model.addAttribute("usuario", usuario));
 	    model.addAttribute("inscripcion", inscripcion); 
 	    return "formularioInscripcion";
 	}
