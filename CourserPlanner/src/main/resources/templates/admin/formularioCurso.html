@@ -11,7 +11,7 @@
 
 <body class="d-flex flex-column min-vh-100 bg-light">
     
-    <div th:replace="~{fragments/cabecera :: cabecera}"></div>
+    <div th:replace="~{fragments/cabeceraAdmin :: cabeceraAdmin}"></div>
 
     <main class="flex-grow-1 py-5">
         <div class="container">
@@ -19,58 +19,62 @@
                 <div class="col-lg-10">
                     <div class="card shadow-sm border-0 p-4">
                         <div class="card-body">
-                            <h2 class="mb-2">Crear Nuevo Curso</h2>
-                            <p class="text-muted mb-4">Introduce los datos para publicar un nuevo curso en la plataforma.</p>
+                            <h2 class="mb-2" th:text="${curso.id == null} ? 'Crear Nuevo Curso' : 'Editar Curso'">Formulario</h2>
+                            <p class="text-muted mb-4">Introduce los datos para gestionar el curso en la plataforma.</p>
 
-                            <form method="post" th:action="@{/crearCurso/submit}" th:object="${curso}">
+                            <form method="post" 
+                                  th:action="${curso.id == null} ? @{/crearCurso/submit} : @{/admin/editarCurso/submit}" 
+                                  th:object="${curso}">
+                                
+                                <input type="hidden" th:if="${curso.id != null}" th:field="*{id}" />
                                 
                                 <div class="row">
                                     <div class="col-md-8 mb-3">
                                         <label class="form-label text-secondary fw-bold">Título del Curso:</label>
-                                        <input type="text" th:field="*{titulo}" class="form-control" placeholder="Ej: Introducción a Spring Boot" required>
+                                        <input type="text" th:field="*{titulo}" class="form-control" required>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <label class="form-label text-secondary fw-bold">Categoría:</label>
-                                        <input type="text" th:field="*{categoria}" class="form-control" placeholder="Ej: Programación" required>
+                                        <input type="text" th:field="*{categoria}" class="form-control" required>
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label text-secondary fw-bold">Horas:</label>
-                                        <input type="number" th:field="*{horasForm}" class="form-control" min="0" placeholder="Ej: 2">
+                                        <input type="number" th:field="*{horasForm}" class="form-control" min="0">
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label text-secondary fw-bold">Minutos:</label>
-                                        <input type="number" th:field="*{minutosForm}" class="form-control" min="0" max="59" placeholder="Ej: 45">
+                                        <input type="number" th:field="*{minutosForm}" class="form-control" min="0" max="59">
                                     </div>
                                 </div>
 
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label text-secondary fw-bold">Precio (€):</label>
-                                        <input type="number" step="0.01" th:field="*{precio}" class="form-control" placeholder="0.00">
+                                        <input type="number" step="0.01" th:field="*{precio}" class="form-control">
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label text-secondary fw-bold">Plazas Máximas:</label>
-                                        <input type="number" th:field="*{plazasMaximas}" class="form-control" placeholder="Ej: 20">
+                                        <input type="number" th:field="*{plazasMaximas}" class="form-control">
                                     </div>
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label text-secondary fw-bold">URL de la imagen del curso:</label>
-                                    <input type="text" th:field="*{fotoCurso}" class="form-control" placeholder="http://imagen-curso.jpg">
+                                    <input type="text" th:field="*{fotoCurso}" class="form-control">
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label text-secondary fw-bold">Descripción:</label>
-                                    <textarea th:field="*{descripcion}" class="form-control" rows="4" placeholder="Describe brevemente el contenido del curso..."></textarea>
+                                    <textarea th:field="*{descripcion}" class="form-control" rows="4"></textarea>
                                 </div>
 
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-                                    <a th:href="@{/admin/listaCursos}" class="btn btn-outline-secondary px-4">Cancelar</a>
+                                    <a th:href="@{/admin/misCursos}" class="btn btn-outline-secondary px-4">Cancelar</a>
                                     <button type="submit" class="btn btn-success px-4">
-                                        <i class="bi bi-plus-circle-fill"></i> Publicar Curso
+                                        <i class="bi bi-check-lg"></i> Guardar Cambios
                                     </button>
                                 </div>
                             </form>

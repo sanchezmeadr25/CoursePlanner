@@ -42,6 +42,7 @@ public class CursoControlador {
         this.instructorServicio = instructorServicio;
     }
 
+    //Crtear cursos
     @GetMapping("/crearCurso")
     public String mostrarFormulario(Model model) {
         model.addAttribute("curso", new Curso());
@@ -59,6 +60,7 @@ public class CursoControlador {
         return "redirect:/admin/misCursos";
     }
 
+    //Lista ed cursos que son del profesor
     @GetMapping("admin/misCursos")
     public String listarMisCursos(Model model, @AuthenticationPrincipal Usuario usuario) {
         
@@ -66,12 +68,14 @@ public class CursoControlador {
         return "admin/listaCursos";
     }
 
+    //Catalogo de cursos para el estudiante
     @GetMapping("/catalogo")
     public String listarTodosLosCursos(Model model) {
         model.addAttribute("cursos", cursoServicio.buscarTodos());
         return "listaCursosEstudiante";
     }
 
+    //Lista de cursos inscritos el estuciante
     @GetMapping("/misCursosInscritos")
     public String listarMisCursosInscritos(Model model, @AuthenticationPrincipal Usuario usuario) {
         
@@ -84,5 +88,27 @@ public class CursoControlador {
         model.addAttribute("misCursos", (misCursos != null) ? misCursos : new ArrayList<Curso>());
         
         return "misCursosInscritos";
+    }
+    
+    
+    //Editar CUrso
+    @GetMapping("/admin/editarCurso/{id}")
+    public String mostrarFormularioEditar(@PathVariable("id") Long id, Model model) {
+        Curso curso = cursoRepositorio.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID de curso inválido:" + id));
+        
+        model.addAttribute("curso", curso);
+      
+        model.addAttribute("listaInstructores", instructorRepositorio.findAll());
+        
+        return "formularioCurso";
+    }
+
+   
+    @PostMapping("/admin/editarCurso/submit")
+    public String guardarEdicionCurso(@ModelAttribute Curso curso) {
+
+        cursoRepositorio.save(curso);
+        return "redirect:/admin/misCursos";
     }
 }

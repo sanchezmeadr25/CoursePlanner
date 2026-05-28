@@ -18,7 +18,7 @@ public class ControladorPrincipal {
 
     @GetMapping("/principalAdmin") 
     public String principalAdmin(Model model, @AuthenticationPrincipal Usuario usuario) {
-        // Ya no necesitas buscarlo en el repositorio, 'usuario' ya está aquí
+      
         model.addAttribute("usuario", usuario);
         model.addAttribute("numCursos", cursoRepositorio.countByInstructor_Dni(usuario.getDni()));
         return "principalAdmin"; 
@@ -26,11 +26,10 @@ public class ControladorPrincipal {
 
     @GetMapping("/principalUser") 
     public String principalUser(Model model, @AuthenticationPrincipal Usuario usuario) {
-        // Si el usuario es de tipo Estudiante, ten cuidado con las consultas de instructor
+       
         model.addAttribute("usuario", usuario);
         
-        // OJO: Si este método es para Estudiantes, countByInstructor_Dni puede fallar o devolver 0.
-        // Asegúrate de que la lógica sea coherente con el tipo de usuario.
+       
         model.addAttribute("numCursos", cursoRepositorio.countByInstructor_Dni(usuario.getDni()));
         
         return "principalUser"; 
