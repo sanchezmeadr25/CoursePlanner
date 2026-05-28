@@ -4,22 +4,24 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
+
+import com.salesianostriana.dam.courserplanner.repositorio.UsuarioRepositorio;
 
 @Configuration
 @EnableWebSecurity //esto sirve para activar la seguridad y que se apliquen las que indico
 public class ConfiguracionSeguridad {
 	
 	private final CustomAuthenticationSuccessHandler successHandler;
+	private final UsuarioRepositorio usuarioRepositorio;
 	
-	public ConfiguracionSeguridad(CustomAuthenticationSuccessHandler successHandler) {
+	public ConfiguracionSeguridad(CustomAuthenticationSuccessHandler successHandler, UsuarioRepositorio usuarioRepositorio) {
 		super();
 		this.successHandler = successHandler;
+		this.usuarioRepositorio = usuarioRepositorio;
 	}
 	
 	
@@ -52,19 +54,12 @@ public class ConfiguracionSeguridad {
 		    http.headers(headers -> headers.frameOptions(opts -> opts.disable()));
 
 		    return http.build();
-		}
+	}
+
 	@Bean
 	UserDetailsService userDetailsService() {
-		InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-
-		UserDetails user = User.builder().username("user").password("{noop}user").roles("USER").build();
-
-		UserDetails admin = User.builder().username("admin").password("{noop}admin").roles("ADMIN").build();
-
-		manager.createUser(user);
-		manager.createUser(admin);
-
-		return manager;
+		return username -> usuarioRepositorio.findByUsername(username)
+				.orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
 	}
 		
 	
