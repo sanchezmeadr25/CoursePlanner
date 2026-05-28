@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <title>Mis Cursos Inscritos</title>
-    <style>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <title>Mis Cursos Inscritos</title>
+        <style>
         .card-curso {
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
@@ -25,39 +27,43 @@
             background-color: #f8f9fa;
         }
     </style>
-</head>
+    </head>
 
-<body class="d-flex flex-column min-vh-100 bg-light">
-    <div th:replace="~{fragments/cabecera :: cabecera}"></div>
+    <body class="d-flex flex-column min-vh-100 bg-light">
+        <div th:replace="~{fragments/cabecera :: cabecera}"></div>
 
-    <main class="container py-5">
-        <div th:text="${misCursos}"></div>
-        <h1>Mis Cursos</h1>
+        <main class="flex-grow-1 p-4">
+            <h1>Mis Cursos Inscritos</h1>
 
-        <div th:if="${misCursos == null or #lists.isEmpty(misCursos)}">
-            <p>No tienes cursos inscritos actualmente.</p>
-        </div>
+            <div th:if="${misCursos == null or #lists.isEmpty(misCursos)}">
+                <p>No tienes cursos inscritos actualmente.</p>
+            </div>
 
-        <div th:if="${misCursos != null and not #lists.isEmpty(misCursos)}" class="row">
-            <div class="col-md-4" th:each="c : ${misCursos}">
-                <div class="card">
-                    <img th:src="${c.foto != null and not #strings.startsWith(c.foto, '/') ? c.foto : '/images/default.png'}"
-                        class="card-img-top img-curso" alt="Curso"
-                        onerror="this.onerror=null; this.src='/images/default.png';">
-                    <div class="card-body">
-                        <h5 th:text="${(c != null and c.titulo != null) ? c.titulo : 'Sin título'}">Título</h5>
-                        <p th:text="${(c != null and c.categoria != null) ? c.categoria : 'Sin categoría'}">Categoría
-                        </p>
+            <div th:if="${misCursos != null and not #lists.isEmpty(misCursos)}"
+                class="row">
+                <div class="col-md-2" th:each="c : ${misCursos}">
+                    <div class="card">
 
-                        <a th:if="${c != null and c.id != null}" th:href="@{/detalleCurso/{id}(id=${c.id})}"
-                            class="btn btn-primary">Ver detalles</a>
+                        <div class="card-body">
+                            <img th:src="${c.fotoCurso}"
+                                class="card-img-top img-curso"
+                                alt="Imagen del curso">
+                            <h5
+                                th:text="${(c != null and c.titulo != null) ? c.titulo : 'Sin título'}">Título</h5>
+                            <p
+                                th:text="${(c != null and c.categoria != null) ? c.categoria : 'Sin categoría'}">Categoría
+                            </p>
+
+                            <a th:if="${c != null and c.id != null}"
+                                th:href="@{/detalleCurso/{id}(id=${c.id})}"
+                                class="btn btn-primary">Ver detalles</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
 
-    <div th:replace="~{fragments/pieDePagina :: pieDePagina}"></div>
-</body>
+        <div th:replace="~{fragments/pieDePagina :: pieDePagina}"></div>
+    </body>
 
 </html>
