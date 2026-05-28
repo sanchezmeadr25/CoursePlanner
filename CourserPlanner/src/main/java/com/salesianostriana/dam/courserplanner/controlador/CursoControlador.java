@@ -30,120 +30,84 @@ public class CursoControlador {
     private final InstructorRepositorio instructorRepositorio;
     private final InstructorServicio instructorServicio;
 
-	private void cargarUsuario(Model model, Principal principal) {
-		if (principal != null) {
-			usuarioRepositorio.findByUsername(principal.getName())
-					.ifPresent(usuario -> model.addAttribute("usuario", usuario));
-		}
-	}
+    public CursoControlador(InscripcionServicio inscripcionServicio, CursoRepositorio cursoRepositorio,
+                            CursoServicio cursoServicio, InstructorRepositorio instructorRepositorio,
+                            InstructorServicio instructorServicio) {
+        super();
+        this.inscripcionServicio = inscripcionServicio;
+        this.cursoRepositorio = cursoRepositorio;
+        this.cursoServicio = cursoServicio;
+        this.instructorRepositorio = instructorRepositorio;
+        this.instructorServicio = instructorServicio;
+    }
 
-	
-	@GetMapping("/crearCurso")
-	public String mostrarFormulario(Model model, Principal principal) {
-		cargarUsuario(model, principal);
-	    model.addAttribute("curso", new Curso());
-	    model.addAttribute("listaInstructores", instructorRepositorio.findAll());
-	    return "formularioCurso"; 
-	}
+    //Crtear cursos
+    @GetMapping("/crearCurso")
+    public String mostrarFormulario(Model model) {
+        model.addAttribute("curso", new Curso());
+        model.addAttribute("listaInstructores", instructorRepositorio.findAll());
+        return "formularioCurso";
+    }
 
-	@PostMapping("/crearCurso/submit")
-	public String guardarCurso(@ModelAttribute Curso curso) {
-	    
-	    List<Instructor> lista = instructorRepositorio.findAll();
-	    if (!lista.isEmpty()) {
-	        curso.setInstructor(lista.get(0)); 
-	    }
-	    
-	    cursoRepositorio.save(curso);
-	    return "redirect:/admin/misCursos";
-	}
+    @PostMapping("/crearCurso/submit")
+    public String guardarCurso(@ModelAttribute Curso curso) {
+        List<Instructor> lista = instructorRepositorio.findAll();
+        if (!lista.isEmpty()) {
+            curso.setInstructor(lista.get(0));
+        }
+        cursoRepositorio.save(curso);
+        return "redirect:/admin/misCursos";
+    }
 
-	@GetMapping("/admin/editarCurso/{id}")
-	public String mostrarFormularioEdicion(@PathVariable("id") Long id, Model model, Principal principal) {
-		cargarUsuario(model, principal);
-		Optional<Curso> curso = cursoServicio.buscarPorId(id);
+    //Lista ed cursos que son del profesor
+    @GetMapping("admin/misCursos")
+    public String listarMisCursos(Model model, @AuthenticationPrincipal Usuario usuario) {
+        
+        model.addAttribute("listaCurso", cursoServicio.buscarCursoPorInstructor(usuario.getDni()));
+        return "admin/listaCursos";
+    }
 
-		if (curso.isPresent()) {
-			Curso cursoAEditar = curso.get();
+    //Catalogo de cursos para el estudiante
+    @GetMapping("/catalogo")
+    public String listarTodosLosCursos(Model model) {
+        model.addAttribute("cursos", cursoServicio.buscarTodos());
+        return "listaCursosEstudiante";
+    }
 
-			if (cursoAEditar.getDuracionHoras() != null) {
-				cursoAEditar.setHorasForm((int) cursoAEditar.getDuracionHoras().toHours());
-				cursoAEditar.setMinutosForm(cursoAEditar.getDuracionHoras().toMinutesPart());
-			}
+    //Lista de cursos inscritos el estuciante
+    @GetMapping("/misCursosInscritos")
+    public String listarMisCursosInscritos(Model model, @AuthenticationPrincipal Usuario usuario) {
+        
+        List<Curso> misCursos = inscripcionServicio.buscarCursosPorEstudiante(usuario.getDni());
+        
+        if (misCursos != null) {
+            misCursos.removeIf(Objects::isNull);
+        }
+        
+        model.addAttribute("misCursos", (misCursos != null) ? misCursos : new ArrayList<Curso>());
+        
+        return "misCursosInscritos";
+    }
+    
+    
+    //Editar CUrso
+    @GetMapping("/admin/editarCurso/{id}")
+    public String mostrarFormularioEditar(@PathVariable("id") Long id, Model model) {
+        Curso curso = cursoRepositorio.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("ID de curso inválido:" + id));
+        
+        model.addAttribute("curso", curso);
+      
+        model.addAttribute("listaInstructores", instructorRepositorio.findAll());
+        
+        return "formularioCurso";
+    }
 
-			model.addAttribute("curso", cursoAEditar);
-			model.addAttribute("listaInstructores", instructorRepositorio.findAll());
-			return "formularioCurso";
-		}
+   
+    @PostMapping("/admin/editarCurso/submit")
+    public String guardarEdicionCurso(@ModelAttribute Curso curso) {
 
-		return "redirect:/admin/misCursos";
-	}
-
-	@PostMapping("/admin/editarCurso/submit")
-	public String procesarFormularioEdicion(@ModelAttribute Curso cursoEditado) {
-		Optional<Curso> cursoOriginal = cursoServicio.buscarPorId(cursoEditado.getId());
-
-		if (cursoOriginal.isPresent()) {
-			Curso curso = cursoOriginal.get();
-			curso.setTitulo(cursoEditado.getTitulo());
-			curso.setCategoria(cursoEditado.getCategoria());
-			curso.setPrecio(cursoEditado.getPrecio());
-			curso.setPlazasMaximas(cursoEditado.getPlazasMaximas());
-			curso.setFotoCurso(cursoEditado.getFotoCurso());
-			curso.setDescripcion(cursoEditado.getDescripcion());
-			curso.setHorasForm(cursoEditado.getHorasForm());
-			curso.setMinutosForm(cursoEditado.getMinutosForm());
-
-			cursoServicio.editar(curso);
-		}
-
-		return "redirect:/admin/misCursos";
-	}
-	
-	@GetMapping("admin/misCursos")
-	public String listarMisCursos(Model model, Principal principal) {
-		cargarUsuario(model, principal);
-	    
-	    model.addAttribute("listaCurso", usuarioRepositorio.findByUsername(principal.getName())
-	            .map(instructor -> cursoServicio.buscarCursoPorInstructor(instructor.getDni()))
-	            .orElse(Collections.emptyList()));
-	            
-	    return "admin/listaCursos";
-	}
-	
-	@GetMapping("/catalogo")
-	public String listarTodosLosCursos(Model model, Principal principal) {
-		cargarUsuario(model, principal);
-		model.addAttribute("cursos", cursoServicio.buscarTodos());
-		return "listaCursosEstudiante";
-
-	}
-	
-	
-	@GetMapping("/misCursosInscritos")
-	public String listarMisCursosInscritos(Model model, Principal principal) {
-	    String username = principal.getName();
-	    Usuario usuario = usuarioRepositorio.findByUsername(username)
-	            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-	    
-	    List<Curso> misCursos = inscripcionServicio.buscarCursosPorEstudiante(usuario.getDni());
-	    
-	  
-	    if (misCursos != null) {
-	        misCursos.removeIf(Objects::isNull);
-	    }
-	    
-	    model.addAttribute("usuario", usuario);
-	    model.addAttribute("misCursos", (misCursos != null) ? misCursos : new ArrayList<Curso>());
-	    
-	    return "misCursosInscritos"; 
-	}
-	
-	
-	
-	
-	
-	
-	
-	
+        cursoRepositorio.save(curso);
+        return "redirect:/admin/misCursos";
+    }
 }
