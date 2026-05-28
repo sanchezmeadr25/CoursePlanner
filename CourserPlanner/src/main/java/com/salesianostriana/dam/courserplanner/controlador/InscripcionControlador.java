@@ -21,42 +21,49 @@ import com.salesianostriana.dam.courserplanner.servicio.InscripcionServicio;
 @RequestMapping("/inscripcion")
 public class InscripcionControlador {
 
-    private final InscripcionServicio inscripcionServicio;
+	private final InscripcionServicio inscripcionServicio;
+	private final EstudianteRepositorio estudianteRepositorio; 
 
-    
-    public InscripcionControlador(InscripcionServicio inscripcionServicio) {
-        this.inscripcionServicio = inscripcionServicio;
-    }
-
-    @GetMapping("/nueva")
-    public String mostrarFormulario(@RequestParam(required = false) Long cursoId, Model model) {
-        Inscripcion inscripcion = new Inscripcion();
-        InscripcionPK pk = new InscripcionPK();
-        
-        if (cursoId != null) {
-            pk.setCursoId(cursoId);
-        }
-        
-        inscripcion.setInscripcionPK(pk); 
-        model.addAttribute("inscripcion", inscripcion); 
-        return "formularioInscripcion";
-    }
-    
-    @PostMapping("/nuevainscripcion/submit") 
-    public String procesarInscripcion(@ModelAttribute("inscripcion") Inscripcion inscripcion, 
-                                      @AuthenticationPrincipal Estudiante estudiante) {
-      
-        if (estudiante == null) {
-            throw new RuntimeException("Solo los estudiantes pueden realizar inscripciones");
-        }
-
-      
-        inscripcion.getInscripcionPK().setEstudianteDni(estudiante.getDni());
-        inscripcion.setEstado(EstadoInscripcion.PENDIENTE);
-        inscripcion.setFechaInscripcion(LocalDateTime.now());
-        
-        inscripcionServicio.registrarInscripcion(inscripcion);
-        
-        return "redirect:/principalUser";
-    }
+	
+	public InscripcionControlador(InscripcionServicio inscripcionServicio, EstudianteRepositorio estudianteRepositorio) {
+		this.inscripcionServicio = inscripcionServicio;
+		this.estudianteRepositorio = estudianteRepositorio;
+	}
+	@GetMapping("/nueva")
+	public String mostrarFormulario(@RequestParam(required = false) Long cursoId, Model model, Principal principal) {
+	    Inscripcion inscripcion = new Inscripcion();
+	    InscripcionPK pk = new InscripcionPK();
+	    
+	    if (cursoId != null) {
+	        pk.setCursoId(cursoId);
+	    }
+	    
+	    inscripcion.setInscripcionPK(pk); 
+	    estudianteRepositorio.findByUsername(principal.getName())
+	            .ifPresent(usuario -> model.addAttribute("usuario", usuario));
+	    model.addAttribute("inscripcion", inscripcion); 
+	    return "formularioInscripcion";
+	}
+	
+	
+	@PostMapping("/nuevainscripcion/submit") 
+	public String procesarInscripcion(@ModelAttribute("inscripcion") Inscripcion inscripcion, 
+	                                  Principal principal) {
+	
+	    String username = principal.getName();
+	  
+	    Estudiante estudiante = estudianteRepositorio.findByUsername(username)
+	            .orElseThrow(() -> new RuntimeException("Estudiante no encontrado para el usuario: " + username));
+	    
+	
+	    inscripcion.getInscripcionPK().setEstudianteDni(estudiante.getDni());
+	   
+	    inscripcion.setEstado(EstadoInscripcion.PENDIENTE);
+	    
+	    inscripcion.setFechaInscripcion(LocalDateTime.now());
+	    
+	    inscripcionServicio.registrarInscripcion(inscripcion);
+	    
+	    return "redirect:/principalUser";
+	}
 }
