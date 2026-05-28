@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 @Entity
 @Table(name = "inscripcion")
+@ToString(exclude = {"estudiante", "curso"})
 public class Inscripcion {
 
     @EmbeddedId
@@ -27,10 +28,12 @@ public class Inscripcion {
 
     private double valoracion;
 
+   
     @ManyToOne
     @MapsId("estudianteDni") // Coincide con el campo en InscripcionPK
     @JoinColumn(name = "estudiante_dni")
     private Estudiante estudiante;
+
 
     @ManyToOne
     @MapsId("cursoId")       // Coincide con el campo en InscripcionPK
