@@ -35,6 +35,7 @@ public class InstructorControlador {
         instructorServicio.guardar(instructor);
         return "redirect:/";
     }
+    
 
     @GetMapping("/dashboard/instructor")
     public String mostrarDashboard(Model model, @AuthenticationPrincipal Usuario usuario) {

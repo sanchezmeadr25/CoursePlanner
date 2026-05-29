@@ -34,4 +34,10 @@ public class ControladorPrincipal {
         
         return "principalUser"; 
     }
+    
+    @GetMapping("/eleccionCuenta")
+    public String elegirCuenta() {
+        
+        return "eleccionCuenta"; 
+    }
 }

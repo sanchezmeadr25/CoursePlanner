@@ -55,14 +55,15 @@
                                     class="d-flex align-items-center link-dark text-decoration-none"
                                     id="dropdownUser1" data-bs-toggle="dropdown"
                                     aria-expanded="false">
-                                    <img th:src="${usuario != null and usuario.foto != null and !#strings.isEmpty(usuario.foto)} ? ${usuario.foto} : 'https://ssl.gstatic.com/accounts/ui/avatar_2x.png'" alt="Foto de perfil"
+                                    <img
+                                        th:src="${usuario != null and usuario.foto != null and !#strings.isEmpty(usuario.foto)} ? ${usuario.foto} : 'https://ssl.gstatic.com/accounts/ui/avatar_2x.png'"
+                                        alt="Foto de perfil"
                                         width="40" height="40"
-                                        class="rounded-circle border border-2 border-primary object-fit-cover"
-                                        onerror="this.onerror=null;this.src='https://ssl.gstatic.com/accounts/ui/avatar_2x.png';">
+                                        class="rounded-circle border border-2 border-primary object-fit-cover">
                                 </a>
 
                                 <ul
-                                    class="dropdown-menu dropdown-menu-end shadow border-0 mt-2"
+                                    class="dropdown-menu shadow border-0 mt-2"
                                     aria-labelledby="dropdownUser1">
                                     <li>
                                         <h6 class="dropdown-header"
