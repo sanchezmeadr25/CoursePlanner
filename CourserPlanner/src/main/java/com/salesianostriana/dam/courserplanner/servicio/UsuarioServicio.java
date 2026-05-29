@@ -13,7 +13,7 @@ public class UsuarioServicio extends ServicosBasesImplementados<Usuario,String,U
 	private UsuarioRepositorio usuarioRepositorio;
 
 	public UsuarioServicio(UsuarioRepositorio usuarioRepositorio) {
-		super();
+		super(usuarioRepositorio);
 		this.usuarioRepositorio = usuarioRepositorio;
 	}
 

@@ -1,121 +1,186 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <title>Formulario de Estudiante</title>
+    </head>
 
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <body class="d-flex flex-column min-vh-100 bg-light">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <main class="flex-grow-1 py-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="card shadow-sm border-0 p-4">
+                            <div class="card-body">
+                                <h2 class="mb-2">Registro de Estudiante</h2>
+                                <p class="text-muted mb-4">Introduce los datos
+                                    para dar de alta al nuevo alumno.</p>
 
-    <title>Formulario de Estudiante</title>
-</head>
+                                <form method="post"
+                                    th:action="@{/anadirestudiante/submit}"
+                                    th:object="${estudianteFormulario}">
 
-<body class="d-flex flex-column min-vh-100">
-    <div th:replace="~{fragments/cabecera :: cabecera}"></div>
-
-    <main class="flex-grow-1 mt-4">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-8 form-container">
-                    <div class="card shadow-lg border-0 bg-dark" data-bs-theme="dark">
-                        <div class="card-body p-4">
-                            <h2 class="text-center mb-4 text-primary">Registro de Estudiante</h2>
-                            <p class="text-muted text-center">Introduce los datos para dar de alta al nuevo alumno.</p>
-
-                            <form method="post" th:action="@{/anadirEstudiante/submit}"
-                                th:object="${estudianteFormulario}">
-
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label font-weight-bold">DNI:</label>
-                                        <input type="text" th:field="*{dni}" class="form-control"
-                                            placeholder="12345678X" required>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label
+                                                class="form-label text-secondary fw-bold">DNI:</label>
+                                            <input type="text" th:field="*{dni}"
+                                                class="form-control"
+                                                placeholder="12345678X"
+                                                required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label
+                                                class="form-label text-secondary fw-bold">Foto
+                                                Perfil:</label>
+                                            <input type="text"
+                                                th:field="*{foto}"
+                                                class="form-control"
+                                                placeholder="http://imagen.jpg">
+                                        </div>
                                     </div>
 
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Foto Perfil:</label>
-                                        <input type="text" th:field="*{fotoPerfil}" class="form-control"
-                                            placeholder="http://imagen.jpg">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label
+                                                class="form-label text-secondary fw-bold">Nombre:</label>
+                                            <input type="text"
+                                                th:field="*{username}"
+                                                class="form-control"
+                                                placeholder="Ej: Juan" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label
+                                                class="form-label text-secondary fw-bold">Apellidos:</label>
+                                            <input type="text"
+                                                th:field="*{apellidos}"
+                                                class="form-control"
+                                                placeholder="Ej: Pérez García"
+                                                required>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Nombre:</label>
-                                        <input type="text" th:field="*{nombre}" class="form-control"
-                                            placeholder="Ej:Juan" required>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label
+                                                class="form-label text-secondary fw-bold">Correo
+                                                Electrónico:</label>
+                                            <div class="input-group">
+                                                <span
+                                                    class="input-group-text"><i
+                                                        class="bi bi-envelope"></i></span>
+                                                <input type="email"
+                                                    th:field="*{email}"
+                                                    class="form-control"
+                                                    placeholder="ejemplo@correo.com"
+                                                    required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label
+                                                class="form-label text-secondary fw-bold">Contraseña:</label>
+                                            <input type="password"
+                                                th:field="*{password}"
+                                                class="form-control"
+                                                placeholder="••••••••" required>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Apellidos:</label>
-                                        <input type="text" th:field="*{apellidos}" class="form-control"
-                                            placeholder="Ej:Pérez García" required>
-                                    </div>
-                                </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label">Correo Electrónico:</label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">@</span>
-                                        <input type="email" th:field="*{email}" class="form-control"
-                                            placeholder="Ej:ejemplo@correo.com" required>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label
+                                                class="form-label text-secondary fw-bold">Teléfono:</label>
+                                            <input type="tel"
+                                                th:field="*{telefono}"
+                                                class="form-control"
+                                                placeholder="Ej: 600123456"
+                                                required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label
+                                                class="form-label text-secondary fw-bold">Fecha
+                                                Nacimiento:</label>
+                                            <input type="date"
+                                                th:field="*{fechaNacimiento}"
+                                                class="form-control" required>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Teléfono:</label>
-                                        <input type="tel" th:field="*{telefono}" class="form-control"
-                                            placeholder="Ej:600123456" required>
+                                    <div class="row">
+                                        <div class="col-md-4 mb-3">
+                                            <label
+                                                class="form-label text-secondary fw-bold">Nivel
+                                                de Experiencia:</label>
+                                            <select
+                                                th:field="*{nivelExperiencia}"
+                                                class="form-select" required>
+                                                <option
+                                                    value="Principiante">Principiante</option>
+                                                <option
+                                                    value="Intermedio">Intermedio</option>
+                                                <option
+                                                    value="Avanzado">Avanzado</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label
+                                                class="form-label text-secondary fw-bold">Tipo
+                                                de Rol:</label>
+                                            <select th:field="*{rol}"
+                                                class="form-select" required>
+                                                <option
+                                                    value="USER">Estudiante</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 mb-3">
+                                            <label
+                                                class="form-label text-secondary fw-bold">País:</label>
+                                            <input type="text"
+                                                th:field="*{pais}"
+                                                class="form-control"
+                                                placeholder="Ej: España">
+                                        </div>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Fecha Nacimiento:</label>
-                                        <input type="date" th:field="*{fechaNacimiento}" class="form-control" required>
-                                    </div>
-                                </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label">Nivel de Experiencia:</label>
-                                    <select th:field="*{nivelExperiencia}" class="form-select" required>
-                                        <option value="" disabled selected>Selecciona un nivel...</option>
-                                        <option value="Principiante">Principiante</option>
-                                        <option value="Intermedio">Intermedio</option>
-                                        <option value="Avanzado">Avanzado</option>
-                                    </select>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">País:</label>
-                                        <input type="text" th:field="*{pais}" class="form-control"
-                                            placeholder="Ej:España">
+                                    <div class="row mb-3">
+                                        <div class="col-md-12">
+                                            <label
+                                                class="form-label text-secondary fw-bold">Localidad:</label>
+                                            <input type="text"
+                                                th:field="*{localidad}"
+                                                class="form-control"
+                                                placeholder="Ej: Madrid">
+                                        </div>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Localidad:</label>
-                                        <input type="text" th:field="*{localidad}" class="form-control"
-                                            placeholder="Ej:Madrid">
-                                    </div>
-                                </div>
 
-                                <div class="d-grid gap-2 mt-4">
-                                    <button type="submit" name="enviar" value="Enviar" class="btn btn-primary btn-lg">
-                                        <i class="bi bi-person-plus-fill"></i>
-                                        Registrar Estudiante
-                                    </button>
-                                    <a href="/" class="btn btn-outline-secondary">Cancelar</a>
-                                </div>
-                            </form>
+                                    <div
+                                        class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                                        <a th:href="@{/admin/listaEstudiantes}"
+                                            class="btn btn-outline-secondary px-4">Cancelar</a>
+                                        <button type="submit"
+                                            class="btn btn-success px-4">
+                                            <i
+                                                class="bi bi-person-plus-fill"></i>
+                                            Registrar Estudiante
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
 
-    <div th:replace="~{fragments/pieDePagina :: piedepagina}"></div>
+        <div th:replace="~{fragments/pieDePagina :: pieDePagina}"></div>
 
-</body>
-
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
 </html>

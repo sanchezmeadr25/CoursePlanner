@@ -1,8 +1,43 @@
 package com.salesianostriana.dam.courserplanner.servicio;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
+import com.salesianostriana.dam.courserplanner.modelo.Curso;
+import com.salesianostriana.dam.courserplanner.repositorio.CursoRepositorio;
+import com.salesianostriana.dam.courserplanner.repositorio.EstudianteRepositorio;
+import com.salesianostriana.dam.courserplanner.serviciobase.ServicosBasesImplementados;
+
 @Service
-public class CursoServicio {
+public class CursoServicio  extends ServicosBasesImplementados<Curso, Long, CursoRepositorio>  {
+
+	private final CursoRepositorio cursoRepositorio;
+
+	public CursoServicio(CursoRepositorio cursoRepositorio) {
+		super(cursoRepositorio);
+		this.cursoRepositorio = cursoRepositorio;
+	}
+
+	public Curso guardar(Curso curso) {
+        
+        curso.calcularDuracion(); 
+        return cursoRepositorio.save(curso);
+    }
+	
+	public List<Curso> buscarTodos() {
+		return cursoRepositorio.findAll();
+	}
+	
+	public List<Curso> buscarCursoPorInstructor(String dni) {
+	    return cursoRepositorio.findByInstructor_Dni(dni);
+	}
+
+	public Optional<Curso> findById(Long id) {
+		return cursoRepositorio.findById(id);
+	}
+
+	
 
 }

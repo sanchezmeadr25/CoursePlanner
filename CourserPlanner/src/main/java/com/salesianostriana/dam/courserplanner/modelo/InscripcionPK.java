@@ -15,8 +15,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class InscripcionPK implements Serializable {
 
-	private static final long serialVersionUID =1L;
-	
-	private String estudiante_dni;
-	private Long curso_id;
+    private static final long serialVersionUID = 1L;
+    
+    private String estudianteDni;
+    private Long cursoId;
 }

@@ -11,7 +11,10 @@ public abstract class ServicosBasesImplementados <T, ID, R extends JpaRepository
 	@Autowired
 	protected R repositorio;
 
-
+	public ServicosBasesImplementados(R repositorio) {
+        this.repositorio = repositorio;
+    }
+	
 	@Override
 	public List<T> buscarTodos() {
 		return repositorio.findAll();
