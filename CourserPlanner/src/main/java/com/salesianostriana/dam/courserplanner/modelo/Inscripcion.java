@@ -26,17 +26,18 @@ public class Inscripcion {
     @Column(nullable = false)
     private EstadoInscripcion estado;
 
+    @Column(name = "valoracion")
     private double valoracion;
 
    
     @ManyToOne
-    @MapsId("estudianteDni") // Coincide con el campo en InscripcionPK
+    @MapsId("estudianteDni") 
     @JoinColumn(name = "estudiante_dni")
     private Estudiante estudiante;
 
 
     @ManyToOne
-    @MapsId("cursoId")       // Coincide con el campo en InscripcionPK
+    @MapsId("cursoId")      
     @JoinColumn(name = "curso_id")
     private Curso curso;
 
