@@ -1,6 +1,7 @@
 package com.salesianostriana.dam.courserplanner.controlador;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -11,26 +12,33 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.salesianostriana.dam.courserplanner.modelo.Curso;
 import com.salesianostriana.dam.courserplanner.modelo.EstadoInscripcion;
 import com.salesianostriana.dam.courserplanner.modelo.Estudiante;
 import com.salesianostriana.dam.courserplanner.modelo.Inscripcion;
 import com.salesianostriana.dam.courserplanner.modelo.InscripcionPK;
 import com.salesianostriana.dam.courserplanner.repositorio.EstudianteRepositorio;
+import com.salesianostriana.dam.courserplanner.servicio.CursoServicio;
 import com.salesianostriana.dam.courserplanner.servicio.InscripcionServicio;
 
 @Controller
 @RequestMapping("/inscripcion")
 public class InscripcionControlador {
 
-    private final InscripcionServicio inscripcionServicio;
-    private final EstudianteRepositorio estudianteRepositorio; 
+	private final InscripcionServicio inscripcionServicio;
+    private final EstudianteRepositorio estudianteRepositorio;
+    private final CursoServicio cursoServicio; 
 
-    public InscripcionControlador(InscripcionServicio inscripcionServicio, EstudianteRepositorio estudianteRepositorio) {
-        this.inscripcionServicio = inscripcionServicio;
-        this.estudianteRepositorio = estudianteRepositorio;
-    }
-    
-    @GetMapping("/nueva")
+  
+    public InscripcionControlador(InscripcionServicio inscripcionServicio, EstudianteRepositorio estudianteRepositorio,
+			CursoServicio cursoServicio) {
+		super();
+		this.inscripcionServicio = inscripcionServicio;
+		this.estudianteRepositorio = estudianteRepositorio;
+		this.cursoServicio = cursoServicio;
+	}
+
+	@GetMapping("/nueva")
     public String mostrarFormulario(@RequestParam(required = false) Long cursoId, 
                                     Model model, 
                                     @AuthenticationPrincipal Estudiante estudianteLogueado) {
@@ -40,11 +48,13 @@ public class InscripcionControlador {
         
         if (cursoId != null) {
             pk.setCursoId(cursoId);
+          
+            Curso curso = cursoServicio.findById(cursoId).orElse(null);
+            model.addAttribute("curso", curso);
         }
         
         inscripcion.setInscripcionPK(pk); 
         
-        // Gracias a @AuthenticationPrincipal, ya tenemos al estudianteLogueado
         model.addAttribute("usuario", estudianteLogueado);
         model.addAttribute("inscripcion", inscripcion); 
         
@@ -55,7 +65,7 @@ public class InscripcionControlador {
     public String procesarInscripcion(@ModelAttribute("inscripcion") Inscripcion inscripcion, 
                                       @AuthenticationPrincipal Estudiante estudianteLogueado) {
     
-        // Ya no necesitas buscar al estudiante en el repositorio, ya lo tienes inyectado
+      
         inscripcion.getInscripcionPK().setEstudianteDni(estudianteLogueado.getDni());
        
         inscripcion.setEstado(EstadoInscripcion.PENDIENTE);

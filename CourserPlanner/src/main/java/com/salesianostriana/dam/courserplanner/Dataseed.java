@@ -166,54 +166,56 @@ public class Dataseed {
 			usuarioRepositorio.save(user4);
 
 			Curso cursoPrueba = Curso.builder()
-				    .titulo("Curso de Prueba")
-				    .categoria("Programación")
-				    .descripcion("Descripción de prueba para verificar que el listado funciona.")
-				    .fotoCurso("https://via.placeholder.com/150")
-				    .precio(99.99)
-				    .plazasMaximas(20)
-				    .duracionHoras(Duration.ofHours(2).plusMinutes(30)) 
-				    .instructor(admin) 
-				    .build();
-				cursoRepositorio.save(cursoPrueba);
-				
-				Curso cursoDiseno = Curso.builder()
-						.titulo("Introducción a Figma y UI/UX")
-						.categoria("Diseño UI/UX")
-						.descripcion("Aprende a diseñar interfaces web y móviles desde cero de forma práctica.")
-						.fotoCurso("https://cdn-imgix.headout.com/media/images/c9db3cea62133b6a6bb70597326b4a34-388-dubai-img-worlds-of-adventure-tickets-01.jpg?auto=compress%2Cformat&w=1222.3999999999999&h=687.6&q=90&ar=16%3A9&crop=faces&fit=crop")
-						.precio(49.99)
-						.plazasMaximas(15)
-						.duracionHoras(Duration.ofHours(15))
-						.instructor(admin) 
-						.build();
-				cursoRepositorio.save(cursoDiseno);
+	                .titulo("Curso de Prueba")
+	                .categoria("Programación")
+	                .descripcion("Descripción de prueba...")
+	                .fotoCurso("https://cdn-imgix.headout.com/media/images/c9db3cea62133b6a6bb70597326b4a34-388-dubai-img-worlds-of-adventure-tickets-01.jpg?auto=compress%2Cformat&w=1222.3999999999999&h=687.6&q=90&ar=16%3A9&crop=faces&fit=crop")
+	                .precio(99.99)
+	                .descuento(0.0)
+	                .plazasMaximas(20)
+	                .duracionHoras(Duration.ofHours(2).plusMinutes(30)) 
+	                .instructor(admin) 
+	                .build();
+	        cursoRepositorio.save(cursoPrueba);
 
-				Curso cursoHacking = Curso.builder()
-						.titulo("Hacking Ético y Seguridad Web")
-						.categoria("Ciberseguridad")
-						.descripcion("Descubre las principales vulnerabilidades OWASP y cómo proteger tus aplicaciones.")
-						.fotoCurso("https://via.placeholder.com/150")
-						.precio(149.99)
-						.plazasMaximas(10)
-						.duracionHoras(Duration.ofHours(40))
-						.instructor(admin) 
-						.build();
-				cursoRepositorio.save(cursoHacking);
+	        Curso cursoDiseno = Curso.builder()
+	                .titulo("Introducción a Figma y UI/UX")
+	                .categoria("Diseño UI/UX")
+	                .descripcion("Aprende a diseñar interfaces...")
+	                .fotoCurso("https://talentoformacion.com/wp-content/uploads/2026/04/figma.png")
+	                .precio(49.99)
+	                .descuento(20.0) 
+	                .plazasMaximas(15)
+	                .duracionHoras(Duration.ofHours(15))
+	                .instructor(admin) 
+	                .build();
+	        cursoRepositorio.save(cursoDiseno);
 
-				Curso cursoPython = Curso.builder()
-						.titulo("Python para Ciencia de Datos")
-						.categoria("Big Data")
-						.descripcion("Domina Pandas, NumPy y Matplotlib para analizar grandes volúmenes de datos.")
-						.fotoCurso("https://via.placeholder.com/150")
-						.precio(120.00)
-						.plazasMaximas(25)
-						.duracionHoras(Duration.ofHours(25).plusMinutes(45))
-						.instructor(admin) 
-						.build();
-				cursoRepositorio.save(cursoPython);
-			
+	        Curso cursoHacking = Curso.builder()
+	                .titulo("Hacking Ético y Seguridad Web")
+	                .categoria("Ciberseguridad")
+	                .descripcion("Descubre las principales vulnerabilidades...")
+	                .fotoCurso("https://inforges.es/wp-content/uploads/2024/06/que-es-el-hacking-etico-y-como-se-lleva-a-cabo-inforges.jpg")
+	                .precio(149.99)
+	                .descuento(10.0)
+	                .plazasMaximas(10)
+	                .duracionHoras(Duration.ofHours(40))
+	                .instructor(admin) 
+	                .build();
+	        cursoRepositorio.save(cursoHacking);
 
+	        Curso cursoPython = Curso.builder()
+	                .titulo("Python para Ciencia de Datos")
+	                .categoria("Big Data")
+	                .descripcion("Domina Pandas, NumPy y Matplotlib...")
+	                .fotoCurso("https://miro.medium.com/1*3IcLSFuT8PQg4cUBaRXH1A.png")
+	                .precio(120.00)
+	                .descuento(0.0) 
+	                .plazasMaximas(25)
+	                .duracionHoras(Duration.ofHours(25).plusMinutes(45))
+	                .instructor(admin) 
+	                .build();
+	        cursoRepositorio.save(cursoPython);
 		
 
 	}
