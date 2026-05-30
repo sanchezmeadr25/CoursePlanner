@@ -10,7 +10,7 @@
 </head>
 
 <body class="d-flex flex-column min-vh-100 bg-light">
-    
+
     <div th:replace="~{fragments/cabeceraAdmin :: cabeceraAdmin}"></div>
 
     <main class="flex-grow-1 py-5">
@@ -19,15 +19,16 @@
                 <div class="col-lg-10">
                     <div class="card shadow-sm border-0 p-4">
                         <div class="card-body">
-                            <h2 class="mb-2" th:text="${curso.id == null} ? 'Crear Nuevo Curso' : 'Editar Curso'">Formulario</h2>
+                            <h2 class="mb-2" th:text="${curso.id == null} ? 'Crear Nuevo Curso' : 'Editar Curso'">
+                                Formulario</h2>
                             <p class="text-muted mb-4">Introduce los datos para gestionar el curso en la plataforma.</p>
 
-                            <form method="post" 
-                                  th:action="${curso.id == null} ? @{/crearCurso/submit} : @{/admin/editarCurso/submit}" 
-                                  th:object="${curso}">
-                                
+                            <form method="post"
+                                th:action="${curso.id == null} ? @{/crearCurso/submit} : @{/admin/editarCurso/submit}"
+                                th:object="${curso}">
+
                                 <input type="hidden" th:if="${curso.id != null}" th:field="*{id}" />
-                                
+
                                 <div class="row">
                                     <div class="col-md-8 mb-3">
                                         <label class="form-label text-secondary fw-bold">Título del Curso:</label>
@@ -46,14 +47,24 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label text-secondary fw-bold">Minutos:</label>
-                                        <input type="number" th:field="*{minutosForm}" class="form-control" min="0" max="59">
+                                        <input type="number" th:field="*{minutosForm}" class="form-control" min="0"
+                                            max="59">
                                     </div>
                                 </div>
 
                                 <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label text-secondary fw-bold">Precio (€):</label>
-                                        <input type="number" step="0.01" th:field="*{precio}" class="form-control">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-secondary fw-bold">Precio (€):</label>
+                                            <input type="number" step="0.01" th:field="*{precio}" class="form-control"
+                                                required>
+                                        </div>
+
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label text-secondary fw-bold">Descuento (%):</label>
+                                            <input type="number" step="0.1" th:field="*{descuento}" class="form-control"
+                                                min="0" max="100" placeholder="Ej: 20.0">
+                                        </div>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label text-secondary fw-bold">Plazas Máximas:</label>
@@ -89,4 +100,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
