@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.salesianostriana.dam.courserplanner.modelo.Instructor;
@@ -51,5 +52,32 @@ public class InstructorControlador {
         instructor.ifPresent(i -> model.addAttribute("instructor", i));
         
         return "admin/dashboardInstructor";
+    }
+    
+ // 1. Mostrar el formulario de edición
+    @GetMapping("/editarInstructor/{dni}")
+    public String mostrarFormularioEdicion(@PathVariable("dni") String dni, 
+                                           Model model, 
+                                           @AuthenticationPrincipal Usuario usuarioLogueado) {
+        
+        Optional<Instructor> instructor = instructorServicio.buscarPorId(dni);
+        
+        if (instructor.isPresent()) {
+         
+            model.addAttribute("usuario", usuarioLogueado);
+            
+            model.addAttribute("instructorFormulario", instructor.get());
+            
+            return "formularioInstructor";
+        } else {
+            return "redirect:/principalAdmin";
+        }
+    }
+    
+    // 2. Procesar el formulario de edición
+    @PostMapping("/editarInstructor/submit")
+    public String procesarFormularioEdicion(@ModelAttribute("instructorFormulario") Instructor i) {
+        instructorServicio.guardar(i); 
+        return "redirect:/principalAdmin";
     }
 }
