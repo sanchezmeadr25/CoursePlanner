@@ -113,12 +113,15 @@ public class CursoControlador {
     }
     
     
-    //Borrar CUrso
-    @GetMapping("/admin/borrarCurso/{id}")
-    public String borrarCurso(@PathVariable("id") Long id) {
-        if (cursoRepositorio.existsById(id)) {
-            cursoRepositorio.deleteById(id);
-        }
-        return "redirect:/admin/misCursos";
+    //Mostrar dettalles del cuso
+    
+    @GetMapping("/cursoDetalle/{id}")
+    public String mostrarDetalleCurso(@PathVariable("id") Long id, Model model) {
+    	Curso curso = cursoRepositorio.buscarInscripcionesyEstudiantes(id)
+                .orElseThrow(() -> new RuntimeException("Curso no encontrado"));
+        
+        model.addAttribute("curso", curso);
+        return "detalleCurso"; 
     }
+    
 }
