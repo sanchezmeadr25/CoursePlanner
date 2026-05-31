@@ -111,4 +111,17 @@ public class CursoControlador {
         cursoRepositorio.save(curso);
         return "redirect:/admin/misCursos";
     }
+    
+    
+    //Mostrar dettalles del cuso
+    
+    @GetMapping("/cursoDetalle/{id}")
+    public String mostrarDetalleCurso(@PathVariable("id") Long id, Model model) {
+    	Curso curso = cursoRepositorio.buscarInscripcionesyEstudiantes(id)
+                .orElseThrow(() -> new RuntimeException("Curso no encontrado"));
+        
+        model.addAttribute("curso", curso);
+        return "detalleCurso"; 
+    }
+    
 }

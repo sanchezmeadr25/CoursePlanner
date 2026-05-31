@@ -12,7 +12,7 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import com.salesianostriana.dam.courserplanner.repositorio.UsuarioRepositorio;
 
 @Configuration
-@EnableWebSecurity //esto sirve para activar la seguridad y que se apliquen las que indico
+@EnableWebSecurity 
 public class ConfiguracionSeguridad {
 	
 	private final CustomAuthenticationSuccessHandler successHandler;
@@ -31,7 +31,7 @@ public class ConfiguracionSeguridad {
 		//Aquí dentro lo que hacemos es decidir quien entra y quien no y a que puede entrar.
 		http.authorizeHttpRequests(authz -> authz
 		        .requestMatchers("/", "/principal", "/acceso", "/h2-console/**", 
-		                         "/crearInstructor", "/anadirestudiante", "/registro/seleccion", 
+		                         "/crearInstructor", "/anadirestudiante", "/eleccionCuenta", 
 		                         "/css/**", "/js/**", "/img/**", "/error").permitAll()
 		        .requestMatchers("/admin/**").hasRole("ADMIN")
 		        .anyRequest().authenticated()

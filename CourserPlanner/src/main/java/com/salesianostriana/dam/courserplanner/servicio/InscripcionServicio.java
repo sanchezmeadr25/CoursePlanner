@@ -58,4 +58,10 @@ public class InscripcionServicio
 		List<Inscripcion> inscripciones = inscripcionRepositorio.findAllByEstudianteDni(dniEstudiante);
 		return inscripciones.stream().map(i -> i.getCurso()).collect(Collectors.toList());
 	}
+
+	public Inscripcion findById(InscripcionPK inscripcionPK) {
+		// TODO Auto-generated method stub
+		return inscripcionRepositorio.findById(inscripcionPK)
+                .orElse(null);
+	}
 }

@@ -10,7 +10,7 @@
     <title>Nueva Inscripción</title>
 </head>
 
-<body class="d-flex flex-column min-vh-100 bg-light">
+<body class="d-flex flex-column min-vh-100">
 
     <div th:replace="~{fragments/cabecera :: cabecera}"></div>
 
@@ -23,27 +23,44 @@
                             <h2 class="mb-2">Registrar Inscripción</h2>
                             <p class="text-muted mb-4">Confirma tu inscripción al curso seleccionado.</p>
 
-                            <div th:if="${error}" class="alert alert-danger" role="alert">
-                                <i class="bi bi-exclamation-triangle-fill"></i> <span th:text="${error}"></span>
+                            <div th:if="${curso != null}" class="card mb-4 border-0 bg-light">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-3">
+                                            <img th:src="${curso.fotoCurso}" class="img-fluid rounded" alt="Imagen del curso">
+                                        </div>
+                                        <div class="col-md-9">
+                                            <h4 class="card-title" th:text="${curso.titulo}">Título del Curso</h4>
+                                            
+                                            <div class="mt-3">
+                                                <p class="mb-1">Precio original: <span class="text-decoration-line-through" th:text="${#numbers.formatDecimal(curso.precio, 1, 'POINT', 2, 'COMMA')} + '€'"></span></p>
+                                                
+                                                <p class="mb-1" th:if="${curso.descuento > 0}">
+                                                    Descuento: <span class="text-danger fw-bold" th:text="'-' + ${#numbers.formatInteger(curso.descuento, 0)} + '%'"></span>
+                                                </p>
+                                                
+                                                <hr class="my-2">
+                                                
+                                                <p class="h5 mb-0">
+                                                    Subtotal: 
+                                                    <span class="text-success fw-bold" 
+                                                          th:text="${#numbers.formatDecimal(curso.precio - (curso.precio * curso.descuento / 100), 1, 'POINT', 2, 'COMMA')} + '€'">
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <form method="post" th:action="@{/inscripcion/nuevainscripcion/submit}" th:object="${inscripcion}">
-                                
                                 <input type="hidden" th:field="*{inscripcionPK.cursoId}">
-
-                                <div class="row">
-                                    <div class="col-md-12 mb-3">
-                                        <label class="form-label text-secondary fw-bold">Detalles de la inscripción</label>
-                                        <p class="text-info">
-                                            <i class="bi bi-info-circle"></i> Tu DNI y el progreso inicial (0%) se asignarán automáticamente al confirmar.
-                                        </p>
-                                    </div>
-                                </div>
 
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
                                     <a th:href="@{/catalogo}" class="btn btn-outline-secondary px-4">Cancelar</a>
                                     <button type="submit" class="btn btn-success px-4">
-                                        <i class="bi bi-check-circle-fill"></i> Confirmar Inscripción
+                                        <i class="bi bi-check-circle-fill"></i>
+                                        Confirmar Inscripción
                                     </button>
                                 </div>
                             </form>

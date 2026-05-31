@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.ArrayList;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -52,6 +53,8 @@ public class Curso {
 	@Column(name = "plazas_maximas", nullable = false)
 	private int plazasMaximas;
 	
+	@Column(name = "descuento")
+	private double descuento;
 	
 	@Column(name = "duracion")
 	private Duration duracionHoras;
@@ -74,16 +77,30 @@ public class Curso {
     
     
     
-    
+    public double getPrecioFinal() {
+        return this.precio - (this.precio * this.descuento / 100);
+    }
     
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_instructor_curso"))
 	private Instructor instructor;
 
-	@OneToMany(mappedBy = "curso")
+	@OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
 	@Builder.Default
 	private List<Inscripcion> listaInscripciones = new ArrayList<>();
 
+	
+	// Métodos helper porque es una asociación Biderrrecional
+	public void addInscripcion(Inscripcion inscripcion) {
+	    this.listaInscripciones.add(inscripcion);
+	    inscripcion.setCurso(this);
+	}
+
+	public void removeInscripcion(Inscripcion inscripcion) {
+	    this.listaInscripciones.remove(inscripcion);
+	    inscripcion.setCurso(null);
+	}
+	
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)
