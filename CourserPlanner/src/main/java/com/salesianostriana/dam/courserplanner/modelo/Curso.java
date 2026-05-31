@@ -16,11 +16,17 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
 
 @Data
 @NoArgsConstructor
@@ -34,25 +40,36 @@ public class Curso {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", nullable = false)
 	private Long id;
-
+	
+	
+	@NotBlank(message = "El título no puede estar vacío")
+	@Size(max = 300, message = "El título no puede exceder los 300 caracteres")
 	@Column(name = "titulo", nullable = false, length = 300)
 	private String titulo;
 
 	@Column(name = "descripcion", columnDefinition = "Text")
 	private String descripcion;
 
+	@NotBlank(message = "La categoría es obligatoria")
 	@Column(name = "categoria", nullable = false)
 	private String categoria;
 
+	
 	@Column(name = "foto")
 	private String fotoCurso;
 
+	@DecimalMin(value = "0.0", message = "El precio no puede ser negativo")
 	@Column(name = "precio", nullable = false)
 	private double precio;
 	
+	@Min(value = 1, message = "Debe haber al menos 1 plaza")
 	@Column(name = "plazas_maximas", nullable = false)
 	private int plazasMaximas;
 	
+	@DecimalMin(value = "0.0")
+	@DecimalMax(value = "100.0", message = "El descuento no puede superar el 100%")
+	@Column(name = "descuento")
+	private double descuento;
 	
 	@Column(name = "duracion")
 	private Duration duracionHoras;
@@ -75,7 +92,9 @@ public class Curso {
     
     
     
-    
+    public double getPrecioFinal() {
+        return this.precio - (this.precio * this.descuento / 100);
+    }
     
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_instructor_curso"))
