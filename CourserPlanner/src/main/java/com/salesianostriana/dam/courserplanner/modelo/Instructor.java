@@ -13,13 +13,13 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@Entity
 @Data
 @AllArgsConstructor
-@Entity
-
 public class Instructor extends Usuario{
 
 	
@@ -30,10 +30,13 @@ public class Instructor extends Usuario{
 
 	@Column(name = "valoracion")
 	private double valoracionMedia;
+	
+	
 
 	
 
-	@OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "instructor", 
+			orphanRemoval = true)
 	@Builder.Default
 	@ToString.Exclude
 	private List<Curso> curso = new ArrayList<>();

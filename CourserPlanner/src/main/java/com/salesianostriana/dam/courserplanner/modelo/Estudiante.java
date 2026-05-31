@@ -6,15 +6,16 @@ import java.util.List;
 import jakarta.persistence.*;
 import lombok.*;
 
+@Entity
 @Data
 @AllArgsConstructor
-@Entity
-@Table(name = "estudiante")
+@ToString(exclude = {"inscripciones"})
 public class Estudiante extends Usuario {
 
 	@Column(name = "nivelExperiencia", nullable = false)
 	private String nivelExperiencia;
 
+	
 	@OneToMany(mappedBy = "estudiante", cascade = CascadeType.ALL, orphanRemoval = true)
 	@Builder.Default
 	private List<Inscripcion> listaInscripciones = new ArrayList<>();
