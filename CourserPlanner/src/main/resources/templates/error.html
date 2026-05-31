@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <title>Error</title>
+</head>
+<body class="bg-light d-flex align-items-center min-vh-100">
+
+    <div class="container text-center">
+        <div class="card shadow-sm border-0 p-5 mx-auto" style="max-width: 500px;">
+            <div class="card-body">
+                <i class="bi bi-exclamation-triangle text-danger display-1"></i>
+                
+                <h2 class="fw-bold mt-3" th:text="${errorTitulo}">Error</h2>
+                
+                <p class="text-muted" th:text="${errorMensaje}">Ha ocurrido un error inesperado.</p>
+                
+                <hr>
+                
+                <a th:href="@{/principal}" class="btn btn-primary mt-3">Volver al inicio</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

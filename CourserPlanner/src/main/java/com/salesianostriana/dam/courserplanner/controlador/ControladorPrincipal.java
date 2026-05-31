@@ -20,7 +20,7 @@ public class ControladorPrincipal {
     public String principalAdmin(Model model, @AuthenticationPrincipal Usuario usuario) {
       
         model.addAttribute("usuario", usuario);
-        model.addAttribute("numCursos", cursoRepositorio.countByInstructor_Dni(usuario.getDni()));
+        model.addAttribute("numCursos", cursoRepositorio.cantidadCursosInstructor(usuario.getDni()));
         return "principalAdmin"; 
     }
 
@@ -30,7 +30,7 @@ public class ControladorPrincipal {
         model.addAttribute("usuario", usuario);
         
        
-        model.addAttribute("numCursos", cursoRepositorio.countByInstructor_Dni(usuario.getDni()));
+        model.addAttribute("numCursos", cursoRepositorio.cantidadCursosInstructor(usuario.getDni()));
         
         return "principalUser"; 
     }
