@@ -34,6 +34,8 @@ public class ConfiguracionSeguridad {
 		                         "/crearInstructor", "/anadirestudiante", "/eleccionCuenta", 
 		                         "/css/**", "/js/**", "/img/**", "/error").permitAll()
 		        .requestMatchers("/admin/**").hasRole("ADMIN")
+		        .requestMatchers("/dashboard/instructor").hasRole("ADMIN") 
+		        .requestMatchers("/inscripcion/**").hasRole("USER")      
 		        .anyRequest().authenticated()
 		    )
 		    .requestCache(cache -> {
