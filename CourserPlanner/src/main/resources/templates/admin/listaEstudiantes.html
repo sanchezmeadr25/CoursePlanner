@@ -11,7 +11,7 @@
 
 <body class="d-flex flex-column min-vh-100">
 
-    <div th:replace="~{fragments/cabecera :: cabecera}"></div>
+    <div th:replace="~{fragments/cabeceraAdmin :: cabeceraAdmin}"></div>
 
     <main class="container my-5 flex-grow-1">
 
@@ -42,10 +42,12 @@
                         <td th:text="${estudiante.email}">usser@user.com</td>
 
                         <td class="text-center">
-                            <a th:href="@{/admin/estudiante/detalle/{id}(id=${estudiante.dni})}"
+                            <a th:href="@{/admin/estudiante/detalle/{dni}(dni=${estudiante.dni})}"
                                 class="btn btn-outline-info btn-sm">Detalle</a>
-                            <a th:href="@{/admin/estudiante/editar/{id}(id=${estudiante.dni})}"
+
+                            <a th:href="@{/admin/editarEstudiante/{dni}(dni=${estudiante.dni})}"
                                 class="btn btn-outline-primary btn-sm ms-2">Editar</a>
+
                             <button type="button" class="btn btn-outline-danger btn-sm ms-2" data-bs-toggle="modal"
                                 data-bs-target="#delete-modal" th:data-bs-id="${estudiante.dni}">Borrar</button>
                         </td>

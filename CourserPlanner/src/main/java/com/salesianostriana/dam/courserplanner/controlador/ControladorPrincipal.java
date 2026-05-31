@@ -1,10 +1,8 @@
 package com.salesianostriana.dam.courserplanner.controlador;
 
-import com.salesianostriana.dam.courserplanner.modelo.Usuario; // Asegúrate de importar tu clase Usuario
-import com.salesianostriana.dam.courserplanner.repositorio.UsuarioRepositorio; // Asegúrate de importar tu repo
-import com.salesianostriana.dam.courserplanner.repositorio.CursoRepositorio; // Asegúrate de importar tu repo
-import java.security.Principal;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.salesianostriana.dam.courserplanner.modelo.Usuario; 
+import com.salesianostriana.dam.courserplanner.repositorio.CursoRepositorio; 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,31 +10,34 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller 
 public class ControladorPrincipal {
 
-    @Autowired 
-    private UsuarioRepositorio usuarioRepositorio;
+    private final CursoRepositorio cursoRepositorio;
 
-    @Autowired
-    private CursoRepositorio cursoRepositorio;
+    public ControladorPrincipal(CursoRepositorio cursoRepositorio) {
+        this.cursoRepositorio = cursoRepositorio;
+    }
 
     @GetMapping("/principalAdmin") 
-    public String principalAdmin(Model model, Principal principal) {
-    	Usuario usuario = usuarioRepositorio.findByUsername(principal.getName())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
-       
+    public String principalAdmin(Model model, @AuthenticationPrincipal Usuario usuario) {
+      
         model.addAttribute("usuario", usuario);
         model.addAttribute("numCursos", cursoRepositorio.countByInstructor_Dni(usuario.getDni()));
         return "principalAdmin"; 
     }
-    
-    @GetMapping("/principalUser") 
-    public String principalUser(Model model, Principal principal) {
-    	Usuario usuario = usuarioRepositorio.findByUsername(principal.getName())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
+    @GetMapping("/principalUser") 
+    public String principalUser(Model model, @AuthenticationPrincipal Usuario usuario) {
        
         model.addAttribute("usuario", usuario);
+        
+       
         model.addAttribute("numCursos", cursoRepositorio.countByInstructor_Dni(usuario.getDni()));
+        
         return "principalUser"; 
+    }
+    
+    @GetMapping("/eleccionCuenta")
+    public String elegirCuenta() {
+        
+        return "eleccionCuenta"; 
     }
 }

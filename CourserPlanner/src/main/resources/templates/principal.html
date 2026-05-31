@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CoursePlanner | Impulsa tu Carrera Profesional</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CoursePlanner | Impulsa tu Carrera Profesional</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet">
 
-    <style>
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"><script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <style>
         .hero-section {
             background: linear-gradient(135deg, #78c2ad, #5a9e8a);
             color: white;
@@ -20,59 +24,75 @@
             color: #78c2ad;
         }
     </style>
-</head>
-<body class="bg-light">
+    </head>
+    <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold text-primary" th:href="@{/}">CoursePlanner</a>
-            <div class="d-flex">
-                <a th:href="@{/login}" class="btn btn-outline-primary me-2">Iniciar Sesión</a>
-                <a th:href="@{/registro}" class="btn btn-primary">Registrarse</a>
+        <nav
+            class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+            <div class="container">
+                <a class="navbar-brand fw-bold text-primary"
+                    th:href="@{/}">CoursePlanner</a>
+                <div class="d-flex">
+                    <a th:href="@{/login}"
+                        class="btn btn-outline-primary me-2">Iniciar Sesión</a>
+                    <a th:href="@{/registro}"
+                        class="btn btn-primary">Registrarse</a>
+                </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <header class="hero-section text-center">
-        <div class="container">
-            <h1 class="display-3 fw-bold mb-4">Domina tu futuro profesional</h1>
-            <p class="lead mb-5">La plataforma definitiva para organizar tu aprendizaje, conectar con instructores expertos y alcanzar tus metas.</p>
-            <a th:href="@{/registro}" class="btn btn-light btn-lg px-5 shadow">¡Comienza ahora gratis!</a>
-        </div>
-    </header>
-
-    <main class="container py-5">
-        <div class="row g-4 text-center">
-            <div class="col-md-4">
-                <i class="bi bi-book feature-icon"></i>
-                <h3 class="mt-3">Cursos Especializados</h3>
-                <p class="text-muted">Accede a un catálogo curado de cursos diseñados para el mercado laboral actual.</p>
+        <header class="hero-section text-center">
+            <div class="container">
+                <h1 class="display-3 fw-bold mb-4">Domina tu futuro
+                    profesional</h1>
+                <p class="lead mb-5">La plataforma definitiva para organizar tu
+                    aprendizaje, conectar con instructores expertos y alcanzar
+                    tus metas.</p>
+                <a th:href="@{/registro}"
+                    class="btn btn-light btn-lg px-5 shadow">¡Comienza ahora
+                    gratis!</a>
             </div>
-            <div class="col-md-4">
-                <i class="bi bi-graph-up-arrow feature-icon"></i>
-                <h3 class="mt-3">Sigue tu Progreso</h3>
-                <p class="text-muted">Gestiona tus inscripciones y mide cuánto has avanzado en cada lección.</p>
+        </header>
+
+        <main class="container py-5">
+            <div class="row g-4 text-center">
+                <div class="col-md-4">
+                    <i class="bi bi-book feature-icon"></i>
+                    <h3 class="mt-3">Cursos Especializados</h3>
+                    <p class="text-muted">Accede a un catálogo curado de cursos
+                        diseñados para el mercado laboral actual.</p>
+                </div>
+                <div class="col-md-4">
+                    <i class="bi bi-graph-up-arrow feature-icon"></i>
+                    <h3 class="mt-3">Sigue tu Progreso</h3>
+                    <p class="text-muted">Gestiona tus inscripciones y mide
+                        cuánto has avanzado en cada lección.</p>
+                </div>
+                <div class="col-md-4">
+                    <i class="bi bi-people feature-icon"></i>
+                    <h3 class="mt-3">Conecta con Expertos</h3>
+                    <p class="text-muted">Aprende de instructores apasionados y
+                        obtén feedback real de tus valoraciones.</p>
+                </div>
             </div>
-            <div class="col-md-4">
-                <i class="bi bi-people feature-icon"></i>
-                <h3 class="mt-3">Conecta con Expertos</h3>
-                <p class="text-muted">Aprende de instructores apasionados y obtén feedback real de tus valoraciones.</p>
+        </main>
+
+        <section class="bg-dark text-white py-5">
+            <div class="container text-center">
+                <h2 class="mb-4">¿Listo para dar el siguiente paso?</h2>
+                <a th:href="@{/registro}"
+                    class="btn btn-primary btn-lg mb-3">Crea tu cuenta de
+                    Estudiante</a>
+                <p class="text-secondary">¿Eres instructor? <a
+                        th:href="@{/registro-instructor}"
+                        class="text-white text-decoration-none fw-bold">Únete
+                        como profesor</a></p>
             </div>
-        </div>
-    </main>
+        </section>
 
-    <section class="bg-dark text-white py-5">
-        <div class="container text-center">
-            <h2 class="mb-4">¿Listo para dar el siguiente paso?</h2>
-            <a th:href="@{/registro}" class="btn btn-primary btn-lg mb-3">Crea tu cuenta de Estudiante</a>
-            <p class="text-secondary">¿Eres instructor? <a th:href="@{/registro-instructor}" class="text-white text-decoration-none fw-bold">Únete como profesor</a></p>
-        </div>
-    </section>
+        <footer class="py-4 text-center text-secondary">
+        2026 CoursePlanner. Impulsando talento.</p>
+        </footer>
 
-    <footer class="py-4 text-center text-secondary">
-        <p>&copy; 2026 CoursePlanner. Impulsando talento.</p>
-    </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    </body>
 </html>
