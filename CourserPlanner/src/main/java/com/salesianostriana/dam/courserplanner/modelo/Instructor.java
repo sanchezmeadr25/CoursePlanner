@@ -10,6 +10,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,11 +26,12 @@ import lombok.ToString;
 public class Instructor extends Usuario{
 
 	
-
+	@NotEmpty(message = "La especialidad no puede estar vacía")
 	@Column(name = "especialidad", nullable = false)
 	private String especialidad;
 
-
+	@Min(0) 
+    @Max(5)
 	@Column(name = "valoracion")
 	private double valoracionMedia;
 	
@@ -35,8 +39,7 @@ public class Instructor extends Usuario{
 
 	
 
-	@OneToMany(mappedBy = "instructor", 
-			orphanRemoval = true)
+	@OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL, orphanRemoval = true)
 	@Builder.Default
 	@ToString.Exclude
 	private List<Curso> curso = new ArrayList<>();

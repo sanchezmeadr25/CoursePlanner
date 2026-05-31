@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 
 @Entity
@@ -12,6 +13,7 @@ import lombok.*;
 @ToString(exclude = {"inscripciones"})
 public class Estudiante extends Usuario {
 
+	@NotEmpty(message = "El nivel de experiencia no puede estar vacío")
 	@Column(name = "nivelExperiencia", nullable = false)
 	private String nivelExperiencia;
 
