@@ -50,7 +50,7 @@ public class InscripcionControlador {
         if (cursoId != null) {
             pk.setCursoId(cursoId);
           
-            Curso curso = cursoServicio.busrcarPorId(cursoId).orElse(null);
+            Curso curso = cursoServicio.buscarPorId(cursoId).orElse(null);
             model.addAttribute("curso", curso);
         }
         
