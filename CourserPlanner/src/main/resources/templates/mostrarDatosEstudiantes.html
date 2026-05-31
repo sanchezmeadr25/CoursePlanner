@@ -1,11 +1,81 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-    </head>
-    <body>
 
-    </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Detalle del Estudiante</title>
+</head>
+
+<body class="d-flex flex-column min-vh-100 bg-light">
+
+    <div th:replace="~{fragments/cabeceraAdmin :: cabeceraAdmin}"></div>
+
+    <main class="flex-grow-1 py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card shadow-sm border-0 p-4">
+                        <div class="card-body">
+                            <h2 class="mb-4 fw-bold text-primary">Datos del Estudiante</h2>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-4">
+                                        <label class="text-secondary fw-bold small">DNI:</label>
+                                        <p class="fs-6" th:text="${estudiante.dni}"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="text-secondary fw-bold small">Nombre:</label>
+                                        <p class="fs-6" th:text="${estudiante.username}"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="text-secondary fw-bold small">Apellidos:</label>
+                                        <p class="fs-6" th:text="${estudiante.apellidos}"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="text-secondary fw-bold small">Email:</label>
+                                        <p class="fs-6" th:text="${estudiante.email}"></p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="mb-4">
+                                        <label class="text-secondary fw-bold small">Teléfono:</label>
+                                        <p class="fs-6" th:text="${estudiante.telefono}"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="text-secondary fw-bold small">Fecha Nacimiento:</label>
+                                        <p class="fs-6" th:text="${estudiante.fechaNacimiento}"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="text-secondary fw-bold small">Experiencia:</label>
+                                        <p class="fs-6" th:text="${estudiante.nivelExperiencia}"></p>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="text-secondary fw-bold small">Ubicación (País/Localidad):</label>
+                                        <p class="fs-6" th:text="${estudiante.pais} + ' / ' + ${estudiante.localidad}"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                                <a th:href="@{/admin/listaEstudiantes}" class="btn btn-outline-secondary px-4">Volver</a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div th:replace="~{fragments/pieDePagina :: pieDePagina}"></div>
+</body>
+
 </html>

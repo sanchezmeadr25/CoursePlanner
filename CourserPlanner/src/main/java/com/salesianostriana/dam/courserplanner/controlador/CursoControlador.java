@@ -72,6 +72,7 @@ public class CursoControlador {
     //Lista ed cursos que son del profesor
     @GetMapping("admin/misCursos")
     public String listarMisCursos(Model model, @AuthenticationPrincipal Usuario usuario) {
+        model.addAttribute("usuario", usuario); 
         model.addAttribute("listaCurso", cursoServicio.buscarCursoPorInstructor(usuario.getDni()));
         return "admin/listaCursos";
     }
