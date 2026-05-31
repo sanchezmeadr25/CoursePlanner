@@ -71,6 +71,11 @@ public class Curso {
 	@Column(name = "descuento")
 	private double descuento;
 	
+	@DecimalMin(value = "0.0")
+	@DecimalMax(value = "5.0")
+	@Column(name = "valoracion")
+	private double valoracion;
+	
 	@Column(name = "duracion")
 	private Duration duracionHoras;
 	

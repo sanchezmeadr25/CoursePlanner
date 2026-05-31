@@ -19,14 +19,12 @@ import com.salesianostriana.dam.courserplanner.serviciobase.ServicosBasesImpleme
 public class InscripcionServicio
 		extends ServicosBasesImplementados<Inscripcion, InscripcionPK, InscripcionRepositorio> {
 
-	private final InscripcionRepositorio inscripcionRepositorio;
 	private final EstudianteRepositorio estudianteRepositorio;
 	private final CursoRepositorio cursoRepositorio;
 
-	public InscripcionServicio(InscripcionRepositorio repositorio, InscripcionRepositorio inscripcionRepositorio,
+	public InscripcionServicio(InscripcionRepositorio repositorio,
 			EstudianteRepositorio estudianteRepositorio, CursoRepositorio cursoRepositorio) {
 		super(repositorio);
-		this.inscripcionRepositorio = inscripcionRepositorio;
 		this.estudianteRepositorio = estudianteRepositorio;
 		this.cursoRepositorio = cursoRepositorio;
 	}
@@ -55,13 +53,13 @@ public class InscripcionServicio
 	// la transformamos en una lista de cursos y sacamos el cirso de la inscripcion
 	// y hacemos una lista con los curso sacaado
 	public List<Curso> buscarCursosPorEstudiante(String dniEstudiante) {
-		List<Inscripcion> inscripciones = inscripcionRepositorio.findAllByEstudianteDni(dniEstudiante);
+		List<Inscripcion> inscripciones = repositorio.findAllByEstudianteDni(dniEstudiante);
 		return inscripciones.stream().map(i -> i.getCurso()).collect(Collectors.toList());
 	}
 
 	public Inscripcion findById(InscripcionPK inscripcionPK) {
 		// TODO Auto-generated method stub
-		return inscripcionRepositorio.findById(inscripcionPK)
+		return repositorio.findById(inscripcionPK)
                 .orElse(null);
 	}
 }

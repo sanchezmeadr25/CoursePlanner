@@ -1,7 +1,6 @@
 package com.salesianostriana.dam.courserplanner.controlador;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -17,7 +16,6 @@ import com.salesianostriana.dam.courserplanner.modelo.EstadoInscripcion;
 import com.salesianostriana.dam.courserplanner.modelo.Estudiante;
 import com.salesianostriana.dam.courserplanner.modelo.Inscripcion;
 import com.salesianostriana.dam.courserplanner.modelo.InscripcionPK;
-import com.salesianostriana.dam.courserplanner.repositorio.EstudianteRepositorio;
 import com.salesianostriana.dam.courserplanner.servicio.CursoServicio;
 import com.salesianostriana.dam.courserplanner.servicio.InscripcionServicio;
 
@@ -26,15 +24,13 @@ import com.salesianostriana.dam.courserplanner.servicio.InscripcionServicio;
 public class InscripcionControlador {
 
 	private final InscripcionServicio inscripcionServicio;
-    private final EstudianteRepositorio estudianteRepositorio;
     private final CursoServicio cursoServicio; 
 
   
-    public InscripcionControlador(InscripcionServicio inscripcionServicio, EstudianteRepositorio estudianteRepositorio,
+    public InscripcionControlador(InscripcionServicio inscripcionServicio,
 			CursoServicio cursoServicio) {
 		super();
 		this.inscripcionServicio = inscripcionServicio;
-		this.estudianteRepositorio = estudianteRepositorio;
 		this.cursoServicio = cursoServicio;
 	}
     
