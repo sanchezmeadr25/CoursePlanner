@@ -37,7 +37,8 @@ public class InscripcionControlador {
 		this.estudianteRepositorio = estudianteRepositorio;
 		this.cursoServicio = cursoServicio;
 	}
-
+    
+    //Crear Inscripcion
 	@GetMapping("/nueva")
     public String mostrarFormulario(@RequestParam(required = false) Long cursoId, 
                                     Model model, 
@@ -49,7 +50,7 @@ public class InscripcionControlador {
         if (cursoId != null) {
             pk.setCursoId(cursoId);
           
-            Curso curso = cursoServicio.findById(cursoId).orElse(null);
+            Curso curso = cursoServicio.busrcarPorId(cursoId).orElse(null);
             model.addAttribute("curso", curso);
         }
         
