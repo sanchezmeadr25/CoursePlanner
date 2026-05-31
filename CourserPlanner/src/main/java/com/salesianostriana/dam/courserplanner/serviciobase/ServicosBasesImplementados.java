@@ -25,6 +25,8 @@ public abstract class ServicosBasesImplementados <T, ID, R extends JpaRepository
 		return repositorio.findById(id);
 	}
 
+	
+	
 	@Override
 	public T guardar(T t) {
 		return repositorio.save(t);
