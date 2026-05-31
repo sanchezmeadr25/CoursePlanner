@@ -53,6 +53,8 @@ public class Curso {
 	@Column(name = "plazas_maximas", nullable = false)
 	private int plazasMaximas;
 	
+	@Column(name = "descuento")
+	private double descuento;
 	
 	@Column(name = "duracion")
 	private Duration duracionHoras;
@@ -75,7 +77,9 @@ public class Curso {
     
     
     
-    
+    public double getPrecioFinal() {
+        return this.precio - (this.precio * this.descuento / 100);
+    }
     
 	@ManyToOne
 	@JoinColumn(foreignKey = @ForeignKey(name = "fk_instructor_curso"))
