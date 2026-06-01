@@ -2,15 +2,19 @@ package com.salesianostriana.dam.courserplanner;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.stereotype.Component;
 
 import com.salesianostriana.dam.courserplanner.modelo.Curso;
+import com.salesianostriana.dam.courserplanner.modelo.EstadoInscripcion;
 import com.salesianostriana.dam.courserplanner.modelo.Estudiante;
+import com.salesianostriana.dam.courserplanner.modelo.Inscripcion;
 import com.salesianostriana.dam.courserplanner.modelo.Instructor;
 import com.salesianostriana.dam.courserplanner.modelo.Rol;
 import com.salesianostriana.dam.courserplanner.modelo.Usuario;
 import com.salesianostriana.dam.courserplanner.repositorio.CursoRepositorio;
+import com.salesianostriana.dam.courserplanner.repositorio.InscripcionRepositorio;
 import com.salesianostriana.dam.courserplanner.repositorio.UsuarioRepositorio;
 import com.salesianostriana.dam.courserplanner.seguridad.ConfiguradorCodificadorContrasenas;
 
@@ -23,16 +27,14 @@ public class Dataseed {
 	private final CursoRepositorio cursoRepositorio;
 	private final UsuarioRepositorio usuarioRepositorio;
 	private final ConfiguradorCodificadorContrasenas codi;
+	private final InscripcionRepositorio inscripcionRepositorio; 
 
-	
-
-	public Dataseed( CursoRepositorio cursoRepositorio, UsuarioRepositorio usuarioRepositorio,
-			ConfiguradorCodificadorContrasenas codi) {
-		super();
-		
-		this.cursoRepositorio = cursoRepositorio;
-		this.usuarioRepositorio = usuarioRepositorio;
-		this.codi = codi;
+	public Dataseed(CursoRepositorio cursoRepositorio, UsuarioRepositorio usuarioRepositorio,
+	                ConfiguradorCodificadorContrasenas codi, InscripcionRepositorio inscripcionRepositorio) {
+	    this.cursoRepositorio = cursoRepositorio;
+	    this.usuarioRepositorio = usuarioRepositorio;
+	    this.codi = codi;
+	    this.inscripcionRepositorio = inscripcionRepositorio; 
 	}
 
 	@PostConstruct
@@ -217,6 +219,30 @@ public class Dataseed {
 	                .build();
 	        cursoRepositorio.save(cursoPython);
 		
+	        
+	        Inscripcion ins1 = new Inscripcion();
+	        ins1.setEstudiante(user);
+	        ins1.setCurso(cursoPrueba); 
+	        ins1.setEstado(EstadoInscripcion.EN_CURSO);
+	        ins1.setProgreso(24);
+	        ins1.setFechaInscripcion(LocalDateTime.now());
+	        inscripcionRepositorio.save(ins1);
+
+	        Inscripcion ins2 = new Inscripcion();
+	        ins2.setEstudiante(user2);
+	        ins2.setCurso(cursoPrueba);
+	        ins2.setEstado(EstadoInscripcion.COMPLETADO);
+	        ins2.setProgreso(100);
+	        ins2.setFechaInscripcion(LocalDateTime.now());
+	        inscripcionRepositorio.save(ins2);
+
+	        Inscripcion ins3 = new Inscripcion();
+	        ins3.setEstudiante(user3);
+	        ins3.setCurso(cursoHacking);
+	        ins3.setEstado(EstadoInscripcion.PENDIENTE);
+	        ins3.setProgreso(0);
+	        ins3.setFechaInscripcion(LocalDateTime.now());
+	        inscripcionRepositorio.save(ins3);
 
 	}
 }

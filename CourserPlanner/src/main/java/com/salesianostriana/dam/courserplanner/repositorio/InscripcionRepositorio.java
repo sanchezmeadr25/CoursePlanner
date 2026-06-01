@@ -38,4 +38,12 @@ public interface InscripcionRepositorio extends JpaRepository<Inscripcion, Inscr
 	// Contar cuántas valoraciones han hecho los alumnos
 	@Query("SELECT COUNT(i.valoracion) FROM Inscripcion i WHERE i.estudiante.dni = :dni AND i.valoracion IS NOT NULL")
 	long countValoracionesPorEstudiante(@Param("dni") String dni);
+	
+	//Buscamos la inscripcion
+	@Query("SELECT i FROM Inscripcion i WHERE i.estudiante.dni = :dni AND i.curso.id = :id")
+    Optional<Inscripcion> findByEstudianteDniAndCursoId(@Param("dni") String estudianteDni, @Param("id") Long cursoId);
+	
+	//Buscamos el curso
+	@Query("SELECT i FROM Inscripcion i WHERE i.curso.id = :id")
+    List<Inscripcion> findByCursoId(@Param("id") Long cursoId);
 }

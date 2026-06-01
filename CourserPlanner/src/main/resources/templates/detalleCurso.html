@@ -63,10 +63,20 @@
                     <div class="d-grid gap-2 mt-3">
                         <a th:href="@{/admin/misCursos}" class="btn btn-outline-secondary">Volver al listado</a>
                         
-                        <a th:href="@{/inscripcion/nueva(cursoId=${curso.id})}" class="btn btn-success shadow-sm">
-                            <i class="bi bi-person-plus-fill"></i> Inscribirse
-                        </a>
+						<a th:if="${#authorization.expression('hasRole(''USER'')')}" 
+						   th:href="@{/inscripcion/nueva(cursoId=${curso.id})}" 
+						   class="btn btn-success shadow-sm">
+						    <i class="bi bi-person-plus-fill"></i> Inscribirse
+						</a>
+						
                     </div>
+					<div class="mt-4">
+					    <a sec:authorize="hasRole('ADMIN')" 
+					       th:href="@{/admin/inscripciones/{id}(id=${curso.id})}" 
+					       class="btn btn-outline-primary btn-lg">
+					       <i class="bi bi-people-fill"></i> Ver Inscripciones de este curso
+					    </a>
+					</div>
                 </div>
             </div>
         </div>

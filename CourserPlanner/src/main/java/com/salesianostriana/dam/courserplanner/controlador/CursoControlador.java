@@ -12,11 +12,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.salesianostriana.dam.courserplanner.modelo.Curso;
+import com.salesianostriana.dam.courserplanner.modelo.EstadoInscripcion;
+import com.salesianostriana.dam.courserplanner.modelo.Inscripcion;
 import com.salesianostriana.dam.courserplanner.modelo.Instructor;
 import com.salesianostriana.dam.courserplanner.modelo.Usuario;
+import com.salesianostriana.dam.courserplanner.repositorio.InscripcionRepositorio;
 import com.salesianostriana.dam.courserplanner.repositorio.InstructorRepositorio;
 import com.salesianostriana.dam.courserplanner.servicio.CursoServicio;
 import com.salesianostriana.dam.courserplanner.servicio.InscripcionServicio;
@@ -28,120 +32,154 @@ import jakarta.validation.Valid;
 @Controller
 public class CursoControlador {
 
-    private final InscripcionServicio inscripcionServicio;
-    private final CursoServicio cursoServicio;
-    private final InstructorRepositorio instructorRepositorio;
-    private final InstructorServicio instructorServicio;
+	private final InscripcionServicio inscripcionServicio;
+	private final CursoServicio cursoServicio;
+	private final InstructorRepositorio instructorRepositorio;
+	private final InstructorServicio instructorServicio;
+	private final InscripcionRepositorio inscripcionRepositorio;
 
-    public CursoControlador(InscripcionServicio inscripcionServicio, 
-                            CursoServicio cursoServicio, 
-                            InstructorRepositorio instructorRepositorio,
-                            InstructorServicio instructorServicio) {
-        super();
-        this.inscripcionServicio = inscripcionServicio;
-        this.cursoServicio = cursoServicio;
-        this.instructorRepositorio = instructorRepositorio;
-        this.instructorServicio = instructorServicio;
-    }
+	
 
-    //Crtear cursos
-    @GetMapping("/crearCurso")
-    public String mostrarFormulario(Model model) {
-        model.addAttribute("curso", new Curso());
-        model.addAttribute("listaInstructores", instructorRepositorio.findAll());
-        return "formularioCurso";
-    }
+	public CursoControlador(InscripcionServicio inscripcionServicio, CursoServicio cursoServicio,
+			InstructorRepositorio instructorRepositorio, InstructorServicio instructorServicio,
+			InscripcionRepositorio inscripcionRepositorio) {
+		super();
+		this.inscripcionServicio = inscripcionServicio;
+		this.cursoServicio = cursoServicio;
+		this.instructorRepositorio = instructorRepositorio;
+		this.instructorServicio = instructorServicio;
+		this.inscripcionRepositorio = inscripcionRepositorio;
+	}
 
-    @PostMapping("/crearCurso/submit")
-    public String guardarCurso(@Valid @ModelAttribute Curso curso, BindingResult bindingResult, 
-                               @AuthenticationPrincipal Usuario usuario) {
-        if (bindingResult.hasErrors()) {
-            return "formularioCurso";
-        }
-        
-        
-        if (usuario instanceof Instructor) {
-            curso.setInstructor((Instructor) usuario);
-        }
-        
-        cursoServicio.guardar(curso);
-        return "redirect:/admin/misCursos";
-    }
+	// Crtear cursos
+	@GetMapping("/crearCurso")
+	public String mostrarFormulario(Model model) {
+		model.addAttribute("curso", new Curso());
+		model.addAttribute("listaInstructores", instructorRepositorio.findAll());
+		return "formularioCurso";
+	}
 
-    
-    //Lista ed cursos que son del profesor
-    @GetMapping("admin/misCursos")
-    public String listarMisCursos(Model model, @AuthenticationPrincipal Usuario usuario) {
-        model.addAttribute("usuario", usuario); 
-        model.addAttribute("listaCurso", cursoServicio.buscarCursoPorInstructor(usuario.getDni()));
-        return "admin/listaCursos";
-    }
+	@PostMapping("/crearCurso/submit")
+	public String guardarCurso(@Valid @ModelAttribute Curso curso, BindingResult bindingResult,
+			@AuthenticationPrincipal Usuario usuario) {
+		if (bindingResult.hasErrors()) {
+			return "formularioCurso";
+		}
 
-    //Catalogo de cursos para el estudiante
-    @GetMapping("/catalogo")
-    public String listarTodosLosCursos(Model model) {
-        model.addAttribute("cursos", cursoServicio.buscarTodos());
-        return "listaCursosEstudiante";
-    }
+		if (usuario instanceof Instructor) {
+			curso.setInstructor((Instructor) usuario);
+		}
 
-    //Lista de cursos inscritos el estuciante
-    @GetMapping("/misCursosInscritos")
-    public String listarMisCursosInscritos(Model model, @AuthenticationPrincipal Usuario usuario) {
-        List<Curso> misCursos = inscripcionServicio.buscarCursosPorEstudiante(usuario.getDni());
-        
-        if (misCursos != null) {
-            misCursos.removeIf(Objects::isNull);
-        }
-        
-        model.addAttribute("misCursos", (misCursos != null) ? misCursos : new ArrayList<Curso>());
-        
-        return "misCursosInscritos";
-    }
-    
-    //Editar CUrso
-    @GetMapping("/admin/editarCurso/{id}")
-    public String mostrarFormularioEditar(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("curso", cursoServicio.buscarPorId(id)
-                .orElseThrow(() -> new GlobalException.RecursoNoEncontradoExcepcion("ID de curso inválido: " + id)));
-        
-        model.addAttribute("listaInstructores", instructorRepositorio.findAll());
-        
-        return "formularioCurso";
-    }
+		cursoServicio.guardar(curso);
+		return "redirect:/admin/misCursos";
+	}
 
-    @PostMapping("/admin/editarCurso/submit")
-    public String guardarEdicionCurso(@Valid @ModelAttribute Curso curso, BindingResult bindingResult, RedirectAttributes ra) {
-        if (bindingResult.hasErrors()) {
-            return "formularioCurso";
-        }
-        cursoServicio.guardar(curso);
-        ra.addFlashAttribute("mensaje", "Curso guardado correctamente");
-        return "redirect:/admin/misCursos";
-    }
-    
-    //Mostrar dettalles del cuso
-    @GetMapping("/cursoDetalle/{id}")
-    public String mostrarDetalleCurso(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("curso", cursoServicio.buscarPorId(id)
-                .orElseThrow(() -> new GlobalException.RecursoNoEncontradoExcepcion("Curso no encontrado")));
-        
-        return "detalleCurso"; 
-    }
-    
-    
-    //Borar curso
-    @GetMapping("/admin/borrarCurso/{id}")
-    public String borrarCurso(@PathVariable("id") Long id, RedirectAttributes ra) {
-        Curso curso = cursoServicio.buscarPorId(id)
-                .orElseThrow(() -> new GlobalException.RecursoNoEncontradoExcepcion("Curso no encontrado"));
+	// Lista ed cursos que son del profesor
+	@GetMapping("admin/misCursos")
+	public String listarMisCursos(Model model, @AuthenticationPrincipal Usuario usuario) {
+		model.addAttribute("usuario", usuario);
+		model.addAttribute("listaCurso", cursoServicio.buscarCursoPorInstructor(usuario.getDni()));
+		return "admin/listaCursos";
+	}
 
-       
-        if (!curso.getListaInscripciones().isEmpty()) {
-            ra.addFlashAttribute("error", "No puedes borrar un curso que tiene estudiantes inscritos.");
-        } else {
-            cursoServicio.eliminarPorId(id); 
-            ra.addFlashAttribute("mensaje", "Curso eliminado correctamente.");
-        }
-        return "redirect:/admin/misCursos";
-    }
+	// Catalogo de cursos para el estudiante
+	@GetMapping("/catalogo")
+	public String listarTodosLosCursos(Model model) {
+		model.addAttribute("cursos", cursoServicio.buscarTodos());
+		return "listaCursosEstudiante";
+	}
+
+	// Lista de cursos inscritos el estuciante
+	@GetMapping("/misCursosInscritos")
+	public String listarMisCursosInscritos(Model model, @AuthenticationPrincipal Usuario usuario) {
+		List<Curso> misCursos = inscripcionServicio.buscarCursosPorEstudiante(usuario.getDni());
+
+		if (misCursos != null) {
+			misCursos.removeIf(Objects::isNull);
+		}
+
+		model.addAttribute("misCursos", (misCursos != null) ? misCursos : new ArrayList<Curso>());
+
+		return "misCursosInscritos";
+	}
+
+	// Editar CUrso
+	@GetMapping("/admin/editarCurso/{id}")
+	public String mostrarFormularioEditar(@PathVariable("id") Long id, Model model) {
+		model.addAttribute("curso", cursoServicio.buscarPorId(id)
+				.orElseThrow(() -> new GlobalException.RecursoNoEncontradoExcepcion("ID de curso inválido: " + id)));
+
+		model.addAttribute("listaInstructores", instructorRepositorio.findAll());
+
+		return "formularioCurso";
+	}
+
+	@PostMapping("/admin/editarCurso/submit")
+	public String guardarEdicionCurso(@Valid @ModelAttribute Curso curso, BindingResult bindingResult,
+			RedirectAttributes ra) {
+		if (bindingResult.hasErrors()) {
+			return "formularioCurso";
+		}
+		cursoServicio.guardar(curso);
+		ra.addFlashAttribute("mensaje", "Curso guardado correctamente");
+		return "redirect:/admin/misCursos";
+	}
+
+	// Mostrar dettalles del cuso
+	@GetMapping("/cursoDetalle/{id}")
+	public String mostrarDetalleCurso(@PathVariable("id") Long id, Model model,
+			@AuthenticationPrincipal Usuario usuario) {
+
+		model.addAttribute("curso", cursoServicio.buscarPorId(id)
+				.orElseThrow(() -> new GlobalException.RecursoNoEncontradoExcepcion("Curso no encontrado")));
+
+		model.addAttribute("usuario", usuario);
+
+		return "detalleCurso";
+	}
+
+	// Borar curso
+	@GetMapping("/admin/borrarCurso/{id}")
+	public String borrarCurso(@PathVariable("id") Long id, RedirectAttributes ra) {
+		Curso curso = cursoServicio.buscarPorId(id)
+				.orElseThrow(() -> new GlobalException.RecursoNoEncontradoExcepcion("Curso no encontrado"));
+
+		if (!curso.getListaInscripciones().isEmpty()) {
+			ra.addFlashAttribute("error", "No puedes borrar un curso que tiene estudiantes inscritos.");
+		} else {
+			cursoServicio.eliminarPorId(id);
+			ra.addFlashAttribute("mensaje", "Curso eliminado correctamente.");
+		}
+		return "redirect:/admin/misCursos";
+	}
+
+	// Inscripciones
+	@GetMapping("/admin/inscripciones/{id}")
+	public String listarInscripciones(@PathVariable("id") Long cursoId, Model model) {
+	    
+	    model.addAttribute("inscripciones", inscripcionRepositorio.findByCursoId(cursoId));
+	    model.addAttribute("cursoId", cursoId);
+	    
+	    return "admin/listaInscripciones";
+	}
+	
+	@PostMapping("/admin/inscripciones/editar")
+	public String editarInscripcion(@RequestParam("estudianteDni") String dni,
+	                                @RequestParam("cursoId") Long cursoId,
+	                                @RequestParam("estado") EstadoInscripcion estado,
+	                                @RequestParam("progreso") int progreso) {
+	  
+	    
+	    inscripcionRepositorio.findByEstudianteDniAndCursoId(dni, cursoId)
+	        .ifPresent(inscripcion -> {
+	          
+	            inscripcion.setEstado(estado);
+	            inscripcion.setProgreso(progreso);
+	            
+	         
+	            inscripcionRepositorio.save(inscripcion);
+	        });
+	    
+	    return "redirect:/admin/inscripciones/" + cursoId;
+	}
 }
