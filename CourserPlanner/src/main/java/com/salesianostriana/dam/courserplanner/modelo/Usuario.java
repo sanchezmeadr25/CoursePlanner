@@ -17,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -33,6 +34,7 @@ import lombok.NoArgsConstructor;
 public  class Usuario implements UserDetails {
 
 	@Id
+	@Size(min = 9, max = 9, message = "El DNI debe tener 9 caracteres")
 	@Column(name = "dni", length = 9, nullable = false)
 	protected String dni;
 

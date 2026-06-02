@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import jakarta.validation.Valid;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,6 +24,9 @@ import lombok.RequiredArgsConstructor;
 public class InstructorControlador {
 
 	private final InstructorServicio instructorServicio;
+	private final PasswordEncoder passwordEncoder;
+	private static final String PASSWORD_SEGURA_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^A-Za-z0-9]).{8,}$";
+	private static final String PASSWORD_SEGURA_MENSAJE = "La contrasena debe tener al menos 8 caracteres, mayuscula, minuscula, numero y simbolo";
 
 	//Crear Instructor
 	@GetMapping("/crearInstructor")
@@ -33,9 +37,11 @@ public class InstructorControlador {
 
 	@PostMapping("/crearInstructor")
 	public String submit(@Valid @ModelAttribute("instructor") Instructor instructor, BindingResult bindingResult) {
+		validarPasswordSegura(instructor.getPassword(), bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "formularioInstructor";
 		}
+		instructor.setPassword(passwordEncoder.encode(instructor.getPassword()));
 		instructorServicio.crearInstructor(instructor);
 		return "redirect:/";
 	}
@@ -57,6 +63,7 @@ public class InstructorControlador {
 	@PostMapping("/editarInstructor/submit")
 	public String procesarFormularioEdicion(@Valid @ModelAttribute("instructor") Instructor i,
 			BindingResult bindingResult) {
+		validarPasswordSegura(i.getPassword(), bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "formularioInstructor";
 		}
@@ -83,5 +90,24 @@ public class InstructorControlador {
 		}
 
 		return "redirect:/principalAdmin";
+	}
+
+	private void validarPasswordSegura(String password, BindingResult bindingResult) {
+		if (password == null || password.isBlank()) {
+			bindingResult.rejectValue("password", "password.segura", PASSWORD_SEGURA_MENSAJE);
+			return;
+		}
+
+		if (esPasswordCodificada(password)) {
+			return;
+		}
+
+		if (!password.matches(PASSWORD_SEGURA_REGEX)) {
+			bindingResult.rejectValue("password", "password.segura", PASSWORD_SEGURA_MENSAJE);
+		}
+	}
+
+	private boolean esPasswordCodificada(String password) {
+		return password.startsWith("$2a$") || password.startsWith("$2b$") || password.startsWith("$2y$");
 	}
 }

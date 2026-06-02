@@ -27,7 +27,8 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label text-secondary fw-bold">DNI:</label>
-                                        <input type="text" th:field="*{dni}" class="form-control shadow-sm" placeholder="12345678X" required>
+                                        <input type="text" th:field="*{dni}" class="form-control shadow-sm" th:classappend="${#fields.hasErrors('dni')} ? 'is-invalid'" placeholder="12345678X" minlength="9" maxlength="9" required>
+                                        <div class="invalid-feedback" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></div>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label text-secondary fw-bold">Foto Perfil:</label>
@@ -57,11 +58,12 @@
 									<div class="col-md-6 mb-3">
 									    <label class="form-label text-secondary fw-bold">Contraseña:</label>
 									    <div class="input-group shadow-sm">
-									        <input type="password" th:field="*{password}" class="form-control" id="passwordInput" placeholder="••••••••" required>
+									        <input type="password" th:field="*{password}" class="form-control" th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'" id="passwordInput" placeholder="••••••••" minlength="8" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}" title="Debe tener al menos 8 caracteres, mayuscula, minuscula, numero y simbolo" required>
 									        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
 									            <i class="bi bi-eye" id="toggleIcon"></i>
 									        </button>
 									    </div>
+									    <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
 									</div>
 
                                 <div class="row">
