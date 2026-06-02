@@ -112,19 +112,18 @@ La aplicacion usa H2.
 
 Configuracion principal:
 
-```properties
+properties
 server.port=9000
 spring.datasource.url=jdbc:h2:./db/basedatos;DB_CLOSE_ON_EXIT=FALSE
 spring.datasource.username=sa
 spring.datasource.password=
 spring.jpa.hibernate.ddl-auto=create-drop
-```
 
 Consola H2:
 
-```text
+
 http://localhost:9000/h2-console
-```
+
 
 Datos de acceso a H2:
 
