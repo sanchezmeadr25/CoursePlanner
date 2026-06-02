@@ -44,14 +44,14 @@
             <div th:if="${not #lists.isEmpty(cursos)}" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                 <div class="col" th:each="c : ${cursos}">
                     <div class="card h-100 shadow-sm border-0 card-curso">
-                        <img th:src="${c.fotoCurso}" class="card-img-top img-curso" alt="Imagen del curso">
+                        <img th:src="${c.fotoCurso != null and !#strings.isEmpty(c.fotoCurso) and (#strings.startsWith(c.fotoCurso, 'http') or #strings.startsWith(c.fotoCurso, '/')) ? c.fotoCurso : '/img/logo.png'}" class="card-img-top img-curso" alt="Imagen del curso">
 
                         <div class="card-body d-flex flex-column">
                             <h5 class="card-title fw-bold" th:text="${c.titulo}">Nombre</h5>
                             <p class="text-muted flex-grow-1" th:text="${c.categoria}">Categoría</p>
 
                             <div class="mt-3 d-grid gap-2">
-                                <a th:href="@{/cursoDetalle/{id} (id=${c.id})}"
+                                <a th:href="@{/cursoDetalle/{id}(id=${c.id})}"
                                     class="btn btn-outline-primary btn-sm fw-bold">Ver detalles</a>
 
                                 <a th:href="@{/inscripcion/nueva(cursoId=${c.id})}" class="btn btn-success btn-sm">

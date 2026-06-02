@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.salesianostriana.dam.courserplanner.modelo.Curso;
 import com.salesianostriana.dam.courserplanner.modelo.EstadoInscripcion;
+import com.salesianostriana.dam.courserplanner.modelo.Estudiante;
 import com.salesianostriana.dam.courserplanner.modelo.Inscripcion;
 import com.salesianostriana.dam.courserplanner.modelo.Instructor;
 import com.salesianostriana.dam.courserplanner.modelo.Usuario;
@@ -84,7 +85,8 @@ public class CursoControlador {
 
 	// Catalogo de cursos para el estudiante
 	@GetMapping("/catalogo")
-	public String listarTodosLosCursos(Model model) {
+	public String listarTodosLosCursos(Model model, @AuthenticationPrincipal Usuario usuario) {
+		model.addAttribute("usuario", usuario);
 		model.addAttribute("cursos", cursoServicio.buscarTodos());
 		return "listaCursosEstudiante";
 	}
@@ -99,6 +101,7 @@ public class CursoControlador {
 		}
 
 		model.addAttribute("misCursos", (misCursos != null) ? misCursos : new ArrayList<Curso>());
+		model.addAttribute("usuario", usuario);
 
 		return "misCursosInscritos";
 	}
@@ -128,14 +131,23 @@ public class CursoControlador {
 	// Mostrar dettalles del cuso
 	@GetMapping("/cursoDetalle/{id}")
 	public String mostrarDetalleCurso(@PathVariable("id") Long id, Model model,
-			@AuthenticationPrincipal Usuario usuario) {
+	        @AuthenticationPrincipal Usuario estudiante) { 
 
-		model.addAttribute("curso", cursoServicio.buscarPorId(id)
-				.orElseThrow(() -> new GlobalException.RecursoNoEncontradoExcepcion("Curso no encontrado")));
+	    Curso curso = cursoServicio.buscarPorId(id)
+	            .orElseThrow(() -> new GlobalException.RecursoNoEncontradoExcepcion("Curso no encontrado"));
 
-		model.addAttribute("usuario", usuario);
+	    model.addAttribute("curso", curso);
+	    model.addAttribute("usuario", estudiante);
 
-		return "detalleCurso";
+	   
+	    if (estudiante != null) {
+	        inscripcionRepositorio.findByEstudianteDniAndCursoId(estudiante.getDni(), id)
+	            .ifPresent(inscripcion -> {
+	                model.addAttribute("inscripcion", inscripcion);
+	            });
+	    }
+
+	    return "detalleCurso";
 	}
 
 	// Borar curso
@@ -153,33 +165,5 @@ public class CursoControlador {
 		return "redirect:/admin/misCursos";
 	}
 
-	// Inscripciones
-	@GetMapping("/admin/inscripciones/{id}")
-	public String listarInscripciones(@PathVariable("id") Long cursoId, Model model) {
-	    
-	    model.addAttribute("inscripciones", inscripcionRepositorio.findByCursoId(cursoId));
-	    model.addAttribute("cursoId", cursoId);
-	    
-	    return "admin/listaInscripciones";
-	}
 	
-	@PostMapping("/admin/inscripciones/editar")
-	public String editarInscripcion(@RequestParam("estudianteDni") String dni,
-	                                @RequestParam("cursoId") Long cursoId,
-	                                @RequestParam("estado") EstadoInscripcion estado,
-	                                @RequestParam("progreso") int progreso) {
-	  
-	    
-	    inscripcionRepositorio.findByEstudianteDniAndCursoId(dni, cursoId)
-	        .ifPresent(inscripcion -> {
-	          
-	            inscripcion.setEstado(estado);
-	            inscripcion.setProgreso(progreso);
-	            
-	         
-	            inscripcionRepositorio.save(inscripcion);
-	        });
-	    
-	    return "redirect:/admin/inscripciones/" + cursoId;
-	}
 }

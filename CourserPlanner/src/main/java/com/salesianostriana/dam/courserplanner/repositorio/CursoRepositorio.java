@@ -35,11 +35,11 @@ public interface CursoRepositorio extends JpaRepository<Curso, Long> {
     int countEstudiantesPorInstructor(@Param("dni") String dni);
 
     // Calcular la media de las valoraciones de las inscripciones del instructor
-    @Query("SELECT COALESCE(AVG(i.valoracion), 0) FROM Inscripcion i WHERE i.curso.instructor.dni = :dni")
+    @Query("SELECT COALESCE(AVG(i.valoracion), 0) FROM Inscripcion i WHERE i.curso.instructor.dni = :dni AND i.valoracion > 0")
     double mediaValoracionInstructor(@Param("dni") String dni);
 
     // Contar cuántas valoraciones (no nulas) han dejado los alumnos
-    @Query("SELECT COUNT(i) FROM Inscripcion i WHERE i.curso.instructor.dni = :dni AND i.valoracion IS NOT NULL")
+    @Query("SELECT COUNT(i) FROM Inscripcion i WHERE i.curso.instructor.dni = :dni AND i.valoracion > 0")
     int countValoracionesPorInstructor(@Param("dni") String dni);
     
     

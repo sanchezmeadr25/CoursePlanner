@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <title>Detalle del Curso</title>
@@ -18,14 +18,18 @@
         <div class="row g-4">
             <div class="col-lg-8">
                 <div class="card shadow-sm border-0 p-4 mb-4">
-                    <img th:if="${curso.fotoCurso}" th:src="${curso.fotoCurso}" class="img-fluid rounded mb-4 shadow-sm" alt="Imagen curso">
+                    <img th:src="${curso.fotoCurso != null and !#strings.isEmpty(curso.fotoCurso) and (#strings.startsWith(curso.fotoCurso, 'http') or #strings.startsWith(curso.fotoCurso, '/')) ? curso.fotoCurso : '/img/logo.png'}"
+                         class="img-fluid rounded mb-4 shadow-sm" alt="Imagen del curso">
+                    
                     <h1 class="fw-bold text-primary" th:text="${curso.titulo}">Título</h1>
                     <span class="badge bg-primary mb-3" th:text="${curso.categoria}">Categoría</span>
                     <h4 class="fw-bold mt-3">Descripción</h4>
                     <p class="text-secondary" th:text="${curso.descripcion}">Descripción...</p>
                 </div>
 
-                <div class="card shadow-sm border-0 p-4" th:if="${curso.listaInscripciones != null and not #lists.isEmpty(curso.listaInscripciones)}">
+                <div class="card shadow-sm border-0 p-4" 
+                     th:if="${curso.listaInscripciones != null and not #lists.isEmpty(curso.listaInscripciones)}"
+                     sec:authorize="hasRole('ADMIN')">
                     <h4 class="fw-bold mb-3">Estudiantes Inscritos</h4>
                     <div class="table-responsive">
                         <table class="table table-hover">
@@ -36,11 +40,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="inscripcion : ${curso.listaInscripciones}">
-                                    <td th:text="${inscripcion.estudiante.username}">Usuario</td>
+                                <tr th:each="ins : ${curso.listaInscripciones}">
+                                    <td th:text="${ins.estudiante.username}">Usuario</td>
                                     <td>
                                         <div class="progress" style="height: 20px;">
-                                            <div class="progress-bar bg-success" role="progressbar" th:style="'width: ' + ${inscripcion.progreso} + '%'" th:text="${inscripcion.progreso + '%'}"></div>
+                                            <div class="progress-bar bg-success" role="progressbar" th:style="'width: ' + ${ins.progreso} + '%'" th:text="${ins.progreso + '%'}"></div>
                                         </div>
                                     </td>
                                 </tr>
@@ -55,32 +59,63 @@
                     <h5 class="fw-bold mb-3 text-primary"><i class="bi bi-info-circle"></i> Ficha Técnica</h5>
                     <ul class="list-unstyled">
                         <li class="mb-3"><strong>Instructor:</strong> <br> <span class="text-muted" th:text="${curso.instructor != null ? curso.instructor.username : 'Sin asignar'}"></span></li>
-                        <li class="mb-3"><strong>Duración:</strong> <br> <span class="text-muted" th:text="${curso.duracionHoras != null ? curso.duracionFormateada : 'No definida'}"></span></li>
+                        <li class="mb-3"><strong>Duración:</strong> <br> <span class="text-muted" th:text="${curso.duracionHoras != null ? curso.getDuracionFormateada() : 'No definida'}"></span></li>
                         <li class="mb-3"><strong>Precio:</strong> <br> <span class="h5 fw-bold text-success" th:text="${curso.precio + ' €'}"></span></li>
-                        <li class="mb-3"><strong>Plazas:</strong> <br> <span class="text-muted" th:text="${curso.plazasMaximas}"></span></li>
                     </ul>
                     
                     <div class="d-grid gap-2 mt-3">
-                        <a th:href="@{/admin/misCursos}" class="btn btn-outline-secondary">Volver al listado</a>
+                        <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/misCursos}" class="btn btn-outline-secondary">Volver al listado</a>
+                        <a sec:authorize="hasRole('USER')" th:href="@{/misCursosInscritos}" class="btn btn-outline-secondary">Volver a mis cursos</a>
                         
-						<a th:if="${#authorization.expression('hasRole(''USER'')')}" 
-						   th:href="@{/inscripcion/nueva(cursoId=${curso.id})}" 
-						   class="btn btn-success shadow-sm">
-						    <i class="bi bi-person-plus-fill"></i> Inscribirse
-						</a>
-						
+                        <a th:if="${#authorization.expression('hasRole(''USER'')')}" 
+                           th:href="@{/inscripcion/nueva(cursoId=${curso.id})}" 
+                           class="btn btn-success shadow-sm">
+                            <i class="bi bi-person-plus-fill"></i> Inscribirse
+                        </a>
+                        <a sec:authorize="hasRole('ADMIN')" 
+                           th:href="@{/inscripcion/admin/inscripciones/{id}(id=${curso.id})}" 
+                           class="btn btn-outline-primary">
+                            <i class="bi bi-people-fill"></i> Ver inscripciones
+                        </a>
                     </div>
-					<div class="mt-4">
-					    <a sec:authorize="hasRole('ADMIN')" 
-					       th:href="@{/admin/inscripciones/{id}(id=${curso.id})}" 
-					       class="btn btn-outline-primary btn-lg">
-					       <i class="bi bi-people-fill"></i> Ver Inscripciones de este curso
-					    </a>
-					</div>
+
+                    <button th:if="${inscripcion != null}" type="button" class="btn btn-warning w-100 mt-3 text-white fw-bold" data-bs-toggle="modal" data-bs-target="#modalValoracion">
+                        <i class="bi bi-star-fill"></i> Valorar Curso
+                    </button>
                 </div>
             </div>
         </div>
     </main>
+
+    <div class="modal fade" id="modalValoracion" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Valorar Curso</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form th:action="@{/inscripcion/estudiante/valorar}" method="post">
+                    <div class="modal-body">
+                        <input type="hidden" name="cursoId" th:value="${curso.id}">
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Puntuación (0 - 5)</label>
+                            <input type="number" name="valoracion" class="form-control" min="0" max="5" step="0.5" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Comentario (opcional)</label>
+                            <textarea name="comentario" class="form-control" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Enviar Valoración</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <div th:replace="~{fragments/pieDePagina :: pieDePagina}"></div>
 </body>

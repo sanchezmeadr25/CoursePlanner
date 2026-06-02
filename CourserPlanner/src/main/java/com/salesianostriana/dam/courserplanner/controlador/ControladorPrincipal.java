@@ -31,6 +31,9 @@ public class ControladorPrincipal {
 		model.addAttribute("numEstudiantes", inscripcionesRepositorio.contarEstudiantesPorInstructor(dni));
 		model.addAttribute("calificacion", cursoRepositorio.mediaValoracionInstructor(dni));
 		model.addAttribute("numValoraciones", inscripcionesRepositorio.countValoracionesPorInstructor(dni));
+		model.addAttribute("misCursos", cursoRepositorio.findByInstructor_Dni(dni));
+		model.addAttribute("valoracionesRecientes", inscripcionesRepositorio.findValoracionesRecientesPorInstructor(dni));
+		model.addAttribute("nombreUsuario", usuario.getUsername());
 
 		return "principalAdmin";
 	}

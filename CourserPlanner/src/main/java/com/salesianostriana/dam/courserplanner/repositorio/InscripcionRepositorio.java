@@ -24,7 +24,7 @@ public interface InscripcionRepositorio extends JpaRepository<Inscripcion, Inscr
 
 	// Contar cuántas valoraciones han hecho los alumnos en los cursos del
 	// instructor
-	@Query("SELECT COUNT(i.valoracion) FROM Inscripcion i WHERE i.curso.instructor.dni = :dni AND i.valoracion IS NOT NULL")
+	@Query("SELECT COUNT(i) FROM Inscripcion i WHERE i.curso.instructor.dni = :dni AND i.valoracion > 0")
 	long countValoracionesPorInstructor(@Param("dni") String dni);
 
 	// Contamos los estudiantes que tiene el instructor
@@ -36,7 +36,7 @@ public interface InscripcionRepositorio extends JpaRepository<Inscripcion, Inscr
 	long countCursosInscritosPorEstudiante(@Param("dni") String dni);
 
 	// Contar cuántas valoraciones han hecho los alumnos
-	@Query("SELECT COUNT(i.valoracion) FROM Inscripcion i WHERE i.estudiante.dni = :dni AND i.valoracion IS NOT NULL")
+	@Query("SELECT COUNT(i) FROM Inscripcion i WHERE i.estudiante.dni = :dni AND i.valoracion > 0")
 	long countValoracionesPorEstudiante(@Param("dni") String dni);
 	
 	//Buscamos la inscripcion
@@ -46,4 +46,11 @@ public interface InscripcionRepositorio extends JpaRepository<Inscripcion, Inscr
 	//Buscamos el curso
 	@Query("SELECT i FROM Inscripcion i WHERE i.curso.id = :id")
     List<Inscripcion> findByCursoId(@Param("id") Long cursoId);
+	
+	//Calculamos la valoracion Mdia del progesor
+	@Query("SELECT AVG(i.valoracion) FROM Inscripcion i WHERE i.curso.instructor.dni = :instructorDni AND i.valoracion > 0")
+	Double calcularMediaValoracionInstructor(@Param("instructorDni") String instructorDni);
+
+	@Query("SELECT i FROM Inscripcion i JOIN FETCH i.curso JOIN FETCH i.estudiante WHERE i.curso.instructor.dni = :dni AND i.valoracion > 0 ORDER BY i.fechaInscripcion DESC")
+	List<Inscripcion> findValoracionesRecientesPorInstructor(@Param("dni") String dni);
 }

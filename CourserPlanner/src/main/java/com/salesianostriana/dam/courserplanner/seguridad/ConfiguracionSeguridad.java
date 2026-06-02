@@ -30,14 +30,20 @@ public class ConfiguracionSeguridad {
 		
 		//Aquí dentro lo que hacemos es decidir quien entra y quien no y a que puede entrar.
 		http.authorizeHttpRequests(authz -> authz
-		        .requestMatchers("/", "/principal", "/acceso", "/h2-console/**", 
-		                         "/crearInstructor", "/anadirestudiante", "/eleccionCuenta", 
-		                         "/css/**", "/js/**", "/img/**", "/error").permitAll()
-		        .requestMatchers("/admin/**").hasRole("ADMIN")
-		        .requestMatchers("/dashboard/instructor").hasRole("ADMIN") 
-		        .requestMatchers("/inscripcion/**").hasRole("USER")      
-		        .anyRequest().authenticated()
-		    )
+	            .requestMatchers("/", "/principal", "/acceso", "/h2-console/**", 
+	                             "/crearInstructor", "/anadirestudiante", "/eleccionCuenta", 
+	                             "/css/**", "/js/**", "/img/**", "/error").permitAll()
+	            
+	           
+	            .requestMatchers("/inscripcion/admin/**").hasRole("ADMIN")
+	            .requestMatchers("/admin/**").hasRole("ADMIN")
+	            .requestMatchers("/dashboard/instructor").hasRole("ADMIN")
+	            
+	           
+	            .requestMatchers("/inscripcion/**").hasRole("USER") 
+	            
+	            .anyRequest().authenticated()
+	    )
 		    .requestCache(cache -> {
 		        HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
 		        requestCache.setMatchingRequestParameterName(null);
