@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>CoursePlanner | Gestiona tu aprendizaje</title>
+    <style>
+        :root {
+            --brand: #246b5d;
+            --brand-soft: #78c2ad;
+            --ink: #17212b;
+            --muted: #65727f;
+            --surface: #ffffff;
+            --line: #e7ecef;
+        }
+
+        body {
+            color: var(--ink);
+            background: #f6f8f9;
+        }
+
+        .navbar {
+            border-bottom: 1px solid var(--line);
+        }
+
+        .brand-logo {
+            width: 42px;
+            height: 34px;
+            object-fit: contain;
+        }
+
+        .hero {
+            min-height: 620px;
+            background:
+                linear-gradient(90deg, rgba(11, 30, 39, 0.88), rgba(11, 30, 39, 0.62), rgba(11, 30, 39, 0.28)),
+                url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1800&q=85");
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-copy {
+            max-width: 720px;
+            padding: 96px 0 120px;
+        }
+
+        .eyebrow {
+            color: #bfe9dc;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: .82rem;
+            letter-spacing: .08rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.6rem, 6vw, 5rem);
+            line-height: 1.02;
+        }
+
+        .hero .lead {
+            color: rgba(255, 255, 255, .84);
+            max-width: 620px;
+        }
+
+        .btn-brand {
+            background: var(--brand-soft);
+            border-color: var(--brand-soft);
+            color: #08251d;
+            font-weight: 700;
+        }
+
+        .btn-brand:hover {
+            background: #8bd0be;
+            border-color: #8bd0be;
+            color: #08251d;
+        }
+
+        .metric-strip {
+            margin-top: -72px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .metric-panel {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            box-shadow: 0 16px 38px rgba(21, 40, 52, .10);
+        }
+
+        .metric {
+            min-height: 118px;
+        }
+
+        .metric strong {
+            color: var(--brand);
+            font-size: 2rem;
+        }
+
+        .section-title {
+            max-width: 720px;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            height: 100%;
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 32px rgba(21, 40, 52, .10);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: #e8f6f2;
+            color: var(--brand);
+            font-size: 1.45rem;
+        }
+
+        .role-band {
+            background: #10232b;
+            color: #fff;
+        }
+
+        .role-item {
+            border-top: 1px solid rgba(255, 255, 255, .14);
+        }
+
+        .role-item p,
+        .role-band .text-muted {
+            color: rgba(255, 255, 255, .70) !important;
+        }
+
+        .footer {
+            border-top: 1px solid var(--line);
+        }
+    </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+    <nav class="navbar navbar-expand-lg bg-white sticky-top">
+        <div class="container py-2">
+            <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" th:href="@{/principal}">
+                <img th:src="@{/img/logo.png}" class="brand-logo" alt="CoursePlanner">
+                <span><span class="text-primary">Course</span>Planner</span>
+            </a>
+            <div class="d-flex gap-2">
+                <a th:href="@{/acceso}" class="btn btn-outline-primary">Iniciar sesion</a>
+                <a th:href="@{/eleccionCuenta}" class="btn btn-primary">Crear cuenta</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <div class="hero-copy">
+                <p class="eyebrow mb-3">Formacion organizada, progreso visible</p>
+                <h1 class="fw-bold mb-4">CoursePlanner</h1>
+                <p class="lead fs-4 mb-5">
+                    Una plataforma para descubrir cursos, gestionar inscripciones y seguir el avance de cada estudiante con una experiencia clara para alumnos e instructores.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a th:href="@{/eleccionCuenta}" class="btn btn-brand btn-lg px-4">Empezar ahora</a>
+                    <a th:href="@{/acceso}" class="btn btn-outline-light btn-lg px-4">Acceder</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="metric-strip">
+        <div class="container">
+            <div class="metric-panel rounded-3 overflow-hidden">
+                <div class="row g-0">
+                    <div class="col-md-4 metric p-4 border-end">
+                        <strong>01</strong>
+                        <p class="fw-bold mb-1 mt-2">Catalogo centralizado</p>
+                        <p class="text-muted mb-0">Cursos ordenados por categoria, precio, instructor y detalle.</p>
+                    </div>
+                    <div class="col-md-4 metric p-4 border-end">
+                        <strong>02</strong>
+                        <p class="fw-bold mb-1 mt-2">Seguimiento real</p>
+                        <p class="text-muted mb-0">Inscripciones, progreso y estados visibles desde el panel.</p>
+                    </div>
+                    <div class="col-md-4 metric p-4">
+                        <strong>03</strong>
+                        <p class="fw-bold mb-1 mt-2">Valoraciones utiles</p>
+                        <p class="text-muted mb-0">Feedback para cursos e instructores sin perder contexto.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="py-5 mt-4">
+        <div class="container py-4">
+            <div class="section-title mb-4">
+                <h2 class="fw-bold display-6 mb-3">Todo lo importante del aprendizaje, en un solo sitio</h2>
+                <p class="text-muted fs-5 mb-0">CoursePlanner esta pensado para que cada usuario encuentre rapido lo que necesita y pueda volver a su trabajo sin perder tiempo.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card p-4">
+                        <span class="feature-icon mb-4"><i class="bi bi-journal-bookmark"></i></span>
+                        <h3 class="h5 fw-bold">Cursos bien presentados</h3>
+                        <p class="text-muted mb-0">Ficha tecnica, instructor, duracion, precio e imagen para decidir con confianza.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card p-4">
+                        <span class="feature-icon mb-4"><i class="bi bi-bar-chart-line"></i></span>
+                        <h3 class="h5 fw-bold">Paneles claros</h3>
+                        <p class="text-muted mb-0">Alumnos e instructores tienen indicadores y accesos pensados para su flujo diario.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card p-4">
+                        <span class="feature-icon mb-4"><i class="bi bi-star"></i></span>
+                        <h3 class="h5 fw-bold">Valoraciones conectadas</h3>
+                        <p class="text-muted mb-0">Las opiniones se reflejan en los cursos y ayudan al instructor a mejorar.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <section class="role-band py-5">
+        <div class="container py-3">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-5">
+                    <h2 class="fw-bold display-6 mb-3">Empieza con el perfil que necesitas</h2>
+                    <p class="text-muted fs-5 mb-4">Crea una cuenta de estudiante o instructor y entra directamente en el panel que corresponde a tu forma de trabajar.</p>
+                    <a th:href="@{/eleccionCuenta}" class="btn btn-brand btn-lg px-4">Elegir tipo de cuenta</a>
+                </div>
+                <div class="col-lg-7">
+                    <div class="role-item py-4">
+                        <div class="d-flex gap-3">
+                            <i class="bi bi-person-check fs-3 text-primary"></i>
+                            <div>
+                                <h3 class="h5 fw-bold">Para estudiantes</h3>
+                                <p class="mb-0">Explora el catalogo, confirma inscripciones y revisa tus cursos activos.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="role-item py-4">
+                        <div class="d-flex gap-3">
+                            <i class="bi bi-easel2 fs-3 text-primary"></i>
+                            <div>
+                                <h3 class="h5 fw-bold">Para instructores</h3>
+                                <p class="mb-0">Gestiona cursos, estudiantes inscritos, progreso y valoraciones recientes.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="role-item py-4">
+                        <div class="d-flex gap-3">
+                            <i class="bi bi-shield-check fs-3 text-primary"></i>
+                            <div>
+                                <h3 class="h5 fw-bold">Acceso seguro</h3>
+                                <p class="mb-0">Cada usuario entra en su espacio con rutas y permisos separados.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer bg-white py-4 mt-auto">
+        <div class="container d-flex flex-column flex-md-row justify-content-between gap-2 text-secondary">
+            <span>2026 CoursePlanner</span>
+            <span>Gestion de cursos, inscripciones y progreso academico.</span>
+        </div>
+    </footer>
+
+</body>
+</html>

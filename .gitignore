@@ -1,0 +1,72 @@
+/.metadata/
+
+# Maven
+target/
+.mvn/wrapper/maven-wrapper.jar
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.bak
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.properties
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Spring Tool Suite (STS)
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+*.log
+
+# H2 Database
+*.mv.db
+*.trace.db
+h2/
+data/
+db.lock.db
+
+# Spring Data JPA / Hibernate
+*.sql
+
+# IDE
+.idea/
+*.iws
+*.iml
+*.ipr
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+build/
+dist/
+*.jar
+*.war
+*.ear
+*.class
+
+# Application properties (local overrides)
+application-local.properties
+application-dev.properties
+application-prod.properties
+.env
+.env.local
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
