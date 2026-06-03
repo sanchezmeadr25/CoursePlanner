@@ -1,20 +1,32 @@
 # CoursePlanner
 
-A buenas, este proyecto es CoursePlanner, una aplicación web que me he montado con Spring Boot y Thymeleaf para gestionar todo el cotarro de los cursos online. La idea es que los instructores puedan controlar sus cursos y alumnos, y que los estudiantes puedan bichear el catálogo, apuntarse a lo que les mole y dejar sus valoraciones.
+CoursePlanner es una aplicación web que me he montado con Spring Boot y Thymeleaf para gestionar los cursos online. La idea es que los instructores puedan controlar sus cursos y alumnos, y que los estudiantes puedan ver el catálogo, apuntarse a lo que les gusten  y dejar sus valoraciones.
 
 ## Lo que he usado (Tecnologías)
 
+![Java](https://img.shields.io/badge/Java_21-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot_4.0.6-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![SQL](https://img.shields.io/badge/SQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![H2](https://img.shields.io/badge/H2_Database-007ACC?style=for-the-badge&logo=databricks&logoColor=white)
+![Git](https://img.shields.io/badge/GIT-F05032?style=for-the-badge&logo=git&logoColor=white)
+![GitHub](https://img.shields.io/badge/GITHUB-181717?style=for-the-badge&logo=github&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap_5-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)
+![Thymeleaf](https://img.shields.io/badge/Thymeleaf-005F0F?style=for-the-badge&logo=thymeleaf&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-C71A36?style=for-the-badge&logo=apache-maven&logoColor=white)
+![Lombok](https://img.shields.io/badge/Lombok-92140C?style=for-the-badge)
+
 Para la maquinaria del proyecto he elegido este combo que puedes ver en el pom.xml:
 
-* Java 21 y Spring Boot 4.0.6 (a la última).
-* Spring MVC (para las rutas y la lógica web).
-* Spring Data JPA (para conectar y gestionar la base de datos).
-* Spring Security + Thymeleaf Extras Spring Security 6 (para que nadie entre donde no debe y adaptar las vistas al rol).
-* Spring Boot Validation (para controlar los campos obligatorios, formatos de contraseña y que el DNI tenga cara y ojos).
-* H2 Database con el starter de la consola web (base de datos en memoria para no complicarme la vida al arrancar).
-* Thymeleaf, Bootstrap 5 y Bootstrap Icons (para que la interfaz quede pintona y limpia).
-* Lombok (para ahorrarme los getters, setters y constructores de siempre en el código).
-* Maven (para gestionar todas estas dependencias).
+* **Java 21** y **Spring Boot 4.0.6** (a la última).
+* **Spring MVC** (para las rutas y la lógica web).
+* **Spring Data JPA** (para conectar y gestionar la base de datos).
+* **Spring Security** + **Thymeleaf Extras Spring Security 6** (para la gestión de accesos y roles).
+* **Spring Boot Validation** (para controlar los campos obligatorios, contraseñas y DNI).
+* **H2 Database** con su consola web (para base de datos en memoria).
+* **Thymeleaf**, **Bootstrap 5** y **Bootstrap Icons** (para maquetar el frontend).
+* **Lombok** (para quitarnos código repetitivo).
+* **Maven** (para gestionar todo el pom.xml).
 
 ---
 
