@@ -200,35 +200,3 @@ CoursePlanner
 └── README.md
 ```
 
-## Testing no automatizado
-
-El proyecto incluye documentacion de pruebas manuales en:
-
-```text
-Testing_no_automatizado_CoursePlanner_COMPLETO.docx
-```
-
-Ese documento contiene:
-
-- 54 casos de prueba.
-- Tabla de errores detectados.
-- Tabla de capturas recomendadas.
-- Casos de login, logout, roles, estudiantes, instructores, cursos, inscripciones, valoraciones y errores.
-
-Las capturas se organizan en:
-
-```text
-Fotos testing/
-```
-
-Dentro de esa carpeta hay una subcarpeta por cada captura:
-
-```text
-CAP-001
-CAP-002
-CAP-003
-...
-CAP-054
-```
-
-Cada carpeta corresponde a la evidencia indicada en el documento de testing.
