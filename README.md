@@ -1,202 +1,121 @@
 # CoursePlanner
 
-CoursePlanner es una aplicacion web desarrollada con Spring Boot y Thymeleaf para gestionar cursos online, instructores, estudiantes e inscripciones.
+A buenas, este proyecto es CoursePlanner, una aplicación web que me he montado con Spring Boot y Thymeleaf para gestionar todo el cotarro de los cursos online. La idea es que los instructores puedan controlar sus cursos y alumnos, y que los estudiantes puedan bichear el catálogo, apuntarse a lo que les mole y dejar sus valoraciones.
 
-La aplicacion permite que los instructores administren sus cursos y las inscripciones de sus estudiantes, mientras que los estudiantes pueden consultar el catalogo, inscribirse en cursos, revisar sus cursos inscritos y valorar los cursos realizados.
+## Lo que he usado (Tecnologías)
 
-## Tecnologias utilizadas
+Para la maquinaria del proyecto he elegido este combo que puedes ver en el pom.xml:
 
-- Java 21
-- Spring Boot 4.0.6
-- Spring MVC
-- Spring Data JPA
-- Spring Security
-- Thymeleaf
-- Thymeleaf Extras Spring Security
-- H2 Database
-- Bootstrap 5
-- Bootstrap Icons
-- Lombok
-- Maven
+* Java 21 y Spring Boot 4.0.6 (a la última).
+* Spring MVC (para las rutas y la lógica web).
+* Spring Data JPA (para conectar y gestionar la base de datos).
+* Spring Security + Thymeleaf Extras Spring Security 6 (para que nadie entre donde no debe y adaptar las vistas al rol).
+* Spring Boot Validation (para controlar los campos obligatorios, formatos de contraseña y que el DNI tenga cara y ojos).
+* H2 Database con el starter de la consola web (base de datos en memoria para no complicarme la vida al arrancar).
+* Thymeleaf, Bootstrap 5 y Bootstrap Icons (para que la interfaz quede pintona y limpia).
+* Lombok (para ahorrarme los getters, setters y constructores de siempre en el código).
+* Maven (para gestionar todas estas dependencias).
 
-## Funcionalidades principales
+---
 
-### Funcionalidades publicas
+## ¿Qué hace la aplicación?
 
-- Pagina principal publica.
-- Pantalla de acceso.
-- Eleccion de tipo de cuenta.
-- Registro de estudiante.
-- Registro de instructor.
-- Redireccion desde `/` a `/principal`.
+El sistema cambia según quién seas. Aquí tienes el desglose de funcionalidades:
 
-### Seguridad y usuarios
+### Zona Pública (Sin loguearse)
+* Página de inicio y pantalla de login.
+* Registro tanto para estudiantes como para instructores (eliges tu bando en `/eleccionCuenta`).
+* Redirección automática de `/` a `/principal`.
 
-- Login con Spring Security.
-- Logout desde el menu de usuario.
-- Redireccion segun rol despues del login.
-- Proteccion de rutas por roles.
-- Acceso diferenciado para administrador/instructor y estudiante.
-- Bloqueo de acceso a paginas protegidas sin iniciar sesion.
+### Seguridad (La pasarela)
+* Control de acceso estricto con Spring Security. Si intentas colarte en una página protegida sin cuenta, te rebota.
+* El menú se adapta según tu rol y tiene su botón de Logout bien a mano.
+* Al hacer login, te manda directo a tu panel correspondiente (Admin/Instructor o Estudiante).
 
-### Rol administrador / instructor
+### Rol: Instructor / Admin
+* Cuadro de mandos: Un resumen visual con los cursos activos, total de alumnos, la nota media de sus cursos y cuántas opiniones tiene.
+* Gestión de Cursos (CRUD completo): Crear, editar y borrar. Ojo: No te deja borrar un curso si ya tiene alumnos matriculados (para no romper nada).
+* Control de alumnos: Ver quién está apuntado a cada curso, actualizarles el progreso (de 0 a 100) o cambiar el estado de su inscripción. Además, un listado general de estudiantes con opción de editarlos o borrarlos (con un modal para no meter la pata).
+* Perfil: Modificar sus propios datos de instructor.
 
-- Panel principal con resumen de:
-  - Cursos activos.
-  - Total de estudiantes.
-  - Calificacion media.
-  - Numero de valoraciones.
-- Gestion de cursos propios.
-- Creacion de cursos.
-- Edicion de cursos.
-- Borrado de cursos.
-- Restriccion para no borrar cursos con estudiantes inscritos.
-- Consulta del detalle de un curso.
-- Consulta de estudiantes inscritos en un curso.
-- Gestion de inscripciones:
-  - Cambiar estado.
-  - Actualizar progreso.
-- Gestion de estudiantes:
-  - Listado de estudiantes.
-  - Alta de estudiante.
-  - Edicion de estudiante.
-  - Borrado con modal de confirmacion.
-- Edicion del perfil de instructor.
+### Rol: Estudiante
+* Su panel: Resumen de sus cursos actuales, cursos que quedan libres y valoraciones que ha dejado.
+* Catálogo: Ver los detalles de los cursos disponibles y matricularse con un clic (con un filtro para que no se apunte dos veces al mismo).
+* Mis Cursos: Ver su progreso y puntuar los cursos que ya esté haciendo.
 
-### Rol estudiante
+### Validaciones clave
+* El DNI tiene que ser de 9 caracteres exactos, sí o sí.
+* Contraseñas seguras obligatorias en los formularios: mínimo 8 caracteres, una mayúscula, una minúscula, un número y un símbolo.
+* Los formularios te avisan del error justo al lado del campo que has puesto mal y tienen el típico ojito para mostrar/ocultar la contraseña.
 
-- Panel principal de estudiante con resumen de:
-  - Cursos inscritos.
-  - Cursos disponibles.
-  - Valoraciones dadas.
-- Consulta del catalogo de cursos.
-- Consulta del detalle de un curso.
-- Inscripcion en cursos.
-- Prevencion de inscripciones duplicadas.
-- Consulta de cursos inscritos.
-- Valoracion de cursos.
+---
 
-### Validaciones destacadas
+## Cómo ponerlo en marcha (En 4 pasos)
 
-- El DNI debe tener exactamente 9 caracteres.
-- La contrasena debe ser segura en los formularios:
-  - Minimo 8 caracteres.
-  - Una mayuscula.
-  - Una minuscula.
-  - Un numero.
-  - Un simbolo.
-- Los formularios muestran mensajes de error junto al campo correspondiente.
-- Los campos obligatorios se validan desde el formulario.
-- Los campos numericos usan limites cuando corresponde, por ejemplo progreso entre 0 y 100.
-- Los formularios de contrasena incluyen boton para mostrar y ocultar la contrasena.
+1. Clona este repositorio en tu equipo.
+2. Métete en la carpeta raíz del proyecto de Spring Boot.
+3. Arranca la aplicación con el Maven Wrapper ejecutando:
+   * En Windows: `mvnw spring-boot:run`
+   * En Linux/Mac: `./mvnw spring-boot:run`
+4. Abre tu navegador favorito y entra en: http://localhost:9000
 
+---
 
+## Base de datos (H2)
 
-## Como ejecutar el proyecto
+Para que sea descargar y listo, uso una base de datos H2 en memoria que se crea y se destruye cada vez que lanzas el proyecto. 
 
-1. Clonar el repositorio.
+Si quieres ver las tablas y trastear con las consultas, puedes meterte en la consola web: http://localhost:9000/h2-console
 
+**Datos para el login de H2:**
+* JDBC URL: `jdbc:h2:./db/basedatos`
+* Usuario: `sa`
+* Contraseña: *(déjala en blanco)*
 
-2. Entrar en la carpeta del proyecto Spring Boot.
+---
 
-3. Ejecutar la aplicacion con Maven Wrapper.
+## Mapa de Rutas (Por si te pierdes)
 
-4. Abrir la aplicacion en el navegador.
+### Públicas
+* `/` y `/principal` -> Inicio.
+* `/acceso` -> Login.
+* `/eleccionCuenta`, `/anadirestudiante`, `/crearInstructor` -> Registros.
 
-http://localhost:9000
+### Instructores
+* `/principalAdmin` -> Panel de control.
+* `/admin/misCursos` -> Sus cursos.
+* `/crearCurso` y `/admin/editarCurso/{id}` -> Formularios de curso.
+* `/admin/listaEstudiantes` -> Lista de alumnos.
+* `/inscripcion/admin/inscripciones/{id}` -> Notas y progreso de los alumnos en ese curso.
 
+### Estudiantes
+* `/principalUser` -> Panel de estudiante.
+* `/catalogo` -> Tienda/Catálogo de cursos.
+* `/misCursosInscritos` -> Sus matrículas.
+* `/inscripcion/estudiante/valorar` -> Dejar reseñas.
 
-## Base de datos
-
-La aplicacion usa H2.
-
-Configuracion principal:
-
-properties
-server.port=9000
-spring.datasource.url=jdbc:h2:./db/basedatos;DB_CLOSE_ON_EXIT=FALSE
-spring.datasource.username=sa
-spring.datasource.password=
-spring.jpa.hibernate.ddl-auto=create-drop
-
-Consola H2:
-
-
-http://localhost:9000/h2-console
-
-
-Datos de acceso a H2:
-
-| Campo | Valor |
-|---|---|
-| JDBC URL | `jdbc:h2:./db/basedatos` |
-| Usuario | `sa` |
-| Contrasena | vacia |
-
-## Rutas principales
-
-### Publicas
-
-| Ruta | Descripcion |
-|---|---|
-| `/` | Redirige a la pagina principal |
-| `/principal` | Pagina principal publica |
-| `/acceso` | Login |
-| `/eleccionCuenta` | Seleccion de tipo de cuenta |
-| `/anadirestudiante` | Registro de estudiante |
-| `/crearInstructor` | Registro de instructor |
-
-### Administrador / instructor
-
-| Ruta | Descripcion |
-|---|---|
-| `/principalAdmin` | Panel principal del instructor |
-| `/admin/misCursos` | Listado de cursos del instructor |
-| `/crearCurso` | Formulario para crear curso |
-| `/admin/editarCurso/{id}` | Editar curso |
-| `/admin/borrarCurso/{id}` | Borrar curso |
-| `/admin/listaEstudiantes` | Listado de estudiantes |
-| `/admin/editarEstudiante/{dni}` | Editar estudiante |
-| `/admin/estudiante/borrar/{dni}` | Borrar estudiante |
-| `/inscripcion/admin/inscripciones/{id}` | Gestionar inscripciones de un curso |
-| `/editarInstructor/{dni}` | Editar instructor |
-
-### Estudiante
-
-| Ruta | Descripcion |
-|---|---|
-| `/principalUser` | Panel principal del estudiante |
-| `/catalogo` | Catalogo de cursos |
-| `/misCursosInscritos` | Cursos inscritos del estudiante |
-| `/cursoDetalle/{id}` | Detalle de curso |
-| `/inscripcion/nueva?cursoId={id}` | Crear inscripcion |
-| `/inscripcion/estudiante/valorar` | Valorar curso |
+---
 
 ## Estructura del proyecto
+
+Para que encuentres las cosas rápido, el código está organizado de la forma típica de Spring Boot:
 
 ```text
 CoursePlanner
 ├── CourserPlanner
 │   ├── src
 │   │   ├── main
-│   │   │   ├── java
-│   │   │   │   └── com.salesianostriana.dam.courserplanner
-│   │   │   │       ├── controlador
-│   │   │   │       ├── modelo
-│   │   │   │       ├── repositorio
-│   │   │   │       ├── seguridad
-│   │   │   │       ├── servicio
-│   │   │   │       └── Dataseed.java
+│   │   │   ├── java/.../courserplanner
+│   │   │   │   ├── controlador  <-- Los controladores web (Rutas)
+│   │   │   │   ├── modelo       <-- Entidades de la BD (Curso, Alumno...)
+│   │   │   │   ├── repositorio  <-- Consultas con Spring Data JPA
+│   │   │   │   ├── seguridad    <-- Configuración de Spring Security
+│   │   │   │   ├── servicio     <-- Lógica de negocio
+│   │   │   │   └── Dataseed.java <-- Datos de prueba para no empezar de cero
 │   │   │   └── resources
-│   │   │       ├── static
-│   │   │       │   ├── css
-│   │   │       │   ├── img
-│   │   │       │   └── js
-│   │   │       └── templates
-│   │   └── test
-│   └── pom.xml
-├── Fotos testing
-├── Testing_no_automatizado_CoursePlanner_COMPLETO.docx
+│   │   │       ├── static       <-- El CSS, JS e imágenes
+│   │   │       └── templates    <-- Las vistas en HTML con Thymeleaf
+│   │   └── pom.xml
+├── Fotos testing                <-- Capturas de que todo rula
+├── Testing_no_automatizado...   <-- Documento con las pruebas manuales
 └── README.md
-```
-
